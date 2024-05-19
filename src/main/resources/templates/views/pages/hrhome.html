@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Employee Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/hr/home">HR Panel</a>
+    </div>
+ 
+    <ul class="nav navbar-nav navbar-right">
+    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      
+    </ul>
+  </div>
+</nav>
+
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Manager</th>
+				<th>Designation</th>
+				<th>edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="emp : ${Employee}">
+				<td th:text="${emp.id}"></td>
+				<td th:text="${emp.firstname}"></td>
+				<td th:text="${emp.department}"></td>
+				<td th:text="${emp.managerid}"></td>
+				<td th:text="${emp.designation}"></td>
+				<td><a type="button" class="btn btn-primary"
+					th:href="@{/hr/edit/{id}(id=${emp.id})}">Edit</a></td>
+				<td>
+			</tr>
+		</tbody>
+	</table>
+
+	
+</body>
+</html>

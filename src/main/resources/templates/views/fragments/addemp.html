@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Employee</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/employeeform.css}">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
+</head>
+<body>
+
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/hr/home">Admin Panel</a>
+			</div>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/admin/home"><span
+						class="glyphicon glyphicon-user"></span> Back to Employee list</a></li>
+				<li><a href="/logout"><span
+						class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
+			</ul>
+		</div>
+	</nav>
+
+	<div class="maindiv">
+		<form  id="employeeForm" th:action="@{/admin/add}" method="post" th:object="${Employee}">
+			<h2>Personal Details</h2>
+			<div class="form-group">
+
+				<div class="fields">
+					<label for="middlename">First Name of the Employee:</label> <br>
+					<input type="text" id="firstname" name="firstname"
+						th:field="*{firstname}" placeholder="First Name"
+						required="required">
+				</div>
+				<div>
+					<label for="middlename">Middle Name of the Employee:</label> <br>
+					<input type="text" id="middlename" name="middlename"
+						th:field="*{middlename}" placeholder="Middle Name">
+				</div>
+
+			</div>
+			
+			<div class="form-group">
+
+				<div class="fields">
+					<label for="lastname">Last Name of the Employee:</label> <br>
+					<input type="text" id="lastname" name="lastname"
+						th:field="*{lastname}" placeholder="Last Name" required="required">
+
+				</div>
+				<div>
+					<label for="dob">Date of Birth:</label> <br> <input
+						type="date" id="dob" name="dateOfBirth" th:field="*{dateOfBirth}"
+						required="required">
+
+				</div>
+			</div>
+			
+			<div class="form-group">
+
+					<div class="fields">
+					<label for="gender">Gender:</label> <br> <select
+						id="department" name="department" th:field="*{gender}"
+						required="required">
+						<option value="">Select Gender</option>
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+						<option value="notspecify">Not specify</option>
+					</select>
+				</div>
+				<div class="fields">
+					<label for="BloodGroup">BloodGroup :</label> <br> <select
+						id="department" name="department" th:field="*{bloodgroup}"
+						required="required">
+						<option value="bloodgroup" selected>Blood Group</option>
+						<option value="AB positive">AB+</option>
+						<option value="O positive">O+</option>
+						<option value="A positive">A+</option>
+						<option value="B positive">B+</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+
+				<div class="fields">
+					<label for="mobile">Mobile:</label> <br> <input type="text"
+						id="mobile" name="mobile" th:field="*{mobile}" required="required"
+						placeholder="Mobile">
+				</div>
+
+				<div>
+					<label for="email">Email:</label> <br> <input type="email"
+						id="email" name="email" th:field="*{email}" placeholder="Email"
+						required="required">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+			
+			<div class="fields">
+
+					<label for="address"> PAN number :</label> <br> <input
+						type="text" id="pan" name="pan" th:field="*{pan}"
+						required="required" placeholder="id">
+				</div>
+				<div class="fields">
+
+					<label for="address"> Address :</label> <br> <input
+						type="text" id="address" name="address" th:field="*{address}"
+						required="required" placeholder="Address">
+				</div>
+				
+				
+			</div>
+
+
+			<h2>Employment details</h2>
+			<div class="form-group">
+
+				<div class="fields">
+					<label for="department">Department:</label> <br> <select
+						id="department" name="department" th:field="*{department}"
+						required="required">
+						<option value="">Select Department</option>
+						<option value="Testing">Test</option>
+						<option value="Development">Development</option>
+						<option value="Design">Design</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="managerid">Manager ID:</label><br> <select
+						id="managerid" name="managerid" th:field="*{managerid}"
+						required="required">
+						<option value="">Select Manager ID</option>
+						<!-- Add options for manager IDs -->
+						<option value="ram-2325">ram-2325</option>
+						<option value="laxman-2102">laxman-2102</option>
+					</select>
+
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<div class="fields">
+
+					<label for="salary">Salary:</label> <br> <input type="text"
+						id="salary" name="salary" th:field="*{salary}"
+						placeholder="Salary" required="required">
+				</div>
+
+				<div>
+					<label for="designation">Designation:</label> <br> <select
+						id="designation" name="designation" th:field="*{designation}"
+						required="required">
+						<option value="">Select Designation</option>
+						<option value="associate">Associate</option>
+						<option value="intern">Intern</option>
+						<option value="developer">developer</option>
+						<option value="Lead">Lead</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<div class="fields">
+
+					<label for="dateofJoining">Date of Joining:</label> <br> <input
+						type="date" id="dateofJoining" name="dateofJoining"
+						required="required" th:field="*{dateofJoining}">
+				</div>
+
+				<div>
+					<label for="dateofLeaving">Date of Leaving:</label> <br> <input
+						type="date" id="dateofLeaving" name="dateofLeaving"
+						th:field="*{dateofLeaving}">
+				</div>
+			</div>
+			<h2>Emergency Details</h2>
+			<div class="form-group">
+				<div class="fields">
+
+					<label for="emergencycontact">Emergency Contact 1:</label> <br>
+					<input type="text" id="emergencycontact" name="emergencycontact"
+						required="required" th:field="*{emergencycontact}"
+						placeholder="Emergency Contact">
+				</div>
+
+				<div>
+					<label for="emergencycontactperson">Emergency Contact 2: </label><br>
+					<input type="text" id="emergencycontactperson" required="required"
+						name="emergencycontact 2" th:field="*{emergencycontactperson}"
+						placeholder="Emergency Contact Person">
+
+
+				</div>
+			</div>
+
+			<div class="form-group">
+
+				<div class="fields">
+					<label for="emergencycontactperson">Emergency Contact
+						Person:</label><br> <input type="text" id="emergencycontactperson"
+						required="required" name="emergencycontactperson"
+						th:field="*{emergencycontactperson}"
+						placeholder="Emergency Contact Person">
+
+
+				</div>
+				<div>
+					<label for="relation">Relation:</label> <br> <select
+						id="relation" name="relation" th:field="*{relation}"
+						required="required">
+						<option value="">Select Relation</option>
+						<option value="father">Father</option>
+						<option value="mother">Mother</option>
+						<option value="brother">Brother</option>
+						<option value="guardian">Guardian</option>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="fields">
+
+					<label for="salary">Password:</label> <br> <input
+						type="password" id="salary" name="salary" th:field="*{password}"
+						placeholder="pass" required="required">
+				</div>
+
+
+				<div class="fields">
+
+					<label for="salary">Password:</label> <br> <input
+						type="password" id="salary" name="salary"
+						th:field="*{confirmpassword}" placeholder="Confirmpassword"
+						required="required">
+				</div>
+			</div>
+<!--			<div class="form-group">-->
+
+<!--				<div class="fields">-->
+<!--					<label for="relation">Access Role:</label> <br> <select-->
+<!--						id="relation" name="relation" th:field="*{role}"-->
+<!--						required="required">-->
+<!--						<option value="ADMIN">Admin</option>-->
+<!--						<option value="HR">Hr</option>-->
+<!--						<option value="USER">User</option>-->
+
+<!--					</select>-->
+<!--				</div>-->
+<!--			</div>-->
+
+			<div class="form-group">
+				<div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</div>
+				
+										<div>  <button onclick="downloadFormAsPDF()" class="btn btn-primary">Download as PDF</button>
+				
+			</div>
+		</form>
+		
+
+	</div>
+</body>
+
+    <!-- JavaScript function to download form as PDF -->
+    <script>
+        function downloadFormAsPDF() {
+            var pdf = new jsPDF();
+            pdf.fromHTML($('#employeeForm').html(), {
+                callback: function(pdf) {
+                    pdf.save('employee_details.pdf');
+                }
+            });
+        }
+    </script>
+</html>
