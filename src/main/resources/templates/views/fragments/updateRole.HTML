@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Update Role</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Update Role</h2>
+    <form th:action="@{/updateRole/{id}(id=${Employee.id})}" method="post" th:object="${Employee}">
+        <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" class="form-control" id="firstname" th:value="${Employee.firstname}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" th:value="${Employee.email}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" name="role" class="form-control" th:field="*{role}" required>
+                <option value="">Select Role</option>
+                <option value="USER" th:selected="${Employee.role == 'USER'}">USER</option>
+                <option value="HR" th:selected="${Employee.role == 'HR'}">HR</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Role</button>
+    </form>
+</div>
+
+</body>
+</html>

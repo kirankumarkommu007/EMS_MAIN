@@ -11,7 +11,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand">Welcome <span th:text="${Profile.firstname}"></span></a>
+            <a class="navbar-brand">Profile <span th:text="${Profile.firstname}"></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,7 +30,7 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Employee Profile</h2>
@@ -77,6 +77,12 @@
                 <div class="form-group">
                     <label for="phone">Date of Joining :</label>
                     <input type="tel" class="form-control" id="phone" th:value="${Profile.dateOfJoining}" readonly>
+                </div>
+                
+                
+                     <div class="form-group">
+                    <label for="phone">Role of Employee :</label>
+                    <input type="tel" class="form-control" id="role" th:value="${Profile.role}" readonly>
                 </div>
                 
             </div>

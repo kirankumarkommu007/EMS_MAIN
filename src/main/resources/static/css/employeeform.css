@@ -58,3 +58,12 @@ button {
 .fields{
 	padding-right: 20px;
 }
+.fields2 input[type="text"] {
+    width: 600px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+

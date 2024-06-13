@@ -62,8 +62,7 @@
 
             <!-- Login details -->
             <column name="role" value="ADMIN"/>
-            <column name="password" value="$2a$12$V7AGcOricQdIvH7/oJG2GOdesP3ppl1EXF4v5iadX1cuP4Kl2PvWG
-"/>
+            <column name="password" value="$2a$12$z.XuXcdtmpw9Iyj6tTRdQuGRrMjvOV5JF7sLzDcplhz1k8PuS6qK."/>
         </insert>
     </changeSet>
 

@@ -78,10 +78,14 @@
 							id="bloodgroup" name="bloodgroup" th:field="*{bloodgroup}"
 							required="required">
 							<option value="">Select Blood Group</option>
-							<option value="AB+">AB+</option>
-							<option value="O positive">O+</option>
-							<option value="A positive">A+</option>
-							<option value="B positive">B+</option>
+							<option value="AB +ve">AB+</option>
+							<option value="O +ve">O+</option>
+							<option value="A +ve">A+</option>
+							<option value="B +ve">B+</option>
+							<option value="AB -ve">AB-</option>
+							<option value="O -ve">O-</option>
+							<option value="A -ve">A-</option>
+							<option value="B -ve">B-</option>
 						</select>
 					</div>
 				</div>
@@ -139,12 +143,15 @@
 				</div>
 
 				<div class="form-group">
-					<div class="fields">
+					<div class="fields2">
 						<label for="permanentaddress">Permanent Address:</label><br>
 						<input type="text" id="permanentaddress" name="permanentaddress"
 							th:field="*{permanentaddress}" placeholder="Permanent Address">
 					</div>
-					<div>
+				</div>
+				<div class="form-group">
+
+					<div class="fields2">
 						<label for="communicationaddress">Communication Address:</label><br>
 						<input type="text" id="communicationaddress"
 							name="communicationaddress" th:field="*{communicationaddress}"
@@ -181,19 +188,20 @@
 				</div>
 
 				<div class="form-group">
-					<div class="fields">
+					<div class="fields2">
 						<label for="collegeaddress">College Address:</label><br> <input
 							type="text" id="collegeaddress" name="collegeaddress"
 							th:field="*{collegeaddress}" placeholder="College Address">
 					</div>
-					<div>
-						<label for="technicalSkills">Technical Skills:</label><br> <input
-							type="text" id="technicalSkills" name="technicalSkills"
-							th:field="*{technicalSkills}" placeholder="Technical Skills">
-					</div>
+
 				</div>
 
 				<div class="form-group">
+					<div class="fields">
+						<label for="cgpaPercentage">CGPA/Percentage:</label><br> <input
+							type="text" id="cgpaPercentage" name="cgpaPercentage"
+							th:field="*{cgpaPercentage}" placeholder="CGPA/Percentage">
+					</div>
 					<div class="fields">
 						<label for="technicalCertification">Technical
 							Certification:</label><br> <input type="text"
@@ -201,10 +209,16 @@
 							th:field="*{technicalCertification}"
 							placeholder="Technical Certification">
 					</div>
+
+				</div>
+
+				<div class="form-Group">
+
+
 					<div>
-						<label for="cgpaPercentage">CGPA/Percentage:</label><br> <input
-							type="text" id="cgpaPercentage" name="cgpaPercentage"
-							th:field="*{cgpaPercentage}" placeholder="CGPA/Percentage">
+						<label for="technicalSkills">Technical Skills:</label><br> <input
+							type="text" id="technicalSkills" name="technicalSkills"
+							th:field="*{technicalSkills}" placeholder="Technical Skills">
 					</div>
 				</div>
 
@@ -373,17 +387,7 @@
 					</div>
 				</div>
 
-				<div class="form-group">
-					<div>
-						<label for="role">Role:</label><br> <select id="role"
-							name="role" th:field="*{role}" required="required">
-							<option value="">Select Role</option>
-							<option value="USER">USER</option>
-							<option value="HR">HR</option>
-						</select>
-					</div>
-
-				</div>
+			
 
 
 				<div class="form-group">
