@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/hr/home">Welcome <span th:text="${Profile.firstname}"></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Employee Profile</h2>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" th:value="${Profile.firstname}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <input type="text" class="form-control" id="position" th:value="${Profile.designation}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <input type="text" class="form-control" id="department" th:value="${Profile.department}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" th:value="${Profile.email}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" class="form-control" id="phone" th:value="${Profile.mobile}" readonly>
+                </div>
+                
+                    <div class="form-group">
+                    <label for="phone">Manager:</label>
+                    <input type="tel" class="form-control" id="phone" th:value="${Profile.managerid}" readonly>
+                </div>
+                
+                
+                    <div class="form-group">
+                    <label for="phone">Designation :</label>
+                    <input type="tel" class="form-control" id="phone" th:value="${Profile.designation}" readonly>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label for="phone">Date of Birth :</label>
+                    <input type="tel" class="form-control" id="phone" th:value="${Profile.dateOfBirth}" readonly>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <label for="phone">Date of Joining :</label>
+                    <input type="tel" class="form-control" id="phone" th:value="${Profile.dateofJoining}" readonly>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

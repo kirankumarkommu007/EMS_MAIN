@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/admin/home">Admin Panel</a>
+    </div>
+ 
+    <ul class="nav navbar-nav navbar-right">
+    <li><a href="/admin/add"><span class="glyphicon glyphicon-user"></span> Add Employee</a></li>
+    <li>
+     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+ <!-- <h2>  Welcome <span th:text="${Profile.firstname}"></span></h2> -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="emp : ${Employee}">
+                <td th:text="${emp.id}"></td>
+                <td th:text="${emp.firstname}"></td>
+                <td th:text="${emp.department}"></td>
+                <td th:text="${emp.salary}"></td>
+                <td>
+                    <a type="button" class="btn btn-primary" th:href="@{/admin/edit/{id}(id=${emp.id})}">Edit</a>
+                </td>
+                <td>
+                    <a th:href="@{/admin/delete/{id}(id=${emp.id})}" type="button" class="btn btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this employee?')">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

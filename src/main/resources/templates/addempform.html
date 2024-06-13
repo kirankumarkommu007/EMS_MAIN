@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Personal Details Form</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <form action="#" th:action="@{/submitForm}" th:object="${employee}" method="post">
+        <div class="form-container">
+            <h2>Personal Details</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstname">First Name of the Employee:</label>
+                    <input type="text" id="firstname" th:field="*{firstname}" />
+                </div>
+                <div class="form-group">
+                    <label for="middlename">Middle Name of the Employee:</label>
+                    <input type="text" id="middlename" th:field="*{middlename}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lastname">Last Name of the Employee:</label>
+                    <input type="text" id="lastname" th:field="*{lastname}" />
+                </div>
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth:</label>
+                    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input type="text" id="gender" th:field="*{gender}" />
+                </div>
+                <div class="form-group">
+                    <label for="bloodgroup">Blood Group:</label>
+                    <input type="text" id="bloodgroup" th:field="*{bloodgroup}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" id="mobile" th:field="*{mobile}" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fathername">Father's Name:</label>
+                    <input type="text" id="fathername" th:field="*{fathername}" />
+                </div>
+                <div class="form-group">
+                    <label for="mothername">Mother's Name:</label>
+                    <input type="text" id="mothername" th:field="*{mothername}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="maritalStatus">Marital Status:</label>
+                    <input type="text" id="maritalStatus" th:field="*{maritalStatus}" />
+                </div>
+                <div class="form-group">
+                    <label for="spousename">Spouse's Name:</label>
+                    <input type="text" id="spousename" th:field="*{spousename}" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="communicationaddress">Communication Address:</label>
+                    <textarea id="communicationaddress" th:field="*{communicationaddress}"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" th:field="*{aadhaarSubmitted}" /> Aadhaar submitted
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" th:field="*{panSubmitted}" /> PAN submitted
+                    </label>
+                </div>
+            </div>
+            <div class="form-row">
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
