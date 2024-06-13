@@ -26,39 +26,214 @@
     </ul>
   </div>
 </nav>
-    <h1>Edit Employee</h1>
-    <form th:action="@{'/admin/edit/' + ${Employee.id}}" method="post"
-        th:object="${Employee}">
+<h1>Edit Employee</h1>
+<form th:action="@{'/admin/edit/' + ${Employee.id}}" method="post"
+    th:object="${Employee}">
 
-        <input type="hidden" th:field="*{id}">
-        
-        
-        
-        <div class="form-group">
-            <label for="Name">Name of the Employee :</label> <br> <input
-                type="text" name="title" th:field="*{firstname}"
-                placeholder="name of employee" required="required">
-        </div>
+    <input type="hidden" th:field="*{id}">
 
-        <br>
-        <div class="form-group">
-            <label for="Department">Department:</label><br> 
-            <select id="department" name="department" th:field="*{department}" required="required">
-                <option value="">Select Department</option>
-                <option value="Testing">Test</option>
-                <option value="Development">Development</option>
-                <option value="Design">Design</option>
-            </select>
-        </div>
-        <br>
-        <div class="form-group">
-            <label for="Salary">Salary:</label><br> 
-            <input type="text" th:field="*{salary}" placeholder="Salary">
-        </div>
-        <br>
-        <button type="submit" class="btn btn-default"
-            onclick="return confirm('Are you sure you want to update this employee?')">Update</button>
-    </form>
-    <a class="btn btn-default" href="/admin/home">Back to Employee List</a>
+    <!-- Personal details -->
+    <h2>Personal Details</h2>
+    <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" th:field="*{firstname}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="middlename">Middle Name:</label>
+        <input type="text" id="middlename" name="middlename" th:field="*{middlename}">
+    </div>
+    <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" th:field="*{lastname}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="bloodgroup">Blood Group:</label>
+        <input type="text" id="bloodgroup" name="bloodgroup" th:field="*{bloodgroup}">
+    </div>
+    <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" th:field="*{gender}" required="required">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="notspecify">Not Specify</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="pan">PAN:</label>
+        <input type="text" id="pan" name="pan" th:field="*{pan}">
+    </div>
+    <div class="form-group">
+        <label for="adhaar">Aadhaar:</label>
+        <input type="text" id="adhaar" name="adhaar" th:field="*{adhaar}">
+    </div>
+    <div class="form-group">
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile" th:field="*{mobile}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="fathername">Father's Name:</label>
+        <input type="text" id="fathername" name="fathername" th:field="*{fathername}">
+    </div>
+    <div class="form-group">
+        <label for="mothername">Mother's Name:</label>
+        <input type="text" id="mothername" name="mothername" th:field="*{mothername}">
+    </div>
+    <div class="form-group">
+        <label for="spousename">Spouse's Name:</label>
+        <input type="text" id="spousename" name="spousename" th:field="*{spousename}">
+    </div>
+    <div class="form-group">
+        <label for="maritalStatus">Marital Status:</label>
+        <input type="text" id="maritalStatus" name="maritalStatus" th:field="*{maritalStatus}">
+    </div>
+    <div class="form-group">
+        <label for="permanentaddress">Permanent Address:</label>
+        <input type="text" id="permanentaddress" name="permanentaddress" th:field="*{permanentaddress}">
+    </div>
+    <div class="form-group">
+        <label for="communicationaddress">Communication Address:</label>
+        <input type="text" id="communicationaddress" name="communicationaddress" th:field="*{communicationaddress}">
+    </div>
+
+    <!-- Educational details -->
+    <h2>Educational Details</h2>
+    <div class="form-group">
+        <label for="highestqualification">Highest Qualification:</label>
+        <input type="text" id="highestqualification" name="highestqualification" th:field="*{highestqualification}">
+    </div>
+    <div class="form-group">
+        <label for="qualifyingbranch">Qualifying Branch:</label>
+        <input type="text" id="qualifyingbranch" name="qualifyingbranch" th:field="*{qualifyingbranch}">
+    </div>
+    <div class="form-group">
+        <label for="yearOfPassing">Year of Passing:</label>
+        <input type="text" id="yearOfPassing" name="yearOfPassing" th:field="*{yearOfPassing}">
+    </div>
+    <div class="form-group">
+        <label for="university">University:</label>
+        <input type="text" id="university" name="university" th:field="*{university}">
+    </div>
+    <div class="form-group">
+        <label for="collegeaddress">College Address:</label>
+        <input type="text" id="collegeaddress" name="collegeaddress" th:field="*{collegeaddress}">
+    </div>
+    <div class="form-group">
+        <label for="technicalSkills">Technical Skills:</label>
+        <input type="text" id="technicalSkills" name="technicalSkills" th:field="*{technicalSkills}">
+    </div>
+    <div class="form-group">
+        <label for="technicalCertification">Technical Certification:</label>
+        <input type="text" id="technicalCertification" name="technicalCertification" th:field="*{technicalCertification}">
+    </div>
+    <div class="form-group">
+        <label for="cgpaPercentage">CGPA Percentage:</label>
+        <input type="text" id="cgpaPercentage" name="cgpaPercentage" th:field="*{cgpaPercentage}">
+    </div>
+
+    <!-- Present employment details -->
+    <h2>Present Employment Details</h2>
+    <div class="form-group">
+        <label for="salary">Salary:</label>
+        <input type="text" id="salary" name="salary" th:field="*{salary}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="managerId">Manager ID:</label>
+        <input type="text" id="managerId" name="managerId" th:field="*{managerId}">
+    </div>
+    <div class="form-group">
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" name="designation" th:field="*{designation}">
+    </div>
+    <div class="form-group">
+        <label for="department">Department:</label>
+        <select id="department" name="department" th:field="*{department}" required="required">
+            <option value="">Select Department</option>
+            <option value="Testing">Testing</option>
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="dateOfJoining">Date of Joining:</label>
+        <input type="date" id="dateOfJoining" name="dateOfJoining" th:field="*{dateOfJoining}" required="required">
+    </div>
+    <div class="form-group">
+        <label for="dateOfLeaving">Date of Leaving:</label>
+        <input type="date" id="dateOfLeaving" name="dateOfLeaving" th:field="*{dateOfLeaving}">
+    </div>
+
+    <!-- Previous employment details -->
+    <h2>Previous Employment Details</h2>
+    <div class="form-group">
+        <label for="yearsexperience">Years of Experience:</label>
+        <input type="text" id="yearsexperience" name="yearsexperience" th:field="*{yearsexperience}">
+    </div>
+    <div class="form-group">
+        <label for="jobRole">Job Role:</label>
+        <input type="text" id="jobRole" name="jobRole" th:field="*{jobRole}">
+    </div>
+    <div class="form-group">
+        <label for="previousCompany">Previous Company:</label>
+        <input type="text" id="previousCompany" name="previousCompany" th:field="*{previousCompany}">
+    </div>
+    <div class="form-group">
+        <label for="uanNumber">UAN Number:</label>
+        <input type="text" id="uanNumber" name="uanNumber" th:field="*{uanNumber}">
+    </div>
+    <div class="form-group">
+        <label for="dateOfLeavingCompany">Date of Leaving Company:</label>
+        <input type="date" id="dateOfLeavingCompany" name="dateOfLeavingCompany" th:field="*{dateOfLeavingCompany}">
+    </div>
+
+    <!-- Emergency contact -->
+    <h2>Emergency Contact</h2>
+    <div class="form-group">
+        <label for="emergencyContactPerson1">Emergency Contact Person 1:</label>
+        <input type="text" id="emergencyContactPerson1" name="emergencyContactPerson1" th:field="*{emergencyContactPerson1}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson1mobile">Emergency Contact Person 1 Mobile:</label>
+        <input type="text" id="emergencyContactPerson1mobile" name="emergencyContactPerson1mobile" th:field="*{emergencyContactPerson1mobile}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson1email">Emergency Contact Person 1 Email:</label>
+        <input type="email" id="emergencyContactPerson1email" name="emergencyContactPerson1email" th:field="*{emergencyContactPerson1email}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson1relation">Emergency Contact Person 1 Relation:</label>
+        <input type="text" id="emergencyContactPerson1relation" name="emergencyContactPerson1relation" th:field="*{emergencyContactPerson1relation}">
+    </div>
+
+    <div class="form-group">
+        <label for="emergencyContactPerson2">Emergency Contact Person 2:</label>
+        <input type="text" id="emergencyContactPerson2" name="emergencyContactPerson2" th:field="*{emergencyContactPerson2}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson2mobile">Emergency Contact Person 2 Mobile:</label>
+        <input type="text" id="emergencyContactPerson2mobile" name="emergencyContactPerson2mobile" th:field="*{emergencyContactPerson2mobile}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson2email">Emergency Contact Person 2 Email:</label>
+        <input type="email" id="emergencyContactPerson2email" name="emergencyContactPerson2email" th:field="*{emergencyContactPerson2email}">
+    </div>
+    <div class="form-group">
+        <label for="emergencyContactPerson2relation">Emergency Contact Person 2 Relation:</label>
+        <input type="text" id="emergencyContactPerson2relation" name="emergencyContactPerson2relation" th:field="*{emergencyContactPerson2relation}">
+    </div>
+
+   
+
+    <button type="submit" class="btn btn-default" onclick="return confirm('Are you sure you want to update this employee?')">Update</button>
+</form>
+<a class="btn btn-default" href="/admin/home">Back to Employee List</a>
 </body>
 </html>

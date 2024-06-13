@@ -78,4 +78,5 @@ public class Employees {
 	// Login details
 	private String role;
 	private String password;
+	private boolean status;
 }

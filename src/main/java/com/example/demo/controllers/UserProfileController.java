@@ -23,7 +23,7 @@ public class UserProfileController {
 	}
 
     @Operation(summary = "User profile", description = "Displays the user profile")
-	@GetMapping("/user/profile")
+	@GetMapping("/profile")
 	public String userProfile(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String firstName = authentication.getName();
@@ -31,7 +31,6 @@ public class UserProfileController {
 		if (user == null) {
 			return "error";
 		}
-
 		model.addAttribute("Profile", user);
 
 		return "profile";

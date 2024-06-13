@@ -24,6 +24,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employees> getAllEmployees() {
         return employeeRepo.findAll();
     }
+    
+    @Override
+    public List<Employees> getAllActiveEmployees() {
+        return employeeRepo.findByStatus(true); // Assuming 'status' field in Employees entity
+    }
 
     @Override
     public Optional<Employees> getEmployeeById(Integer id) {
@@ -32,9 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employees addEmployee(Employees employee) {
-        String encodedPassword = passwordEncoder.encode(employee.getPassword());
+        String encodedPassword = passwordEncoder.encode(employee.getFirstname());
         employee.setPassword(encodedPassword);
-        employee.setRole("USER");
         return employeeRepo.save(employee);
     }
 
@@ -48,4 +52,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Integer id) {
         employeeRepo.deleteById(id);
     }
+
+
+    @Override
+    public Employees updatePassword(String firstname, String email, String newPassword) {
+        Employees employee = employeeRepo.findByFirstnameAndEmail(firstname, email);
+        if (employee != null) {
+            // Encode the new password
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            // Set the new encoded password
+            employee.setPassword(encodedPassword);
+            // Save the updated employee
+            return employeeRepo.save(employee);
+        }
+        return null; // Handle error or return Optional.empty()
+    }
+
+
+    
 }

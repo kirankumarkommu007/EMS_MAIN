@@ -33,9 +33,11 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable()
-				.authorizeHttpRequests((auth) -> auth.requestMatchers("/login","/greet/**","/addempform").permitAll()
+				.authorizeHttpRequests((auth) -> auth
+						.requestMatchers("/home","/greet/**","/addempform").permitAll()
 						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-						.requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/user/**").hasRole("USER")
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/user/**").hasRole("USER")
 						.requestMatchers("/hr/**").hasRole("HR").anyRequest().authenticated());
 
 		http.formLogin((form) -> form.loginPage("/welcome").defaultSuccessUrl("/home", true)
