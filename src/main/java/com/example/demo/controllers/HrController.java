@@ -38,6 +38,9 @@ public class HrController {
         model.addAttribute("Employee", new Employees());
         return "/views/fragments/hraddemp";
     }    
+    
+    
+    
     @Operation(summary = "Show HR home page", description = "Displays the HR home page with a list of employees")
     @GetMapping("/hr/home")
     public String showEmpList(Model model) {

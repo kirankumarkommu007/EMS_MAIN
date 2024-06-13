@@ -6,6 +6,7 @@ import com.example.demo.service.EmployeeServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 import java.util.Optional;
 
@@ -13,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,13 +28,12 @@ public class UserProfileController {
 	private final EmployeeRepo employeeRepo;
 	private final EmployeeServiceImpl employeeServiceImpl;
 
-
 	public UserProfileController(EmployeeRepo employeeRepo, EmployeeServiceImpl employeeServiceImpl) {
 		this.employeeRepo = employeeRepo;
 		this.employeeServiceImpl = employeeServiceImpl;
 	}
 
-    @Operation(summary = "User profile", description = "Displays the user profile")
+	@Operation(summary = "User profile", description = "Displays the user profile")
 	@GetMapping("/profile")
 	public String userProfile(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,29 +48,30 @@ public class UserProfileController {
 	}
 
 	@Operation(summary = "User dashboard", description = "Displays the user dashboard")
-	@GetMapping("/user/dashboard")
+	@GetMapping("/user/home")
 	public String userDashboard() {
-		return "user_dashboard";
+		return "/views/pages/userhome";
 	}
-	
-	
-//	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee role")
-//	@GetMapping("/updatePassword")
-//	public String updatePassword(@PathVariable Integer id, Model model) {
-//		Optional<Employees> optionalEmp = employeeServiceImpl.getEmployeeById(id);
-//		if (optionalEmp.isPresent()) {
-//			model.addAttribute("Employee", optionalEmp.get());
-//			return "/views/fragments/updatePassword";
-//		} else {
-//			return "redirect:/admin/home";
-//		}
-//	}
-//
-//	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
-//	@PostMapping("/updatePassword/{id}")
-//	public String updatePassword(@PathVariable Integer id, @RequestParam("password") String newpassword) {
-//		employeeServiceImpl.updateEmployeePassword(id, newpassword);
-//		return "redirect:/admin/home";
-//	}
-	
+
+	 @GetMapping("/updateMyPassword")
+	    public String showUpdatePasswordForm(Model model) {
+	        // Retrieve currently authenticated user's username (firstname)
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        String firstname = auth.getName(); // Assuming firstname is the username in this case
+
+	        // Fetch employee details from repository using firstname
+	        Employees employee = employeeServiceImpl.findByFirstname(firstname);
+
+	        if (employee == null) {
+	            throw new RuntimeException("Employee not found");
+	        }
+
+	        // Pass employee information to the Thymeleaf template
+	        model.addAttribute("employee", employee);
+	        model.addAttribute("employee", new Employees()); // Form backing bean
+
+	        return "/views/fragments/updateMyPassword";
+	    }
+
+
 }

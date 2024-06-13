@@ -92,4 +92,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepo.save(employee);
     }
 
+	public Employees findByFirstname(String firstname) {
+		return employeeRepo.findByFirstname(firstname);
+	}
+
 }

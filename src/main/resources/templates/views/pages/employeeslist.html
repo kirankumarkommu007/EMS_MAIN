@@ -72,11 +72,9 @@ body {
 				<th>Department</th>
 				<th>Salary</th>
 				<th>Edit</th>
-				<th>Update Role</th>
+				<th th:if="${isAdmin}">Update Role</th>
 				<th>Update Password</th>
-
 				<th>Profile</th>
-
 			</tr>
 		</thead>
 		<tbody>
@@ -87,14 +85,10 @@ body {
 				<td th:text="${emp.salary}"></td>
 				<td><a type="button" class="btn btn-primary"
 					th:href="@{/edit/{id}(id=${emp.id})}">Edit</a></td>
-
-
-				<td><a type="button" class="btn btn-success"
+				<td th:if="${isAdmin}"><a type="button" class="btn btn-success"
 					th:href="@{/updateRole/{id}(id=${emp.id})}">Update Role</a></td>
-
 				<td><a type="button" class="btn btn-success"
 					th:href="@{/updatePassword/{id}(id=${emp.id})}">Update Password</a></td>
-
 				<td><a type="button" class="btn btn-primary"
 					th:href="@{/employeessprofile/{id}(id=${emp.id})}">Profile</a></td>
 			</tr>
