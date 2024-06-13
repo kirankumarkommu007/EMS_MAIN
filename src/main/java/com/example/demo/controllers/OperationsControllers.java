@@ -120,7 +120,7 @@ public class OperationsControllers {
 		return "/views/fragments/addempform";
 	}
 
-	@PostMapping("/addemployees")
+//	@PostMapping("/addemployees")
 //	public String addEmp(@ModelAttribute("Employee") Employees employee) {
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		String firstName = authentication.getName();
@@ -136,6 +136,8 @@ public class OperationsControllers {
 //
 //		return "redirect:/admin/home";
 //	}
+
+	@PostMapping("/addemployees")
 
 	public String addEmp(@ModelAttribute("Employee") Employees employee) {
 
@@ -155,236 +157,198 @@ public class OperationsControllers {
 			return "redirect:/admin/home";
 		}
 	}
-
-//	@Operation(summary = "Edit an existing employee", description = "Processes the form submission to edit an existing employee")
-//	@PostMapping("/edit/{id}")
-//	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees employee) {
-//		employeeService.updateEmployee(id, employee);
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//	      if (authentication != null && authentication.getAuthorities().stream()
-//	                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-//	            return "redirect:/admin/home";
-//	        } else if (authentication != null && authentication.getAuthorities().stream()
-//	                .anyMatch(a -> a.getAuthority().equals("ROLE_HR"))) {
-//	            return "redirect:/hr/home";
-//	        }
-//	      
-//
-//	        // Default redirect if no specific role matches
-//	        return "redirect:/home";
-//	    }	
-	
-	
-	
+	@Operation(summary = "Edit an existing employee", description = "Processes the form submission to edit an existing employee")
 	@PostMapping("/edit/{id}")
-    public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee) {
-        Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
-
-        if (optionalEmp.isPresent()) {
-            Employees existingEmployee = optionalEmp.get();
-
-            // Only update fields if they are not null or empty
-            if (updatedEmployee.getFirstname() != null && !updatedEmployee.getFirstname().isEmpty()) {
-                existingEmployee.setFirstname(updatedEmployee.getFirstname());
-            }
-            if (updatedEmployee.getMiddlename() != null && !updatedEmployee.getMiddlename().isEmpty()) {
-                existingEmployee.setMiddlename(updatedEmployee.getMiddlename());
-            }
-            if (updatedEmployee.getLastname() != null && !updatedEmployee.getLastname().isEmpty()) {
-                existingEmployee.setLastname(updatedEmployee.getLastname());
-            }
-            if (updatedEmployee.getDateOfBirth() != null) {
-                existingEmployee.setDateOfBirth(updatedEmployee.getDateOfBirth());
-            }
-            if (updatedEmployee.getGender() != null && !updatedEmployee.getGender().isEmpty()) {
-                existingEmployee.setGender(updatedEmployee.getGender());
-            }
-            if (updatedEmployee.getBloodgroup() != null && !updatedEmployee.getBloodgroup().isEmpty()) {
-                existingEmployee.setBloodgroup(updatedEmployee.getBloodgroup());
-            }
-            if (updatedEmployee.getMobile() != null && !updatedEmployee.getMobile().isEmpty()) {
-                existingEmployee.setMobile(updatedEmployee.getMobile());
-            }
-            if (updatedEmployee.getEmail() != null && !updatedEmployee.getEmail().isEmpty()) {
-                existingEmployee.setEmail(updatedEmployee.getEmail());
-            }
-            if (updatedEmployee.getPan() != null && !updatedEmployee.getPan().isEmpty()) {
-                existingEmployee.setPan(updatedEmployee.getPan());
-            }
-            if (updatedEmployee.getAdhaar() != null && !updatedEmployee.getAdhaar().isEmpty()) {
-                existingEmployee.setAdhaar(updatedEmployee.getAdhaar());
-            }
-            if (updatedEmployee.getFathername() != null && !updatedEmployee.getFathername().isEmpty()) {
-                existingEmployee.setFathername(updatedEmployee.getFathername());
-            }
-            if (updatedEmployee.getMothername() != null && !updatedEmployee.getMothername().isEmpty()) {
-                existingEmployee.setMothername(updatedEmployee.getMothername());
-            }
-            if (updatedEmployee.getMaritalStatus() != null && !updatedEmployee.getMaritalStatus().isEmpty()) {
-                existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
-            }
-            if (updatedEmployee.getSpousename() != null && !updatedEmployee.getSpousename().isEmpty()) {
-                existingEmployee.setSpousename(updatedEmployee.getSpousename());
-            }
-            if (updatedEmployee.getPermanentaddress() != null && !updatedEmployee.getPermanentaddress().isEmpty()) {
-                existingEmployee.setPermanentaddress(updatedEmployee.getPermanentaddress());
-            }
-            if (updatedEmployee.getCommunicationaddress() != null && !updatedEmployee.getCommunicationaddress().isEmpty()) {
-                existingEmployee.setCommunicationaddress(updatedEmployee.getCommunicationaddress());
-            }
-            if (updatedEmployee.getHighestqualification() != null && !updatedEmployee.getHighestqualification().isEmpty()) {
-                existingEmployee.setHighestqualification(updatedEmployee.getHighestqualification());
-            }
-            if (updatedEmployee.getQualifyingbranch() != null && !updatedEmployee.getQualifyingbranch().isEmpty()) {
-                existingEmployee.setQualifyingbranch(updatedEmployee.getQualifyingbranch());
-            }
-            if (updatedEmployee.getYearOfPassing() != null && !updatedEmployee.getYearOfPassing().isEmpty()) {
-                existingEmployee.setYearOfPassing(updatedEmployee.getYearOfPassing());
-            }
-            if (updatedEmployee.getUniversity() != null && !updatedEmployee.getUniversity().isEmpty()) {
-                existingEmployee.setUniversity(updatedEmployee.getUniversity());
-            }
-            if (updatedEmployee.getCollegeaddress() != null && !updatedEmployee.getCollegeaddress().isEmpty()) {
-                existingEmployee.setCollegeaddress(updatedEmployee.getCollegeaddress());
-            }
-            if (updatedEmployee.getCgpaPercentage() != null && !updatedEmployee.getCgpaPercentage().isEmpty()) {
-                existingEmployee.setCgpaPercentage(updatedEmployee.getCgpaPercentage());
-            }
-            if (updatedEmployee.getTechnicalCertification() != null && !updatedEmployee.getTechnicalCertification().isEmpty()) {
-                existingEmployee.setTechnicalCertification(updatedEmployee.getTechnicalCertification());
-            }
-            if (updatedEmployee.getTechnicalSkills() != null && !updatedEmployee.getTechnicalSkills().isEmpty()) {
-                existingEmployee.setTechnicalSkills(updatedEmployee.getTechnicalSkills());
-            }
-            if (updatedEmployee.getDepartment() != null && !updatedEmployee.getDepartment().isEmpty()) {
-                existingEmployee.setDepartment(updatedEmployee.getDepartment());
-            }
-            if (updatedEmployee.getManagerId() != null && !updatedEmployee.getManagerId().isEmpty()) {
-                existingEmployee.setManagerId(updatedEmployee.getManagerId());
-            }
-            if (updatedEmployee.getSalary() != null && !updatedEmployee.getSalary().isEmpty()) {
-                existingEmployee.setSalary(updatedEmployee.getSalary());
-            }
-            if (updatedEmployee.getDesignation() != null && !updatedEmployee.getDesignation().isEmpty()) {
-                existingEmployee.setDesignation(updatedEmployee.getDesignation());
-            }
-            if (updatedEmployee.getDateOfJoining() != null) {
-                existingEmployee.setDateOfJoining(updatedEmployee.getDateOfJoining());
-            }
-            if (updatedEmployee.getDateOfLeaving() != null) {
-                existingEmployee.setDateOfLeaving(updatedEmployee.getDateOfLeaving());
-            }
-            if (updatedEmployee.getYearsexperience() != null && !updatedEmployee.getYearsexperience().isEmpty()) {
-                existingEmployee.setYearsexperience(updatedEmployee.getYearsexperience());
-            }
-            if (updatedEmployee.getJobRole() != null && !updatedEmployee.getJobRole().isEmpty()) {
-            	existingEmployee.setJobRole(updatedEmployee.getJobRole());
-            }
-            if (updatedEmployee.getPreviousCompany() != null && !updatedEmployee.getPreviousCompany().isEmpty()) {
-                existingEmployee.setPreviousCompany(updatedEmployee.getPreviousCompany());
-            }
-            if (updatedEmployee.getUanNumber() != null && !updatedEmployee.getUanNumber().isEmpty()) {
-                existingEmployee.setUanNumber(updatedEmployee.getUanNumber());
-            }
-            if (updatedEmployee.getDateOfLeavingCompany() != null) {
-                existingEmployee.setDateOfLeavingCompany(updatedEmployee.getDateOfLeavingCompany());
-            }
-            if (updatedEmployee.getEmergencyContactPerson1() != null && !updatedEmployee.getEmergencyContactPerson1().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson1(updatedEmployee.getEmergencyContactPerson1());
-            }
-            if (updatedEmployee.getEmergencyContactPerson1mobile() != null && !updatedEmployee.getEmergencyContactPerson1mobile().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson1mobile(updatedEmployee.getEmergencyContactPerson1mobile());
-            }
-            if (updatedEmployee.getEmergencyContactPerson1email() != null && !updatedEmployee.getEmergencyContactPerson1email().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson1email(updatedEmployee.getEmergencyContactPerson1email());
-            }
-            if (updatedEmployee.getEmergencyContactPerson1relation() != null && !updatedEmployee.getEmergencyContactPerson1relation().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson1relation(updatedEmployee.getEmergencyContactPerson1relation());
-            }
-            if (updatedEmployee.getEmergencyContactPerson2() != null && !updatedEmployee.getEmergencyContactPerson2().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson2(updatedEmployee.getEmergencyContactPerson2());
-            }
-            if (updatedEmployee.getEmergencyContactPerson2mobile() != null && !updatedEmployee.getEmergencyContactPerson2mobile().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson2mobile(updatedEmployee.getEmergencyContactPerson2mobile());
-            }
-            if (updatedEmployee.getEmergencyContactPerson2email() != null && !updatedEmployee.getEmergencyContactPerson2email().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson2email(updatedEmployee.getEmergencyContactPerson2email());
-            }
-            if (updatedEmployee.getEmergencyContactPerson2relation() != null && !updatedEmployee.getEmergencyContactPerson2relation().isEmpty()) {
-                existingEmployee.setEmergencyContactPerson2relation(updatedEmployee.getEmergencyContactPerson2relation());
-            }
-
-            employeeService.save(existingEmployee);
-            return "redirect:/admin/home";
-        } else {
-            // Handle the case where the employee is not found
-            return "redirect:/admin/home?error=EmployeeNotFound";
-        }
-    
-}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee role")
-	@GetMapping("/updateRole/{id}")
-	public String updateRole(@PathVariable Integer id, Model model) {
+	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee) {
 	    Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 	    if (optionalEmp.isPresent()) {
-	        model.addAttribute("Employee", optionalEmp.get());
-	        return "/views/fragments/updateRole";
+	        Employees existingEmployee = optionalEmp.get();
+
+	        // Update only the fields that are provided in the form
+	        if (updatedEmployee.getFirstname() != null) {
+	            existingEmployee.setFirstname(updatedEmployee.getFirstname());
+	        }
+	        if (updatedEmployee.getMiddlename() != null) {
+	            existingEmployee.setMiddlename(updatedEmployee.getMiddlename());
+	        }
+	        if (updatedEmployee.getLastname() != null) {
+	            existingEmployee.setLastname(updatedEmployee.getLastname());
+	        }
+	        if (updatedEmployee.getDateOfBirth() != null) {
+	            existingEmployee.setDateOfBirth(updatedEmployee.getDateOfBirth());
+	        }
+	        if (updatedEmployee.getGender() != null) {
+	            existingEmployee.setGender(updatedEmployee.getGender());
+	        }
+	        if (updatedEmployee.getBloodgroup() != null) {
+	            existingEmployee.setBloodgroup(updatedEmployee.getBloodgroup());
+	        }
+	        if (updatedEmployee.getMobile() != null) {
+	            existingEmployee.setMobile(updatedEmployee.getMobile());
+	        }
+	        if (updatedEmployee.getEmail() != null) {
+	            existingEmployee.setEmail(updatedEmployee.getEmail());
+	        }
+	        if (updatedEmployee.getPan() != null) {
+	            existingEmployee.setPan(updatedEmployee.getPan());
+	        }
+	        if (updatedEmployee.getAdhaar() != null) {
+	            existingEmployee.setAdhaar(updatedEmployee.getAdhaar());
+	        }
+	        if (updatedEmployee.getFathername() != null) {
+	            existingEmployee.setFathername(updatedEmployee.getFathername());
+	        }
+	        if (updatedEmployee.getMothername() != null) {
+	            existingEmployee.setMothername(updatedEmployee.getMothername());
+	        }
+	        if (updatedEmployee.getMaritalStatus() != null) {
+	            existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
+	        }
+	        if (updatedEmployee.getSpousename() != null) {
+	            existingEmployee.setSpousename(updatedEmployee.getSpousename());
+	        }
+	        if (updatedEmployee.getPermanentaddress() != null) {
+	            existingEmployee.setPermanentaddress(updatedEmployee.getPermanentaddress());
+	        }
+	        if (updatedEmployee.getCommunicationaddress() != null) {
+	            existingEmployee.setCommunicationaddress(updatedEmployee.getCommunicationaddress());
+	        }
+	        if (updatedEmployee.getHighestqualification() != null) {
+	            existingEmployee.setHighestqualification(updatedEmployee.getHighestqualification());
+	        }
+	        if (updatedEmployee.getQualifyingbranch() != null) {
+	            existingEmployee.setQualifyingbranch(updatedEmployee.getQualifyingbranch());
+	        }
+	        if (updatedEmployee.getYearOfPassing() != null) {
+	            existingEmployee.setYearOfPassing(updatedEmployee.getYearOfPassing());
+	        }
+	        if (updatedEmployee.getUniversity() != null) {
+	            existingEmployee.setUniversity(updatedEmployee.getUniversity());
+	        }
+	        if (updatedEmployee.getCollegeaddress() != null) {
+	            existingEmployee.setCollegeaddress(updatedEmployee.getCollegeaddress());
+	        }
+	        if (updatedEmployee.getCgpaPercentage() != null) {
+	            existingEmployee.setCgpaPercentage(updatedEmployee.getCgpaPercentage());
+	        }
+	        if (updatedEmployee.getTechnicalCertification() != null) {
+	            existingEmployee.setTechnicalCertification(updatedEmployee.getTechnicalCertification());
+	        }
+	        if (updatedEmployee.getTechnicalSkills() != null) {
+	            existingEmployee.setTechnicalSkills(updatedEmployee.getTechnicalSkills());
+	        }
+	        if (updatedEmployee.getDepartment() != null) {
+	            existingEmployee.setDepartment(updatedEmployee.getDepartment());
+	        }
+	        if (updatedEmployee.getManagerId() != null) {
+	            existingEmployee.setManagerId(updatedEmployee.getManagerId());
+	        }
+	        if (updatedEmployee.getSalary() != null) {
+	            existingEmployee.setSalary(updatedEmployee.getSalary());
+	        }
+	        if (updatedEmployee.getDesignation() != null) {
+	            existingEmployee.setDesignation(updatedEmployee.getDesignation());
+	        }
+	        if (updatedEmployee.getDateOfJoining() != null) {
+	            existingEmployee.setDateOfJoining(updatedEmployee.getDateOfJoining());
+	        }
+	        if (updatedEmployee.getDateOfLeaving() != null) {
+	            existingEmployee.setDateOfLeaving(updatedEmployee.getDateOfLeaving());
+	        }
+	        if (updatedEmployee.getYearsexperience() != null) {
+	            existingEmployee.setYearsexperience(updatedEmployee.getYearsexperience());
+	        }
+	        if (updatedEmployee.getJobRole() != null) {
+	            existingEmployee.setJobRole(updatedEmployee.getJobRole());
+	        }
+	        if (updatedEmployee.getPreviousCompany() != null) {
+	            existingEmployee.setPreviousCompany(updatedEmployee.getPreviousCompany());
+	        }
+	        if (updatedEmployee.getUanNumber() != null) {
+	            existingEmployee.setUanNumber(updatedEmployee.getUanNumber());
+	        }
+	        if (updatedEmployee.getDateOfLeavingCompany() != null) {
+	            existingEmployee.setDateOfLeavingCompany(updatedEmployee.getDateOfLeavingCompany());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson1() != null) {
+	            existingEmployee.setEmergencyContactPerson1(updatedEmployee.getEmergencyContactPerson1());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson1mobile() != null) {
+	            existingEmployee.setEmergencyContactPerson1mobile(updatedEmployee.getEmergencyContactPerson1mobile());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson1email() != null) {
+	            existingEmployee.setEmergencyContactPerson1email(updatedEmployee.getEmergencyContactPerson1email());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson1relation() != null) {
+	            existingEmployee.setEmergencyContactPerson1relation(updatedEmployee.getEmergencyContactPerson1relation());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson2() != null) {
+	            existingEmployee.setEmergencyContactPerson2(updatedEmployee.getEmergencyContactPerson2());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson2mobile() != null) {
+	            existingEmployee.setEmergencyContactPerson2mobile(updatedEmployee.getEmergencyContactPerson2mobile());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson2email() != null) {
+	            existingEmployee.setEmergencyContactPerson2email(updatedEmployee.getEmergencyContactPerson2email());
+	        }
+	        if (updatedEmployee.getEmergencyContactPerson2relation() != null) {
+	            existingEmployee.setEmergencyContactPerson2relation(updatedEmployee.getEmergencyContactPerson2relation());
+	        }
+
+	        employeeService.updateEmployee(id, existingEmployee);
+
+	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        if (authentication != null && authentication.getAuthorities().stream()
+	            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+	            return "redirect:/admin/home";
+	        } else if (authentication != null && authentication.getAuthorities().stream()
+	            .anyMatch(a -> a.getAuthority().equals("ROLE_HR"))) {
+	            return "redirect:/hr/home";
+	        }
+	        return "redirect:/home";
 	    } else {
 	        return "redirect:/admin/home";
 	    }
+	}
+
+
+	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee role")
+	@GetMapping("/updateRole/{id}")
+	public String updateRole(@PathVariable Integer id, Model model) {
+		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
+		if (optionalEmp.isPresent()) {
+			model.addAttribute("Employee", optionalEmp.get());
+			return "/views/fragments/updateRole";
+		} else {
+			return "redirect:/admin/home";
+		}
 	}
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updateRole/{id}")
 	public String updateRole(@PathVariable Integer id, @RequestParam("role") String role) {
-	    employeeService.updateEmployeeRole(id, role);
-	    return "redirect:/admin/home";
+		employeeService.updateEmployeeRole(id, role);
+		return "redirect:/admin/home";
 	}
-	
-	
+
 	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee role")
 	@GetMapping("/updatePassword/{id}")
 	public String updatePassword(@PathVariable Integer id, Model model) {
-	    Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
-	    if (optionalEmp.isPresent()) {
-	        model.addAttribute("Employee", optionalEmp.get());
-	        return "/views/fragments/updatePassword";
-	    } else {
-	        return "redirect:/admin/home";
-	    }
+		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
+		if (optionalEmp.isPresent()) {
+			model.addAttribute("Employee", optionalEmp.get());
+			return "/views/fragments/updatePassword";
+		} else {
+			return "redirect:/admin/home";
+		}
 	}
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updatePassword/{id}")
 	public String updatePassword(@PathVariable Integer id, @RequestParam("password") String newpassword) {
-	    employeeService.updateEmployeePassword(id, newpassword);
-	    return "redirect:/admin/home";
+		employeeService.updateEmployeePassword(id, newpassword);
+		return "redirect:/admin/home";
 	}
-
-	
-	
-	
-	
-	
-	
-	
 
 	@GetMapping("/employeessprofile/{id}")
 	public String userProfile(@PathVariable Integer id, Model model) {
