@@ -112,21 +112,25 @@ public class OperationsControllers {
 		}
 	}
 
-	@GetMapping("/listemployees")
-	public String EmployeesList(Model model, Authentication authentication) {
-		List<Employees> empList = employeeService.getAllEmployees();
-		model.addAttribute("Employee", empList);
+	 @GetMapping("/listemployees")
+	    public String employeesList(Model model, Authentication authentication) {
+	        // Check if the user has ADMIN role
+	        boolean isAdmin = authentication.getAuthorities().stream()
+	                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-		// Get the roles of the current user
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		boolean isAdmin = authorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+	        List<Employees> empList;
 
-		// Add roles information to the model
-		model.addAttribute("isAdmin", isAdmin);
+	        if (isAdmin) {
+	            empList = employeeService.getAllEmployees();
+	        } else {
+	            empList = employeeService.getAllEmployeesExceptAdmin();
+	        }
 
-		return "/views/pages/employeeslist";
-	}
+	        model.addAttribute("Employee", empList);
+	        model.addAttribute("isAdmin", isAdmin);
 
+	        return "/views/pages/employeeslist";
+	    }
 	@Operation(summary = "Show add employee form", description = "Displays the form for adding a new employee")
 	@GetMapping("/addemployees")
 	public String AddEmpForm(Model model) {
@@ -357,6 +361,13 @@ public class OperationsControllers {
 	public String deleteEmp(@PathVariable Integer id) {
 		employeeService.deleteEmployee(id);
 		return "redirect:/listemployees";
+	}
+	
+	
+	
+	@GetMapping("/employeeForm")
+	public String employeeForm() {
+		return "/views/fragments/addemployeedownloadform";
 	}
 
 }

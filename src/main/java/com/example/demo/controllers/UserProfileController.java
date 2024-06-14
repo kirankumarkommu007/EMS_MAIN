@@ -53,25 +53,43 @@ public class UserProfileController {
 		return "/views/pages/userhome";
 	}
 
-	 @GetMapping("/updateMyPassword")
-	    public String showUpdatePasswordForm(Model model) {
-	        // Retrieve currently authenticated user's username (firstname)
-	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	        String firstname = auth.getName(); // Assuming firstname is the username in this case
+	@GetMapping("/updateMyPassword")
+	public String showUpdatePasswordForm(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String firstname = auth.getName(); // Assuming firstname is the username in this case
 
-	        // Fetch employee details from repository using firstname
-	        Employees employee = employeeServiceImpl.findByFirstname(firstname);
+		Employees employee = employeeServiceImpl.findByFirstname(firstname);
 
-	        if (employee == null) {
-	            throw new RuntimeException("Employee not found");
-	        }
+		if (employee == null) {
+			throw new RuntimeException("Employee not found");
+		}
 
-	        // Pass employee information to the Thymeleaf template
-	        model.addAttribute("employee", employee);
-	        model.addAttribute("employee", new Employees()); // Form backing bean
+		model.addAttribute("employee", employee); // Pass the found employee
 
-	        return "/views/fragments/updateMyPassword";
-	    }
+		return "/views/fragments/updateMyPassword";
+	}
 
+	@PostMapping("/updateMyPassword")
+	public String updatePassword(Model model, @RequestParam("newPassword") String newPassword,
+			@RequestParam("confirmPassword") String confirmPassword) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		Employees employee = employeeServiceImpl.findByFirstname(name);
+
+		if (employee == null) {
+			model.addAttribute("errorMessage", "Employee not found.");
+			return "/views/fragments/updateMyPassword";
+		}
+
+		if (!newPassword.equals(confirmPassword)) {
+			model.addAttribute("employee", employee);
+			model.addAttribute("errorMessage", "Passwords do not match.");
+			return "/views/fragments/updateMyPassword";
+		}
+
+		employeeServiceImpl.updatePassword(employee.getFirstname(), newPassword);
+		model.addAttribute("successMessage", "Password updated successfully.");
+		return "/views/fragments/updateMyPassword";
+	}
 
 }
