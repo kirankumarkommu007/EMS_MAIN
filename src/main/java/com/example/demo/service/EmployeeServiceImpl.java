@@ -58,12 +58,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void  updatePassword(String firstname, String newPassword) {
 		Employees employee = employeeRepo.findByFirstname(firstname);
-		System.out.println("this is implementation class "+employee.getFirstname());
-		System.out.println("this is implementation class "+newPassword);
-
+		
 		if (employee != null) {
 			String encodedPassword = passwordEncoder.encode(newPassword);
-			System.out.println(encodedPassword);
 			employee.setPassword(encodedPassword);
 			 employeeRepo.save(employee);
 		}

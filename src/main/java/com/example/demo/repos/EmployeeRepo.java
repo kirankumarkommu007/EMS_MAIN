@@ -1,7 +1,6 @@
 package com.example.demo.repos;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,7 @@ import com.example.demo.models.Employees;
 public interface EmployeeRepo extends JpaRepository<Employees, Integer> {
 
 	Employees findByFirstnameAndId(String firstname, Integer id);
-	
+
 	Employees findByFirstnameAndEmail(String firstname, String Email);
 
 	Employees findByFirstname(String firstname);
@@ -21,9 +20,8 @@ public interface EmployeeRepo extends JpaRepository<Employees, Integer> {
 	Employees findByLastname(String lastname);
 
 	List<Employees> findByStatus(boolean b);
-	
-	 @Query("SELECT e FROM Employees e WHERE e.role <> 'ADMIN'")
-	    List<Employees> findAllEmployeesExceptAdmin();
 
+	@Query("SELECT e FROM Employees e WHERE e.role <> 'ADMIN'")
+	List<Employees> findAllEmployeesExceptAdmin();
 
 }

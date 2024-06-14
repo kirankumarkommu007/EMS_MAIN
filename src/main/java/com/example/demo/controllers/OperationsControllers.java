@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,10 +8,8 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.models.Employees;
-import com.example.demo.models.PasswordForm;
-import com.example.demo.repos.EmployeeRepo;
 import com.example.demo.security.MyUserDetailsService;
 import com.example.demo.service.EmployeeServiceImpl;
 
@@ -49,9 +44,7 @@ public class OperationsControllers {
 	@Autowired
 	private JwtUtil jwtTokenProvider;
 
-	@Autowired
-	private MyUserDetailsService employeeDetailsService;
-
+	
 	@Operation(summary = "Welcome page", description = "Displays the welcome page")
 	@GetMapping("/welcome")
 	public String getWelcome() {
@@ -82,8 +75,7 @@ public class OperationsControllers {
 	public String login(@RequestParam String username, @RequestParam String password, Model model,
 			HttpServletResponse response) {
 		try {
-			Authentication authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String token = jwtTokenProvider.generateToken(userDetails);
@@ -363,8 +355,7 @@ public class OperationsControllers {
 		return "redirect:/listemployees";
 	}
 	
-	
-	
+
 	@GetMapping("/employeeForm")
 	public String employeeForm() {
 		return "/views/fragments/addemployeedownloadform";

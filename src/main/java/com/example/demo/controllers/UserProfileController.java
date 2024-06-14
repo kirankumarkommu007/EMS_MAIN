@@ -70,26 +70,35 @@ public class UserProfileController {
 	}
 
 	@PostMapping("/updateMyPassword")
-	public String updatePassword(Model model, @RequestParam("newPassword") String newPassword,
-			@RequestParam("confirmPassword") String confirmPassword) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		Employees employee = employeeServiceImpl.findByFirstname(name);
+	public String updatePassword(Model model,
+	                             @RequestParam("newPassword") String newPassword,
+	                             @RequestParam("confirmPassword") String confirmPassword) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String name = auth.getName();
+	    Employees employee = employeeServiceImpl.findByFirstname(name);
 
-		if (employee == null) {
-			model.addAttribute("errorMessage", "Employee not found.");
-			return "/views/fragments/updateMyPassword";
-		}
+	    if (employee == null) {
+	        model.addAttribute("errorMessage", "Employee not found.");
+	        return "/views/fragments/updateMyPassword";
+	    }
 
-		if (!newPassword.equals(confirmPassword)) {
-			model.addAttribute("employee", employee);
-			model.addAttribute("errorMessage", "Passwords do not match.");
-			return "/views/fragments/updateMyPassword";
-		}
+	    if (!newPassword.equals(confirmPassword)) {
+	        model.addAttribute("employee", employee);
+	        model.addAttribute("errorMessage", "Passwords do not match.");
+	        return "/views/fragments/updateMyPassword";
+	    }
 
-		employeeServiceImpl.updatePassword(employee.getFirstname(), newPassword);
-		model.addAttribute("successMessage", "Password updated successfully.");
-		return "/views/fragments/updateMyPassword";
+	    // Update password
+	    employeeServiceImpl.updatePassword(employee.getFirstname(), newPassword);
+
+	    // Set success message as a flash attribute (for redirect)
+	    model.addAttribute("successMessage", "Password updated successfully.");
+
+	    // Update employee in model to display updated data on the same page
+	    model.addAttribute("employee", employee);
+
+	    // Return the same view with success message displayed
+	    return "/views/fragments/updateMyPassword";
 	}
 
 }
