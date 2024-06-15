@@ -54,7 +54,18 @@ body {
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/admin/home"><span
+				 <li>
+                    <form class="navbar-form" th:action="@{/search}" method="get">
+                        <div class="form-group">
+                            <input type="text" name="employeeId" class="form-control" placeholder="Search by ID">
+                        </div>
+                        <button type="submit" class="btn btn-default">Search</button>
+                    </form>
+                </li>
+                
+                <li><a href="/listemployees"><span
+							class="glyphicon glyphicon-remove"></span> Clear</a></li>
+					<li><a href="/welcome"><span
 							class="glyphicon glyphicon-home"></span> Home</a></li>
 					<li><a href="/logout"><span
 							class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -70,7 +81,7 @@ body {
 				<th>ID</th>
 				<th>Name</th>
 				<th>Department</th>
-				<th>Salary</th>
+				<th>Email</th>
 				<th>Edit</th>
 				<th th:if="${isAdmin}">Update Role</th>
 				<th>Update Password</th>
@@ -82,7 +93,7 @@ body {
 				<td th:text="${emp.id}"></td>
 				<td th:text="${emp.firstname}"></td>
 				<td th:text="${emp.department}"></td>
-				<td th:text="${emp.salary}"></td>
+				<td th:text="${emp.email}"></td>
 				<td><a type="button" class="btn btn-primary"
 					th:href="@{/edit/{id}(id=${emp.id})}">Edit</a></td>
 				<td th:if="${isAdmin}"><a type="button" class="btn btn-success"

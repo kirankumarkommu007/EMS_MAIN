@@ -99,7 +99,7 @@ public class OperationsControllers {
 				return "home";
 			}
 		} catch (Exception e) {
-			model.addAttribute("error", "Invalid username or password");
+			model.addAttribute("error", "Invalid username or password ");
 			return "welcome";
 		}
 	}

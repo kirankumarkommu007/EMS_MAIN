@@ -8,11 +8,26 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            background-color: #f0f0f0; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .login-container {
+            background-color: #fff; /* White background */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            width: 400px; /* Increased width */
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px; /* Adjusted margin */
         }
 
         h1 {
             color: #333;
-            margin-top: 50px;
+            margin-top: 20px;
         }
 
         a {
@@ -31,24 +46,23 @@
 
         form {
             margin-top: 20px;
-            width: 300px;
-            margin-left: auto;
-            margin-right: auto;
             text-align: left;
         }
 
         label {
             display: block;
             margin-bottom: 10px;
+            text-align: left;
         }
 
         input[type="text"],
         input[type="password"] {
-            width: 100%;
+            width: calc(100% - 22px); /* Adjust for padding */
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
         }
 
         button[type="submit"] {
@@ -58,6 +72,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Center the button horizontally */
         }
 
         button[type="submit"]:hover {
@@ -66,26 +82,28 @@
 
         .error {
             color: red;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-   <img alt="" src="">
-    <h1>Welcome to ITyNerds</h1>
-    <p>Please login to continue.</p>
-    <form th:action="@{/login}" method="post">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username"/>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"/>
-        </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-        <p th:if="${error}" class="error" th:text="${error}"></p>
-    </form>
+    <div class="login-container">
+        <h1>Welcome to ITyNerds</h1>
+        <p>Please login to continue.</p>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"/>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"/>
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+            <p th:if="${error}" class="error" th:text="${error}"></p>
+        </form>
+    </div>
 </body>
 </html>

@@ -60,11 +60,14 @@ public class JwtUtil {
 	}
 
 	private String createToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims)
+		return Jwts.builder()
+		        .setHeaderParam("typ", "JWT")
+				.setClaims(claims)
 				.setSubject(subject)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*3 ))//expiration 3 hr
-				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 3)) // expiration 3 hr
+				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+				.compact();
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {

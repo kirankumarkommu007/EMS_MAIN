@@ -8,8 +8,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,9 @@ public class UserProfileController {
 
 	private final EmployeeRepo employeeRepo;
 	private final EmployeeServiceImpl employeeServiceImpl;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	public UserProfileController(EmployeeRepo employeeRepo, EmployeeServiceImpl employeeServiceImpl) {
 		this.employeeRepo = employeeRepo;
@@ -100,5 +106,20 @@ public class UserProfileController {
 	    // Return the same view with success message displayed
 	    return "/views/fragments/updateMyPassword";
 	}
-
+	
+	
+	@GetMapping("/search")
+	public String searchEmployeeById(@RequestParam("employeeId") Integer employeeId, Model model,Authentication authentication) {
+		 boolean isAdmin = authentication.getAuthorities().stream()
+	                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+	        model.addAttribute("isAdmin", isAdmin);
+	    Optional<Employees> employee = employeeServiceImpl.getEmployeeById(employeeId);
+	    if (employee.isPresent()) {
+	        model.addAttribute("Employee", employee.get());
+	        return "/views/pages/employeeslist"; // The view name to display the employee details
+	    } else {
+	        model.addAttribute("error", "Employee not found");
+	        return "/views/pages/employeeslist";
+	    }
+	}
 }
