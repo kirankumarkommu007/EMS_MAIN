@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +13,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.models.Employees;
@@ -61,14 +64,9 @@ public class OperationsControllers {
 				return "redirect:/user/home";
 			}
 		}
-		return "welcome";
+		return "/views/pages/welcome";
 	}
 
-	@Operation(summary = "add employee  page", description = "Displays the add employee form page")
-	@GetMapping("/addempform")
-	public String getform() {
-		return "addempform";
-	}
 
 	@Operation(summary = "Handle login", description = "Processes login and sets JWT token in cookie")
 	@PostMapping("/login")
@@ -100,7 +98,7 @@ public class OperationsControllers {
 			}
 		} catch (Exception e) {
 			model.addAttribute("error", "Invalid username or password ");
-			return "welcome";
+			return "/views/pages/welcome";
 		}
 	}
 
@@ -123,6 +121,7 @@ public class OperationsControllers {
 
 	        return "/views/pages/employeeslist";
 	    }
+	 
 	@Operation(summary = "Show add employee form", description = "Displays the form for adding a new employee")
 	@GetMapping("/addemployees")
 	public String AddEmpForm(Model model) {
@@ -130,18 +129,35 @@ public class OperationsControllers {
 		return "/views/fragments/addempform";
 	}
 
+
 	@PostMapping("/addemployees")
-
-	public String addEmp(@ModelAttribute("Employee") Employees employee) {
-
-		employeeService.addEmployee(employee);
-
-		return "redirect:/admin/home"; // Redirect to the admin home page
+	public String addEmp(@ModelAttribute("Employee") Employees employee, BindingResult result, RedirectAttributes redirectAttributes) {
+	    try {
+	        employeeService.addEmployee(employee);
+	        redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully");
+	    } catch (Exception e) {
+	        if (employeeService.existsByAdhaar(employee.getAdhaar())) {
+	            result.rejectValue("adhaar", "error.employee", "Aadhar number already exists");
+	        }
+	        if (employeeService.existsByPan(employee.getPan())) {
+	            result.rejectValue("pan", "error.employee", "PAN number already exists");
+	        }
+	        if (employeeService.existsByMobile(employee.getMobile())) {
+	            result.rejectValue("mobile", "error.employee", "Mobile number already exists");
+	        }
+	        if (employeeService.existsByEmail(employee.getEmail())) {
+	            result.rejectValue("email", "error.employee", "Email already exists");
+	        }
+	        return "views/fragments/addempform"; // Return to form with error messages
+	    }
+	    return "redirect:/addemployees";
 	}
+
+
 
 	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee")
 	@GetMapping("/edit/{id}")
-	public String editEmpForm(@PathVariable Integer id, Model model) {
+	public String editEmpForm(@PathVariable Integer id, Model model ) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
@@ -153,7 +169,7 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee", description = "Processes the form submission to edit an existing employee")
 	@PostMapping("/edit/{id}")
-	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee) {
+	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee, RedirectAttributes attributes) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			Employees existingEmployee = optionalEmp.get();
@@ -292,9 +308,11 @@ public class OperationsControllers {
 			}
 
 			employeeService.updateEmployee(id, existingEmployee);
+	        attributes.addFlashAttribute("successMessage", "Employee with ID " + id + " has been updated successfully.");
+
 
 		}
-		return "redirect:/welcome";
+		return "redirect:/listemployees";
 
 	}
 
@@ -312,9 +330,11 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updateRole/{id}")
-	public String updateRole(@PathVariable Integer id, @RequestParam("role") String role) {
+	public String updateRole(@PathVariable Integer id, @RequestParam("role") String role, RedirectAttributes redirectAttributes) {
 		employeeService.updateEmployeeRole(id, role);
-		return "redirect:/welcome";
+	    redirectAttributes.addFlashAttribute("successMessage", "Role updated successfully for employee with ID " + id + ".");
+
+		return "redirect:/listemployees";
 	}
 
 	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee role")
@@ -331,18 +351,19 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updatePassword/{id}")
-	public String updatePassword(@PathVariable Integer id, @RequestParam("password") String newpassword) {
+	public String updatePassword(@PathVariable Integer id, @RequestParam("password") String newpassword, RedirectAttributes attributes) {
 		employeeService.updateEmployeePassword(id, newpassword);
-		return "redirect:/welcome";
+	    attributes.addFlashAttribute("successMessage", "Password updated successfully for employee with ID " + id + ".");
+		return "redirect:/listemployees";
 	}
 
-	@GetMapping("/employeessprofile/{id}")
+	@GetMapping("/employeeprofile/{id}")
 	public String userProfile(@PathVariable Integer id, Model model) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Profile", optionalEmp.get());
-			return "/profile";
+			return "/views/pages/profile";
 		} else {
 			return "redirect:/welcome";
 		}

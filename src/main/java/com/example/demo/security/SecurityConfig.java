@@ -38,7 +38,9 @@ public class SecurityConfig {
 						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.requestMatchers("/user/**").hasRole("USER")
-						.requestMatchers("/hr/**").hasRole("HR").anyRequest().authenticated());
+						.requestMatchers("/hr/**").hasRole("HR")
+						.requestMatchers("/listemployees").hasAnyRole("ADMIN", "HR")
+						.anyRequest().authenticated());
 
 		http.formLogin((form) -> form.loginPage("/welcome").defaultSuccessUrl("/home", true)
 				.failureUrl("/login?error=true").permitAll());

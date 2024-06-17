@@ -19,11 +19,11 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="/hr/home">Admin Panel</a>
+				<a class="navbar-brand" href="/welcome">Add Employee</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="/admin/home"><span
-						class="glyphicon glyphicon-user"></span> Back to Home</a></li>
+				<li><a href="/welcome"><span
+						class="glyphicon glyphicon-home"></span> Back to Home</a></li>
 				<li><a href="/logout"><span
 						class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			</ul>
@@ -31,10 +31,23 @@
 	</nav>
 
 	<div class="maindiv">
+
 		<div>
 			<form id="employeeForm" th:action="@{/addemployees}" method="post"
 				th:object="${Employee}">
+				<div th:if="${successMessage}" class="alert alert-success">
+					<p th:text="${successMessage}"></p>
+				</div>
 				<h2>Personal Details</h2>
+
+
+
+				<!-- Error Message Section -->
+				<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+					<ul>
+						<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+					</ul>
+				</div>
 				<div class="form-group">
 					<div class="fields">
 						<label for="firstname">First Name of the Employee:</label><br>
@@ -59,7 +72,7 @@
 					<div>
 						<label for="dateOfBirth">Date of Birth:</label><br> <input
 							type="date" id="dateOfBirth" name="dateOfBirth"
-							th:field="*{dateOfBirth}" required="required">
+							th:value="*{dateOfBirth}" required="required">
 					</div>
 				</div>
 
@@ -86,7 +99,7 @@
 							<option value="O -ve">O-</option>
 							<option value="A -ve">A-</option>
 							<option value="B -ve">B-</option>
-							
+
 						</select>
 					</div>
 				</div>
@@ -269,7 +282,7 @@
 					<div class="fields">
 						<label for="dateOfJoining">Date of Joining:</label><br> <input
 							type="date" id="dateOfJoining" name="dateOfJoining"
-							th:field="*{dateOfJoining}" required="required">
+							th:value="*{dateOfJoining}" required="required">
 					</div>
 					<div>
 						<label for="dateOfLeaving">Date of Leaving:</label><br> <input
@@ -388,7 +401,7 @@
 					</div>
 				</div>
 
-			
+
 
 
 				<div class="form-group">
@@ -404,16 +417,20 @@
 		</div>
 	</div>
 
-	<!-- JavaScript function to download form as PDF -->
-	<!-- <script>
-        function downloadFormAsPDF() {
-            var pdf = new jsPDF();
-            pdf.fromHTML($('#employeeForm').html(), {
-                callback: function (pdf) {
-                    pdf.save('employee_details.pdf');
-                }
-            });
-        }
-    </script> -->
+
+	<script th:if="${successMessage != null}">
+		$(document).ready(function() {
+			$('.toast').toast({
+				delay : 3000
+			}); // Initialize Bootstrap toast with a 3-second delay
+			$('.toast').toast('show'); // Show the toast
+
+			// Redirect after delay (optional)
+			setTimeout(function() {
+				window.location.href = "/addemployees";
+			}, 3000); // Redirect after 3 seconds
+		});
+	</script>
+
 </body>
 </html>

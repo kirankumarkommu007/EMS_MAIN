@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Tag(name = "User Controller", description = "Controller for handling web page requests")
@@ -40,7 +41,7 @@ public class UserProfileController {
 	}
 
 	@Operation(summary = "User profile", description = "Displays the user profile")
-	@GetMapping("/profile")
+	@GetMapping("/employeeprofile")
 	public String userProfile(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String firstName = authentication.getName();
@@ -50,7 +51,7 @@ public class UserProfileController {
 		}
 		model.addAttribute("Profile", user);
 
-		return "profile";
+		return "/views/pages/profile";
 	}
 
 	@Operation(summary = "User dashboard", description = "Displays the user dashboard")
@@ -108,18 +109,21 @@ public class UserProfileController {
 	}
 	
 	
+
 	@GetMapping("/search")
-	public String searchEmployeeById(@RequestParam("employeeId") Integer employeeId, Model model,Authentication authentication) {
-		 boolean isAdmin = authentication.getAuthorities().stream()
-	                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-	        model.addAttribute("isAdmin", isAdmin);
+	public String searchEmployeeById(@RequestParam("employeeId") Integer employeeId, Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
+	    boolean isAdmin = authentication.getAuthorities().stream()
+	            .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+	    model.addAttribute("isAdmin", isAdmin);
+
 	    Optional<Employees> employee = employeeServiceImpl.getEmployeeById(employeeId);
 	    if (employee.isPresent()) {
 	        model.addAttribute("Employee", employee.get());
 	        return "/views/pages/employeeslist"; // The view name to display the employee details
 	    } else {
-	        model.addAttribute("error", "Employee not found");
-	        return "/views/pages/employeeslist";
+	        redirectAttributes.addFlashAttribute("errorMessage", "No Employee Found with Employeed id : "+employeeId+" Please Check the Employee ID");
+	        return "redirect:/listemployees";
 	    }
 	}
+
 }

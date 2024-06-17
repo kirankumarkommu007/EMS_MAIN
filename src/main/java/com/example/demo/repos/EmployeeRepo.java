@@ -23,5 +23,11 @@ public interface EmployeeRepo extends JpaRepository<Employees, Integer> {
 
 	@Query("SELECT e FROM Employees e WHERE e.role <> 'ADMIN'")
 	List<Employees> findAllEmployeesExceptAdmin();
+	
+	
+	boolean existsByAdhaar(String adhaar);
+    boolean existsByPan(String pan);
+    boolean existsByMobile(Long mobile);
+    boolean existsByEmail(String email);
 
 }

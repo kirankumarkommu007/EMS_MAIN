@@ -32,10 +32,14 @@ public class Employees {
     
     private String bloodgroup;
     private String gender;
+    
+    @Column(unique = true, nullable = false)
     private String pan;
+    @Column(unique = true, nullable = false)
     private String adhaar;
-
+    @Column(unique = true, nullable = false)
     private Long mobile;
+    @Column(unique = true, nullable = false)
     private String email;
     private String fathername;
     private String mothername;

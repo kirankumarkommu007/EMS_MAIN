@@ -4,8 +4,6 @@
 <title>Add Employee</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css"
-	href="/css/employeeDownloadform.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script
@@ -18,8 +16,93 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-
+	
+	
 </head>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.maindiv {
+    width: auto;
+    min-width:20%;
+ 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+    width: 260px;
+    padding:8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+.fields{
+	padding-right: 20px;
+}
+.fields2 input[type="text"] {
+    width: 550px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+
+.fields3 input[type="text"] {
+    width: 550px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    height:100px;
+}
+
+
+</style>
 <body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -285,21 +368,7 @@
 	</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('generatePdfBtn').addEventListener('click', function() {
-            var form = document.getElementById('employeeForm');
-            html2canvas(form).then(canvas => {
-                var imgData = canvas.toDataURL('image/png');
-                var pdf = new jsPDF('p', 'mm', 'a4');
-                var imgWidth = pdf.internal.pageSize.getWidth();
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save('employee_details.pdf');
-            });
-        });
-    });
-</script>
+
 
 </body>
 </html>

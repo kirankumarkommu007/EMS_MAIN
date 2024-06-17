@@ -25,6 +25,12 @@
             margin-top: 20px; /* Adjusted margin */
         }
 
+        .login-container img {
+            width: 295px; /* Set the width of the logo */
+            height: 1px; /* Set the height of the logo */
+            margin-bottom: 20px; /* Space between logo and heading */
+        }
+
         h1 {
             color: #333;
             margin-top: 20px;
@@ -84,10 +90,12 @@
             color: red;
             margin-top: 10px;
         }
+       
     </style>
 </head>
 <body>
     <div class="login-container">
+      <!--  <img src="/images/logoItyNerds.png" alt="ITyNerds Logo"/> --> 
         <h1>Welcome to ITyNerds</h1>
         <p>Please login to continue.</p>
         <form th:action="@{/login}" method="post">

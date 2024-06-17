@@ -50,21 +50,21 @@ body {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/admin/home">Admin Panel</a>
+				<a class="navbar-brand" href="/welcome">Employee List</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
-				 <li>
-                    <form class="navbar-form" th:action="@{/search}" method="get">
-                        <div class="form-group">
-                            <input type="text" name="employeeId" class="form-control" placeholder="Search by ID">
-                        </div>
-                        <button type="submit" class="btn btn-default">Search</button>
-                    </form>
-                </li>
-                
-                <li><a href="/listemployees"><span
-							class="glyphicon glyphicon-remove"></span> Clear</a></li>
+					<li>
+						<form class="navbar-form" th:action="@{/search}" method="get">
+							<div class="form-group">
+								<input type="text" name="employeeId" class="form-control"
+									placeholder="Search by ID">
+							</div>
+							<button type="submit" class="btn btn-default">Search</button>
+						</form>
+					</li>
+
+
 					<li><a href="/welcome"><span
 							class="glyphicon glyphicon-home"></span> Home</a></li>
 					<li><a href="/logout"><span
@@ -74,7 +74,49 @@ body {
 		</div>
 	</nav>
 
-	<!-- <h2>  Welcome <span th:text="${Profile.firstname}"></span></h2> -->
+<!-- Message Modal -->
+<div th:if="${successMessage != null or errorMessage != null}" class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="messageModalLabel" th:text="${successMessage != null ? 'Success' : 'Error'}"></h4>
+            </div>
+            <div class="modal-body">
+                <p th:text="${successMessage != null ? successMessage : errorMessage}"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+	<div th:if="${errorMessage}" class="modal fade" id="errorMessageModal"
+		tabindex="-1" role="dialog" aria-labelledby="errorMessageModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="errorMessageModalLabel">Error</h4>
+				</div>
+				<div class="modal-body">
+					<p th:text="${errorMessage}"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<!-- Table of Employees -->
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -101,10 +143,17 @@ body {
 				<td><a type="button" class="btn btn-success"
 					th:href="@{/updatePassword/{id}(id=${emp.id})}">Update Password</a></td>
 				<td><a type="button" class="btn btn-primary"
-					th:href="@{/employeessprofile/{id}(id=${emp.id})}">Profile</a></td>
+					th:href="@{/employeeprofile/{id}(id=${emp.id})}">Profile</a></td>
 			</tr>
 		</tbody>
 	</table>
+
+	<!-- Script to show modal if successMessage is present -->
+<script th:if="${successMessage != null or errorMessage != null}">
+    $(document).ready(function () {
+        $('#messageModal').modal('show');
+    });
+</script>
 
 </body>
 </html>

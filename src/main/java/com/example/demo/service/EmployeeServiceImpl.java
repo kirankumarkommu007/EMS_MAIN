@@ -36,13 +36,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepo.findById(id);
 	}
 
-	@Override
-	public Employees addEmployee(Employees employee) {
-		String encodedPassword = passwordEncoder.encode(employee.getFirstname());
-		employee.setPassword(encodedPassword);
-		employee.setRole("USER");
-		return employeeRepo.save(employee);
-	}
+	 @Override
+	    public Employees addEmployee(Employees employee) throws Exception {
+	        if (isUnique(employee)) {
+	            String encodedPassword = passwordEncoder.encode(employee.getEmail());
+	            employee.setPassword(encodedPassword);
+	            employee.setRole("USER");
+	            return employeeRepo.save(employee);
+	        } else {
+	            throw new Exception("Employee with given details already exists");
+	        }
+	    }
+
+    @Override
+    public boolean isUnique(Employees employee) {
+        return !existsByAdhaar(employee.getAdhaar()) &&
+               !existsByPan(employee.getPan()) &&
+               !existsByMobile(employee.getMobile()) &&
+               !existsByEmail(employee.getEmail());
+    }
+	
+
 
 	@Override
 	public Employees updateEmployee(Integer id, Employees employee) {
@@ -100,6 +114,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
     public List<Employees> getAllEmployeesExceptAdmin() {
         return employeeRepo.findAllEmployeesExceptAdmin();
+    }
+	
+	
+	@Override
+    public boolean existsByAdhaar(String adhaar) {
+        return employeeRepo.existsByAdhaar(adhaar);
+    }
+
+    @Override
+    public boolean existsByPan(String pan) {
+        return employeeRepo.existsByPan(pan);
+    }
+
+    @Override
+    public boolean existsByMobile(Long mobile) {
+        return employeeRepo.existsByMobile(mobile);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return employeeRepo.existsByEmail(email);
     }
 
 }
