@@ -26,7 +26,7 @@
             <column name="pan" type="VARCHAR(20)">
                 <constraints unique="true" nullable="false"/>
             </column>
-            <column name="adhaar" type="VARCHAR(20)">
+            <column name="adhaar" type="BIGINT">
                 <constraints unique="true" nullable="false"/>
             </column>
 

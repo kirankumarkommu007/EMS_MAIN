@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @Controller
 @Tag(name = "Operations Controller", description = "Controller for handling web page requests")
@@ -47,7 +48,6 @@ public class OperationsControllers {
 	@Autowired
 	private JwtUtil jwtTokenProvider;
 
-	
 	@Operation(summary = "Welcome page", description = "Displays the welcome page")
 	@GetMapping("/welcome")
 	public String getWelcome() {
@@ -67,13 +67,13 @@ public class OperationsControllers {
 		return "/views/pages/welcome";
 	}
 
-
 	@Operation(summary = "Handle login", description = "Processes login and sets JWT token in cookie")
 	@PostMapping("/login")
 	public String login(@RequestParam String username, @RequestParam String password, Model model,
 			HttpServletResponse response) {
 		try {
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			Authentication authentication = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String token = jwtTokenProvider.generateToken(userDetails);
@@ -86,42 +86,34 @@ public class OperationsControllers {
 			model.addAttribute("token", token);
 			model.addAttribute("username", userDetails.getUsername());
 			model.addAttribute("roles", role);
+			return "redirect:/welcome";
 
-			if (role.contains("ROLE_ADMIN")) {
-				return "redirect:/admin/home";
-			} else if (role.contains("ROLE_HR")) {
-				return "redirect:/hr/home";
-			} else if (role.contains("ROLE_USER")) {
-				return "redirect:/user/home";
-			} else {
-				return "home";
-			}
 		} catch (Exception e) {
 			model.addAttribute("error", "Invalid username or password ");
 			return "/views/pages/welcome";
 		}
 	}
 
-	 @GetMapping("/listemployees")
-	    public String employeesList(Model model, Authentication authentication) {
-	        // Check if the user has ADMIN role
-	        boolean isAdmin = authentication.getAuthorities().stream()
-	                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+	@GetMapping("/listemployees")
+	public String employeesList(Model model, Authentication authentication) {
+		// Check if the user has ADMIN role
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-	        List<Employees> empList;
+		List<Employees> empList;
 
-	        if (isAdmin) {
-	            empList = employeeService.getAllEmployees();
-	        } else {
-	            empList = employeeService.getAllEmployeesExceptAdmin();
-	        }
+		if (isAdmin) {
+			empList = employeeService.getAllEmployees();
+		} else {
+			empList = employeeService.getAllEmployeesExceptAdmin();
+		}
 
-	        model.addAttribute("Employee", empList);
-	        model.addAttribute("isAdmin", isAdmin);
+		model.addAttribute("Employee", empList);
+		model.addAttribute("isAdmin", isAdmin);
 
-	        return "/views/pages/employeeslist";
-	    }
-	 
+		return "/views/pages/employeeslist";
+	}
+
 	@Operation(summary = "Show add employee form", description = "Displays the form for adding a new employee")
 	@GetMapping("/addemployees")
 	public String AddEmpForm(Model model) {
@@ -129,35 +121,41 @@ public class OperationsControllers {
 		return "/views/fragments/addempform";
 	}
 
+	 @PostMapping("/addemployees")
+	    public String addEmp(@Valid @ModelAttribute("Employee") Employees employee,
+	                         BindingResult bindingResult,
+	                         RedirectAttributes redirectAttributes) {
 
-	@PostMapping("/addemployees")
-	public String addEmp(@ModelAttribute("Employee") Employees employee, BindingResult result, RedirectAttributes redirectAttributes) {
-	    try {
-	        employeeService.addEmployee(employee);
-	        redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully");
-	    } catch (Exception e) {
-	        if (employeeService.existsByAdhaar(employee.getAdhaar())) {
-	            result.rejectValue("adhaar", "error.employee", "Aadhar number already exists");
+	        if (bindingResult.hasErrors()) {
+	            return "views/fragments/addempform"; // Return to form with validation errors
 	        }
-	        if (employeeService.existsByPan(employee.getPan())) {
-	            result.rejectValue("pan", "error.employee", "PAN number already exists");
+
+	        try {
+	            employeeService.addEmployee(employee);
+	            redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully");
+	        } catch (Exception e) {
+	            if (employeeService.existsByAdhaar(employee.getAdhaar())) {
+	                bindingResult.rejectValue("adhaar", "error.employee", "Aadhar number already exists");
+	            }
+	            if (employeeService.existsByPan(employee.getPan())) {
+	                bindingResult.rejectValue("pan", "error.employee", "PAN number already exists");
+	            }
+	            if (employeeService.existsByMobile(employee.getMobile())) {
+	                bindingResult.rejectValue("mobile", "error.employee", "Mobile number already exists");
+	            }
+	            if (employeeService.existsByEmail(employee.getEmail())) {
+	                bindingResult.rejectValue("email", "error.employee", "Email already exists");
+	            }
+	            return "views/fragments/addempform"; // Return to form with error messages
 	        }
-	        if (employeeService.existsByMobile(employee.getMobile())) {
-	            result.rejectValue("mobile", "error.employee", "Mobile number already exists");
-	        }
-	        if (employeeService.existsByEmail(employee.getEmail())) {
-	            result.rejectValue("email", "error.employee", "Email already exists");
-	        }
-	        return "views/fragments/addempform"; // Return to form with error messages
+	        
+	        return "redirect:/addemployees"; // Redirect to a different endpoint after successful addition
 	    }
-	    return "redirect:/addemployees";
-	}
-
-
+	
 
 	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee")
 	@GetMapping("/edit/{id}")
-	public String editEmpForm(@PathVariable Integer id, Model model ) {
+	public String editEmpForm(@PathVariable Integer id, Model model) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
@@ -169,7 +167,8 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee", description = "Processes the form submission to edit an existing employee")
 	@PostMapping("/edit/{id}")
-	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee, RedirectAttributes attributes) {
+	public String editEmp(@PathVariable Integer id, @ModelAttribute("Employee") Employees updatedEmployee,
+			RedirectAttributes attributes) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			Employees existingEmployee = optionalEmp.get();
@@ -308,8 +307,8 @@ public class OperationsControllers {
 			}
 
 			employeeService.updateEmployee(id, existingEmployee);
-	        attributes.addFlashAttribute("successMessage", "Employee with ID " + id + " has been updated successfully.");
-
+			attributes.addFlashAttribute("successMessage",
+					"Employee with ID " + id + " has been updated successfully.");
 
 		}
 		return "redirect:/listemployees";
@@ -330,9 +329,11 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updateRole/{id}")
-	public String updateRole(@PathVariable Integer id, @RequestParam("role") String role, RedirectAttributes redirectAttributes) {
+	public String updateRole(@PathVariable Integer id, @RequestParam("role") String role,
+			RedirectAttributes redirectAttributes) {
 		employeeService.updateEmployeeRole(id, role);
-	    redirectAttributes.addFlashAttribute("successMessage", "Role updated successfully for employee with ID " + id + ".");
+		redirectAttributes.addFlashAttribute("successMessage",
+				"Role updated successfully for employee with ID " + id + ".");
 
 		return "redirect:/listemployees";
 	}
@@ -351,9 +352,29 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee role", description = "Processes the form submission to edit an existing employee role")
 	@PostMapping("/updatePassword/{id}")
-	public String updatePassword(@PathVariable Integer id, @RequestParam("password") String newpassword, RedirectAttributes attributes) {
-		employeeService.updateEmployeePassword(id, newpassword);
-	    attributes.addFlashAttribute("successMessage", "Password updated successfully for employee with ID " + id + ".");
+	public String updatePassword(@PathVariable Integer id, @RequestParam("newPassword") String newPassword,
+			@RequestParam("confirmPassword") String confirmPassword, Model model, RedirectAttributes attributes) {
+		Optional<Employees> employeeOpt = employeeService.getEmployeeById(id);
+		if (!employeeOpt.isPresent()) {
+			attributes.addFlashAttribute("errorMessage", "Employee not found.");
+			return "redirect:/listemployees";
+		}
+
+		Employees employee = employeeOpt.get();
+
+		if (!newPassword.equals(confirmPassword)) {
+			model.addAttribute("Employee", employee); // Make sure the attribute name matches your Thymeleaf template
+			model.addAttribute("errorMessage", "Passwords do not match.");
+			return "views/fragments/updatePassword"; // Ensure this matches the path to your Thymeleaf template
+		}
+
+		// Update password
+		employeeService.updateEmployeePassword(id, newPassword);
+
+		// Set success message as a flash attribute (for redirect)
+		attributes.addFlashAttribute("successMessage",
+				"Password updated successfully for employee with ID " + id + ".");
+
 		return "redirect:/listemployees";
 	}
 
@@ -375,7 +396,6 @@ public class OperationsControllers {
 		employeeService.deleteEmployee(id);
 		return "redirect:/listemployees";
 	}
-	
 
 	@GetMapping("/employeeForm")
 	public String employeeForm() {

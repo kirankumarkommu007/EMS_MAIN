@@ -84,11 +84,6 @@ public class UserProfileController {
 	    String name = auth.getName();
 	    Employees employee = employeeServiceImpl.findByFirstname(name);
 
-	    if (employee == null) {
-	        model.addAttribute("errorMessage", "Employee not found.");
-	        return "/views/fragments/updateMyPassword";
-	    }
-
 	    if (!newPassword.equals(confirmPassword)) {
 	        model.addAttribute("employee", employee);
 	        model.addAttribute("errorMessage", "Passwords do not match.");

@@ -25,7 +25,7 @@ public interface EmployeeRepo extends JpaRepository<Employees, Integer> {
 	List<Employees> findAllEmployeesExceptAdmin();
 	
 	
-	boolean existsByAdhaar(String adhaar);
+	boolean existsByAdhaar(Long adhaar);
     boolean existsByPan(String pan);
     boolean existsByMobile(Long mobile);
     boolean existsByEmail(String email);

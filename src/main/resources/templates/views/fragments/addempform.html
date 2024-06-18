@@ -91,14 +91,14 @@
 							id="bloodgroup" name="bloodgroup" th:field="*{bloodgroup}"
 							required="required">
 							<option value="">Select Blood Group</option>
-							<option value="AB +ve">AB+</option>
-							<option value="O +ve">O+</option>
-							<option value="A +ve">A+</option>
-							<option value="B +ve">B+</option>
-							<option value="AB -ve">AB-</option>
-							<option value="O -ve">O-</option>
-							<option value="A -ve">A-</option>
-							<option value="B -ve">B-</option>
+							<option value="AB +ve">AB +ve</option>
+							<option value="O +ve">O +ve</option>
+							<option value="A +ve">A +ve</option>
+							<option value="B +ve">B +ve</option>
+							<option value="AB -ve">AB -ve</option>
+							<option value="O -ve">O -ve</option>
+							<option value="A -ve">A -ve</option>
+							<option value="B -ve">B -ve</option>
 
 						</select>
 					</div>
@@ -108,7 +108,11 @@
 					<div class="fields">
 						<label for="mobile">Mobile:</label><br> <input type="text"
 							id="mobile" name="mobile" th:field="*{mobile}"
-							required="required" placeholder="Mobile">
+							required="required" placeholder="Mobile" pattern="\d{10}"
+							title="Mobile number must be 10 digits">
+						<div th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}">Mobile
+							Error</div>
+
 					</div>
 					<div>
 						<label for="email">Email:</label><br> <input type="email"
@@ -121,12 +125,22 @@
 					<div class="fields">
 						<label for="pan">PAN Number:</label><br> <input type="text"
 							id="pan" name="pan" th:field="*{pan}" required="required"
+							pattern="[A-Z]{5}\d{4}[A-Z]"
+							title="PAN must be in the format: ABCDE1234F"
 							placeholder="PAN Number">
+						<div th:if="${#fields.hasErrors('pan')}" th:errors="*{pan}">Pan
+							Error</div>
+
 					</div>
 					<div class="fields">
 						<label for="aadhaar">Aadhaar Number:</label><br> <input
+							pattern="\d{12}" title="Adhaar number must be 12 digits"
 							type="text" id="aadhaar" name="aadhaar" th:field="*{adhaar}"
 							required="required" placeholder="Aadhaar Number">
+
+						<div th:if="${#fields.hasErrors('adhaar')}" th:errors="*{adhaar}">Adhaar
+							Error</div>
+
 					</div>
 				</div>
 
@@ -145,9 +159,14 @@
 
 				<div class="form-group">
 					<div class="fields">
-						<label for="maritalStatus">Marital Status:</label><br> <input
+						<label for="maritalStatus">Marital Status:</label><br> <select
 							type="text" id="maritalStatus" name="maritalStatus"
 							th:field="*{maritalStatus}" placeholder="Marital Status">
+
+							<option value="">Select Status</option>
+							<option value="single">Single</option>
+							<option value="married">Married</option>
+						</select>
 					</div>
 					<div>
 						<label for="spousename">Spouse's Name:</label><br> <input
@@ -333,7 +352,7 @@
 							Person 1:</label><br> <input type="text"
 							id="emergencyContactPerson1" name="emergencyContactPerson1"
 							th:field="*{emergencyContactPerson1}"
-							placeholder="Emergency Contact Person 1">
+							placeholder="Emergency Contact Person 1" required="required">
 					</div>
 					<div>
 						<label for="emergencyContactPerson1mobile">Emergency
@@ -341,7 +360,8 @@
 							id="emergencyContactPerson1mobile"
 							name="emergencyContactPerson1mobile"
 							th:field="*{emergencyContactPerson1mobile}"
-							placeholder="Emergency Contact Person 1 Mobile">
+							placeholder="Emergency Contact Person 1 Mobile"
+							required="required">
 					</div>
 				</div>
 
@@ -356,11 +376,17 @@
 					</div>
 					<div>
 						<label for="emergencyContactPerson1relation">Emergency
-							Contact Person 1 Relation:</label><br> <input type="text"
+							Contact Person 1 Relation:</label><br> <select
 							id="emergencyContactPerson1relation"
 							name="emergencyContactPerson1relation"
-							th:field="*{emergencyContactPerson1relation}"
-							placeholder="Emergency Contact Person 1 Relation">
+							th:field="*{emergencyContactPerson1relation}" required="required">
+							<option value="">Select Relation</option>
+							<option value="Mother">Mother</option>
+							<option value="Father">Father</option>
+							<option value="Brother">Brother</option>
+							<option value="Sister">Sister</option>
+							<option value="Guardian">Guardian</option>
+						</select>
 					</div>
 				</div>
 
@@ -370,7 +396,7 @@
 							Person 2:</label><br> <input type="text"
 							id="emergencyContactPerson2" name="emergencyContactPerson2"
 							th:field="*{emergencyContactPerson2}"
-							placeholder="Emergency Contact Person 2">
+							placeholder="Emergency Contact Person 2" required="required">
 					</div>
 					<div>
 						<label for="emergencyContactPerson2mobile">Emergency
@@ -378,7 +404,8 @@
 							id="emergencyContactPerson2mobile"
 							name="emergencyContactPerson2mobile"
 							th:field="*{emergencyContactPerson2mobile}"
-							placeholder="Emergency Contact Person 2 Mobile">
+							placeholder="Emergency Contact Person 2 Mobile"
+							required="required">
 					</div>
 				</div>
 
@@ -393,11 +420,18 @@
 					</div>
 					<div>
 						<label for="emergencyContactPerson2relation">Emergency
-							Contact Person 2 Relation:</label><br> <input type="text"
+							Contact Person 2 Relation:</label><br> <select
 							id="emergencyContactPerson2relation"
 							name="emergencyContactPerson2relation"
-							th:field="*{emergencyContactPerson2relation}"
-							placeholder="Emergency Contact Person 2 Relation">
+							th:field="*{emergencyContactPerson2relation}" required="required">
+							<option value="">Select Relation</option>
+							<option value="Mother">Mother</option>
+							<option value="Father">Father</option>
+							<option value="Brother">Brother</option>
+							<option value="Sister">Sister</option>
+							<option value="Guardian">Guardian</option>
+						</select>
+
 					</div>
 				</div>
 

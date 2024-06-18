@@ -118,7 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	
 	@Override
-    public boolean existsByAdhaar(String adhaar) {
+    public boolean existsByAdhaar(Long adhaar) {
         return employeeRepo.existsByAdhaar(adhaar);
     }
 

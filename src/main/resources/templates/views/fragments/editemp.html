@@ -84,14 +84,14 @@
 							id="bloodgroup" name="bloodgroup" th:field="*{bloodgroup}"
 							required="required">
 							<option value="">Select Blood Group</option>
-							<option value="AB +ve">AB+</option>
-							<option value="O +ve">O+</option>
-							<option value="A +ve">A+</option>
-							<option value="B +ve">B+</option>
-							<option value="AB -ve">AB-</option>
-							<option value="O -ve">O-</option>
-							<option value="A -ve">A-</option>
-							<option value="B -ve">B-</option>
+							<option value="AB +ve">AB +ve</option>
+							<option value="O +ve">O +ve</option>
+							<option value="A +ve">A +ve</option>
+							<option value="B +ve">B +ve</option>
+							<option value="AB -ve">AB -ve</option>
+							<option value="O -ve">O -ve</option>
+							<option value="A -ve">A -ve</option>
+							<option value="B -ve">B -ve</option>
 						</select>
 					</div>
 				</div>
@@ -137,9 +137,14 @@
 
 				<div class="form-group">
 					<div class="fields">
-						<label for="maritalStatus">Marital Status:</label><br> <input
+						<label for="maritalStatus">Marital Status:</label><br> <select
 							type="text" id="maritalStatus" name="maritalStatus"
 							th:field="*{maritalStatus}" placeholder="Marital Status">
+
+							<option value="">Select Status</option>
+							<option value="single">Single</option>
+							<option value="married">Married</option>
+						</select>
 					</div>
 					<div>
 						<label for="spousename">Spouse's Name:</label><br> <input
@@ -348,11 +353,17 @@
 					</div>
 					<div>
 						<label for="emergencyContactPerson1relation">Emergency
-							Contact Person 1 Relation:</label><br> <input type="text"
+							Contact Person 1 Relation:</label><br> <select
 							id="emergencyContactPerson1relation"
 							name="emergencyContactPerson1relation"
-							th:field="*{emergencyContactPerson1relation}"
-							placeholder="Emergency Contact Person 1 Relation">
+							th:field="*{emergencyContactPerson1relation}" required="required">
+							<option value="">Select Relation</option>
+							<option value="Mother">Mother</option>
+							<option value="Father">Father</option>
+							<option value="Brother">Brother</option>
+							<option value="Sister">Sister</option>
+							<option value="Guardian">Guardian</option>
+						</select>
 					</div>
 				</div>
 
@@ -385,18 +396,25 @@
 					</div>
 					<div>
 						<label for="emergencyContactPerson2relation">Emergency
-							Contact Person 2 Relation:</label><br> <input type="text"
+							Contact Person 2 Relation:</label><br> <select
 							id="emergencyContactPerson2relation"
 							name="emergencyContactPerson2relation"
-							th:field="*{emergencyContactPerson2relation}"
-							placeholder="Emergency Contact Person 2 Relation">
+							th:field="*{emergencyContactPerson2relation}">
+							<option value="">Select Relation</option>
+							<option value="Mother">Mother</option>
+							<option value="Father">Father</option>
+							<option value="Brother">Brother</option>
+							<option value="Sister">Sister</option>
+							<option value="Guardian">Guardian</option>
+						</select>
 					</div>
 				</div>
 
 				<button type="submit" class="btn btn-default"
 					onclick="return confirm('Are you sure you want to update this employee?')">Update</button>
+								<a class="btn btn-default" href="/listemployees">Back to List</a>
+					
 			</form>
-			<a class="btn btn-default" href="/welcome">Back to Home</a>
 		</div>
 	</div>
 </body>

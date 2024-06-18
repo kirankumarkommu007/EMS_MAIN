@@ -33,7 +33,7 @@ public interface EmployeeService {
 	
     boolean isUnique(Employees employee);
 
-	boolean existsByAdhaar(String adhaar);
+	boolean existsByAdhaar(Long adhaar);
 
 	boolean existsByPan(String pan);
 
