@@ -32,20 +32,22 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+		http.csrf((csrf)->csrf.disable())
 				.authorizeHttpRequests((auth) -> auth
-						.requestMatchers("/login","/greet/**","/addempform").permitAll()
-						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+						.requestMatchers("/login","/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/admin/**","/updateRole/**").hasRole("ADMIN")
-						.requestMatchers("/user/**").hasRole("USER")
+						.requestMatchers("/listemployees").hasAnyRole("ADMIN","HR")
 						.requestMatchers("/hr/**").hasRole("HR")
-						.requestMatchers("/listemployees").hasAnyRole("ADMIN", "HR")
+						.requestMatchers("/user/**").hasRole("USER")
 						.anyRequest().authenticated());
 
-		http.formLogin((form) -> form.loginPage("/welcome").defaultSuccessUrl("/home", true)
+		http.formLogin((form) -> form
+				.loginPage("/welcome")
 				.failureUrl("/login?error=true").permitAll());
 
-		http.logout((logout) -> logout.logoutUrl("/logout").deleteCookies("token"));// token delete after succesfull
+		http.logout((logout) -> logout
+				.logoutUrl("/logout")
+				.deleteCookies("token", "JSESSIONID"));// token delete after succesfull
 																					// logout if not logged out token
 																					// will stay until expiratation
 

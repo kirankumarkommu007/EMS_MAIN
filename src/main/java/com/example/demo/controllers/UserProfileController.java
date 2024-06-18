@@ -40,7 +40,7 @@ public class UserProfileController {
 		this.employeeServiceImpl = employeeServiceImpl;
 	}
 
-	@Operation(summary = "User profile", description = "Displays the user profile")
+	@Operation(summary = "Employee Profile", description = "Displays the user profile")
 	@GetMapping("/employeeprofile")
 	public String userProfile(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -54,7 +54,7 @@ public class UserProfileController {
 		return "/views/pages/profile";
 	}
 
-	@Operation(summary = "User dashboard", description = "Displays the user dashboard")
+	@Operation(summary = "Employee dashboard", description = "Displays the user dashboard")
 	@GetMapping("/user/home")
 	public String userDashboard() {
 		return "/views/pages/userhome";
@@ -76,6 +76,7 @@ public class UserProfileController {
 		return "/views/fragments/updateMyPassword";
 	}
 
+	@Operation(summary = "Update Password for Logged User", description = "Update the password of present logged user")
 	@PostMapping("/updateMyPassword")
 	public String updatePassword(Model model,
 	                             @RequestParam("newPassword") String newPassword,
@@ -94,7 +95,7 @@ public class UserProfileController {
 	    employeeServiceImpl.updatePassword(employee.getFirstname(), newPassword);
 
 	    // Set success message as a flash attribute (for redirect)
-	    model.addAttribute("successMessage", "Password updated successfully.");
+	    model.addAttribute("successMessage", "Password updated successfully. Please Kindly Relogin");
 
 	    // Update employee in model to display updated data on the same page
 	    model.addAttribute("employee", employee);
@@ -104,7 +105,9 @@ public class UserProfileController {
 	}
 	
 	
-
+	
+	
+	@Operation(summary = "Search Employee", description = "Search the Employees By id")
 	@GetMapping("/search")
 	public String searchEmployeeById(@RequestParam("employeeId") Integer employeeId, Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 	    boolean isAdmin = authentication.getAuthorities().stream()

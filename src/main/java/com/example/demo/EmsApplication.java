@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 contact = @Contact(name = "Kirankumar Kommu", 
                 email = "Kommukirankumar1226@gmail.com")
         ),
-        servers = @Server(url = "http://localhost:1234")
+        servers = @Server(url = "http://localhost:3002")
 )
 public class EmsApplication {
 

@@ -18,6 +18,11 @@ public interface EmployeeRepo extends JpaRepository<Employees, Integer> {
 	Employees findByFirstname(String firstname);
 
 	Employees findByLastname(String lastname);
+	
+	List<Employees> findByRole(String role);
+
+	
+	
 
 	List<Employees> findByStatus(boolean b);
 

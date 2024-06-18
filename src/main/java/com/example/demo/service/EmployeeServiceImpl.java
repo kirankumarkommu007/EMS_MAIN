@@ -137,4 +137,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepo.existsByEmail(email);
     }
 
+	public List<Employees> getEmployeesByRole(String role) {
+		return employeeRepo.findByRole(role);
+	}
+
 }

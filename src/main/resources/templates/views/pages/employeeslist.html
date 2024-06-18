@@ -1,152 +1,164 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Employee Management</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style>
-        body {
-            padding-top: 50px;
-        }
+<meta charset="UTF-8">
+<title>Employee Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        .navbar-brand {
-            font-size: 24px;
-        }
+<style>
+body {
+	padding-top: 50px;
+}
 
-        .container {
-            margin-top: 20px;
-        }
+.navbar-brand {
+	font-size: 24px;
+}
 
-        .list-group-item {
-            font-size: 18px;
-            text-align: center;
-        }
+.container {
+	margin-top: 20px;
+}
 
-        .list-group-item:hover {
-            background-color: #f5f5f5;
-        }
+.list-group-item {
+	font-size: 18px;
+	text-align: center;
+}
 
-        .jumbotron {
-            background-color: #f8f9fa;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+.list-group-item:hover {
+	background-color: #f5f5f5;
+}
+
+.jumbotron {
+	background-color: #f8f9fa;
+	padding: 30px;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Employee List</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form class="navbar-form" th:action="@{/search}" method="get">
-                        <div class="form-group">
-                            <input type="text" name="employeeId" class="form-control" placeholder="Search by ID">
-                        </div>
-                        <button type="submit" class="btn btn-default">Search</button>
-                    </form>
-                </li>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/listemployees">Employee List</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<form class="navbar-form" th:action="@{/search}" method="get">
+							<div class="form-group">
+								<input type="text" name="employeeId" class="form-control"
+									placeholder="Search by ID">
+							</div>
+							<button type="submit" class="btn btn-default">Search</button>
+						</form>
+					</li>
 
-                <li><a href="/welcome"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+					<li><a href="/welcome"><span
+							class="glyphicon glyphicon-home"></span> Home</a></li>
+					<li><a href="/logout"><span
+							class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-<!-- Message Modal -->
-<div th:if="${successMessage != null or errorMessage != null}" class="modal fade" id="messageModal" tabindex="-1"
-     role="dialog" aria-labelledby="messageModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="messageModalLabel" th:text="${successMessage != null ? 'Success' : 'Error'}"></h4>
-            </div>
-            <div class="modal-body">
-                <p th:text="${successMessage != null ? successMessage : errorMessage}"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+	<!-- Message Modal -->
+	<div th:if="${successMessage != null or errorMessage != null}"
+		class="modal fade" id="messageModal" tabindex="-1" role="dialog"
+		aria-labelledby="messageModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="messageModalLabel"
+						th:text="${successMessage != null ? 'Success' : 'Error'}"></h4>
+				</div>
+				<div class="modal-body">
+					<p
+						th:text="${successMessage != null ? successMessage : errorMessage}"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 
-<div th:if="${errorMessage}" class="modal fade" id="errorMessageModal" tabindex="-1" role="dialog"
-     aria-labelledby="errorMessageModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="errorMessageModalLabel">Error</h4>
-            </div>
-            <div class="modal-body">
-                <p th:text="${errorMessage}"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Department</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="emp : ${Employee}">
-        <td th:text="${emp.id}"></td>
-        <td th:text="${emp.firstname}"></td>
-        <td th:text="${emp.department}"></td>
-        <td th:text="${emp.email}"></td>
-        <td th:text="${emp.role}"></td>
-        <td>
-            <div class="btn-group" role="group">
-                <a type="button" class="btn btn-primary mr-1" th:href="@{/edit/{id}(id=${emp.id})}">Edit</a>
-                <a type="button" class="btn btn-success mr-1" th:if="${isAdmin}" th:href="@{/updateRole/{id}(id=${emp.id})}">Update Role</a>
-                <a type="button" class="btn btn-warning mr-1" th:href="@{/updatePassword/{id}(id=${emp.id})}">Update Password</a>
-                <a type="button" class="btn btn-info mr-1" th:href="@{/employeeprofile/{id}(id=${emp.id})}">Profile</a>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="emp : ${Employee}">
+				<td th:text="${emp.id}"></td>
+				<td th:text="${emp.firstname}"></td>
+				<td th:text="${emp.department}"></td>
+				<td th:text="${emp.email}"></td>
+				<td th:text="${emp.role}"></td>
+				<td>
+					<div class="btn-group" role="group">
+						<a type="button" class="btn btn-primary mr-1"
+							th:href="@{/edit/{id}(id=${emp.id})}" data-toggle="tooltip"
+							title="Edit"> <i class="fas fa-pencil-alt ml-2"></i>
+						</a> <a type="button" class="btn btn-success mr-1" th:if="${isAdmin}"
+							th:href="@{/updateRole/{id}(id=${emp.id})}" data-toggle="tooltip"
+							title="Update Role"> <i class="fas fa-user-tag ml-2"></i>
+						</a> <a type="button" class="btn btn-warning mr-1"
+							th:href="@{/updatePassword/{id}(id=${emp.id})}"
+							data-toggle="tooltip" title="Update Password"> <i
+							class="fas fa-lock ml-2"></i>
+						</a> <a type="button" class="btn btn-info mr-1"
+							th:href="@{/employeeprofile/{id}(id=${emp.id})}"
+							data-toggle="tooltip" title="Profile"> <i
+							class="fas fa-id-card ml-2"></i>
+						</a>
+					</div>
 
-<!-- Script to show modal if successMessage is present -->
-<script th:if="${successMessage != null or errorMessage != null}">
-    $(document).ready(function() {
-        $('#messageModal').modal('show');
-    });
-</script>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Script to show modal if successMessage is present -->
+	<script th:if="${successMessage != null or errorMessage != null}">
+		$(document).ready(function() {
+			$('#messageModal').modal('show');
+		});
+	</script>
+	<script>
+		$(document).ready(function() {
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
 
 </body>
 </html>
