@@ -42,6 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	            String encodedPassword = passwordEncoder.encode(employee.getEmail());
 	            employee.setPassword(encodedPassword);
 	            employee.setRole("USER");
+	            employee.setStatus(true);
 	            return employeeRepo.save(employee);
 	        } else {
 	            throw new Exception("Employee with given details already exists");
@@ -139,6 +140,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public List<Employees> getEmployeesByRole(String role) {
 		return employeeRepo.findByRole(role);
+	}
+
+	@Override
+	public List<Employees> findActiveEmployees() {
+		return employeeRepo.findByStatusTrue();
+	}
+
+	@Override
+	public void updateEmployeeStatus(Integer id, Boolean status) {
+		Optional<Employees> optionalEmp = employeeRepo.findById(id);
+		if (optionalEmp.isPresent()) {
+			Employees employee = optionalEmp.get();
+			employee.setStatus(status);
+			employeeRepo.save(employee);
+		}		
 	}
 
 }

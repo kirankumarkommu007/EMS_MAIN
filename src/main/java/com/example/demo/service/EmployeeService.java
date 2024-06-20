@@ -40,4 +40,9 @@ public interface EmployeeService {
 	boolean existsByMobile(Long mobile);
 
 	boolean existsByEmail(String email);
+	
+    List<Employees> findActiveEmployees();
+    
+	void updateEmployeeStatus(Integer id, Boolean status);
+
 }

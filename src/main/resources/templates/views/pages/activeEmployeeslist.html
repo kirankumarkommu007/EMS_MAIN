@@ -53,7 +53,7 @@ body {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/listemployees">Employee List</a>
+				<a class="navbar-brand" href="/listemployees">Active Employees List</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
@@ -112,7 +112,7 @@ body {
 				<th>Name</th>
 				<th>Department</th>
 				<th>Email</th>
-				<th>Status</th>
+				<th>Joining Date</th>
 				<th>Role</th>
 				<th>Actions</th>
 			</tr>
@@ -120,23 +120,33 @@ body {
 		<tbody>
 			<tr th:each="emp : ${Employee}">
 				<td th:text="${emp.id}"></td>
+				
 				<td th:text="${emp.firstname}"></td>
 				<td th:text="${emp.department}"></td>
 				<td th:text="${emp.email}"></td>
-				<td th:text="${emp.status} ? 'ACTIVE' : 'INACTIVE'"></td>
+			 <td th:text="${emp.dateOfJoining}"></td>
+				
 				<td th:text="${emp.role}"></td>
 				<td>
 					<div class="btn-group" role="group">
 						<a type="button" class="btn btn-primary mr-1"
 							th:href="@{/edit/{id}(id=${emp.id})}" data-toggle="tooltip"
 							title="Edit"> <i class="fas fa-pencil-alt ml-2"></i>
-						</a> <a type="button" class="btn btn-success mr-1" th:if="${isAdmin}"
+							
+							
+							
+						</a> <a type="button" class="btn btn-success mr-1"  th:if="${isAdmin}"
 							th:href="@{/updateRole/{id}(id=${emp.id})}" data-toggle="tooltip"
 							title="Update Role"> <i class="fas fa-user-tag ml-2"></i>
+							
+							
+							
 						</a> <a type="button" class="btn btn-warning mr-1"
 							th:href="@{/updatePassword/{id}(id=${emp.id})}"
 							data-toggle="tooltip" title="Update Password"> <i
 							class="fas fa-lock ml-2"></i>
+							
+							
 						</a> <a type="button" class="btn btn-info mr-1"
 							th:href="@{/employeeprofile/{id}(id=${emp.id})}"
 							data-toggle="tooltip" title="Profile"> <i

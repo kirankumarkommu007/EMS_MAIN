@@ -121,37 +121,35 @@ public class OperationsControllers {
 		return "/views/fragments/addempform";
 	}
 
-	 @PostMapping("/addemployees")
-	    public String addEmp(@Valid @ModelAttribute("Employee") Employees employee,
-	                         BindingResult bindingResult,
-	                         RedirectAttributes redirectAttributes) {
+	@PostMapping("/addemployees")
+	public String addEmp(@Valid @ModelAttribute("Employee") Employees employee, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 
-	        if (bindingResult.hasErrors()) {
-	            return "views/fragments/addempform"; // Return to form with validation errors
-	        }
+		if (bindingResult.hasErrors()) {
+			return "views/fragments/addempform"; // Return to form with validation errors
+		}
 
-	        try {
-	            employeeService.addEmployee(employee);
-	            redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully");
-	        } catch (Exception e) {
-	            if (employeeService.existsByAdhaar(employee.getAdhaar())) {
-	                bindingResult.rejectValue("adhaar", "error.employee", "Aadhar number already exists");
-	            }
-	            if (employeeService.existsByPan(employee.getPan())) {
-	                bindingResult.rejectValue("pan", "error.employee", "PAN number already exists");
-	            }
-	            if (employeeService.existsByMobile(employee.getMobile())) {
-	                bindingResult.rejectValue("mobile", "error.employee", "Mobile number already exists");
-	            }
-	            if (employeeService.existsByEmail(employee.getEmail())) {
-	                bindingResult.rejectValue("email", "error.employee", "Email already exists");
-	            }
-	            return "views/fragments/addempform"; // Return to form with error messages
-	        }
-	        
-	        return "redirect:/addemployees"; // Redirect to a different endpoint after successful addition
-	    }
-	
+		try {
+			employeeService.addEmployee(employee);
+			redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully");
+		} catch (Exception e) {
+			if (employeeService.existsByAdhaar(employee.getAdhaar())) {
+				bindingResult.rejectValue("adhaar", "error.employee", "Aadhar number already exists");
+			}
+			if (employeeService.existsByPan(employee.getPan())) {
+				bindingResult.rejectValue("pan", "error.employee", "PAN number already exists");
+			}
+			if (employeeService.existsByMobile(employee.getMobile())) {
+				bindingResult.rejectValue("mobile", "error.employee", "Mobile number already exists");
+			}
+			if (employeeService.existsByEmail(employee.getEmail())) {
+				bindingResult.rejectValue("email", "error.employee", "Email already exists");
+			}
+			return "views/fragments/addempform"; // Return to form with error messages
+		}
+
+		return "redirect:/addemployees"; // Redirect to a different endpoint after successful addition
+	}
 
 	@Operation(summary = "Show edit employee form", description = "Displays the form for editing an existing employee")
 	@GetMapping("/edit/{id}")
@@ -400,6 +398,41 @@ public class OperationsControllers {
 	@GetMapping("/employeeForm")
 	public String employeeForm() {
 		return "/views/fragments/addemployeedownloadform";
+	}
+
+	@GetMapping("/activeEmployees")
+	public String activeList(Model model, Authentication authentication) {
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+		List<Employees> empList = employeeService.findActiveEmployees();
+		model.addAttribute("isAdmin", isAdmin);
+		model.addAttribute("Employee", empList);
+
+		return "/views/pages/activeEmployeeslist";
+	}
+	
+	@GetMapping("/updateStatus/{id}")
+	public String updateStatus(@PathVariable Integer id, Model model) {
+		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
+		if (optionalEmp.isPresent()) {
+			model.addAttribute("Employee", optionalEmp.get());
+			return "/views/fragments/updateStatus";
+		} else {
+			return "redirect:/welcome";
+		}
+	}
+	
+	
+		
+	@PostMapping("/updateStatus/{id}")
+	public String updateStatus(@PathVariable Integer id, @RequestParam("status") Boolean status,
+			RedirectAttributes redirectAttributes) {
+		employeeService.updateEmployeeStatus(id, status);
+		redirectAttributes.addFlashAttribute("successMessage",
+				"Status updated successfully for employee with ID " + id + ".");
+
+		return "redirect:/activeEmployees";
 	}
 
 }

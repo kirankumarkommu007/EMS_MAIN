@@ -82,6 +82,7 @@
             <!-- Login details -->
             <column name="role" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(255)"/>
+            <column name="status" type="boolean"> <constraints nullable="false"/> </column>
         </createTable>
     </changeSet>
 
