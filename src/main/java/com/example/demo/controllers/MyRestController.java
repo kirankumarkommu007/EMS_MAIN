@@ -10,32 +10,40 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.models.Employees;
 import com.example.demo.repos.EmployeeRepo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 public class MyRestController {
 
-	@Autowired
-	private EmployeeRepo employeeRepo;
-	
-	
+    @Autowired
+    private EmployeeRepo employeeRepo;
 
-	@GetMapping("/greet")
-	public String getGreet(@RequestParam String firstname) {
-		Employees employee = employeeRepo.findByFirstname(firstname);
-		if (employee != null) {
-			return "Good Morning " + employee.getFirstname();
-		} else {
-			return "Employee not found";
-		}
-	}
+    private static final Logger logger = LoggerFactory.getLogger(MyRestController.class);
 
-	@GetMapping("/admin")
-	public String getGreetad() {
-		return "hi admin";
-	}
+    @GetMapping("/greet")
+    public String getGreet(@RequestParam String firstname) {
+        logger.info("Received request to greet employee with firstname: {}", firstname);
+        Employees employee = employeeRepo.findByFirstname(firstname);
+        if (employee != null) {
+            logger.info("Employee found: {}", employee.getFirstname());
+            return "Good Morning " + employee.getFirstname();
+        } else {
+            logger.warn("Employee not found with firstname: {}", firstname);
+            return "Employee not found";
+        }
+    }
 
-	@GetMapping("/getall")
-	public List<Employees> getGreetus() {
-		return employeeRepo.findAll();
-	}
+    @GetMapping("/hello")
+    public String getGreetad() {
+        logger.info("Received request to greet the application");
+        return "hi this is EMS application";
+    }
+
+    @GetMapping("/getall")
+    public List<Employees> getGreetus() {
+        logger.info("Received request to get all employees");
+        return employeeRepo.findAll();
+    }
 
 }

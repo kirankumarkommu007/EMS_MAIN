@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -32,11 +33,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 @Tag(name = "Operations Controller", description = "Controller for handling web page requests")
 public class OperationsControllers {
 
 	private final EmployeeServiceImpl employeeService;
+    private static final Logger logger = LoggerFactory.getLogger(OperationsControllers.class);
 
 	public OperationsControllers(EmployeeServiceImpl employeeService) {
 		this.employeeService = employeeService;
@@ -51,6 +56,8 @@ public class OperationsControllers {
 	@Operation(summary = "Welcome page", description = "Displays the welcome page")
 	@GetMapping("/welcome")
 	public String getWelcome() {
+        logger.info("Accessing welcome page");
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.isAuthenticated()
 				&& !(authentication instanceof AnonymousAuthenticationToken)) {
@@ -66,14 +73,29 @@ public class OperationsControllers {
 		}
 		return "/views/pages/welcome";
 	}
+	
+	
+	
+	
+	
+	
+	
+//	 @Operation(summary = "Welcome page", description = "Displays the welcome page")
+//	    @GetMapping("/welcome")
+//	    public String getWelcome() {
+//
+//	        return "/views/pages/welcome";
+//	    }
 
+	 
+	 
+	 
 	@Operation(summary = "Handle login", description = "Processes login and sets JWT token in cookie")
 	@PostMapping("/login")
 	public String login(@RequestParam String username, @RequestParam String password, Model model,
 			HttpServletResponse response) {
 		try {
-			Authentication authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String token = jwtTokenProvider.generateToken(userDetails);
@@ -93,6 +115,47 @@ public class OperationsControllers {
 			return "/views/pages/welcome";
 		}
 	}
+	 
+	 
+
+//	    @Operation(summary = "Handle login", description = "Processes login and sets JWT token in cookie")
+//	    @PostMapping("/login")
+//	    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpServletResponse response) {
+//	        logger.info("Login attempt for user: {}", username);
+//	        try {
+//	            Authentication authentication = authenticationManager
+//	                    .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+//	            SecurityContextHolder.getContext().setAuthentication(authentication);
+//	            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//	            String token = jwtTokenProvider.generateToken(userDetails);
+//	            String role = jwtTokenProvider.extractRoleAsString(token);
+//
+//	            Cookie cookie = new Cookie("token", token);
+//	            cookie.setHttpOnly(true);
+//	            cookie.setPath("/");
+//	            response.addCookie(cookie);
+//	            model.addAttribute("token", token);
+//	            model.addAttribute("username", userDetails.getUsername());
+//	            model.addAttribute("roles", role);
+//
+//	            logger.info("User {} authenticated with role {}", username, role);
+//
+//	            if (role.contains("ROLE_ADMIN")) {
+//	                return "redirect:/admin/home";
+//	            } else if (role.contains("ROLE_HR")) {
+//	                return "redirect:/hr/home";
+//	            } else if (role.contains("ROLE_USER")) {
+//	                return "redirect:/user/home";
+//	            }
+//
+//	        } catch (AuthenticationException e) {
+//	            logger.error("Authentication failed for user: {}", username, e);
+//	            model.addAttribute("error", "Invalid username or password");
+//	            return "/views/pages/welcome";
+//	        }
+//	        return "/views/pages/welcome";
+//	    }
+	
 
 	@GetMapping("/listemployees")
 	public String employeesList(Model model, Authentication authentication) {
@@ -436,3 +499,4 @@ public class OperationsControllers {
 	}
 
 }
+ 

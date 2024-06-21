@@ -20,56 +20,62 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
-	@Autowired
-	private JwtUtil jwtUtil;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws ServletException, IOException {
+    @Autowired
+    private JwtUtil jwtUtil;
 
-		String jwtToken = null;
-		String username = null;
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
 
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("token")) {
-					jwtToken = cookie.getValue();
-				}
-			}
-		}
+        String jwtToken = null;
+        String username = null;
 
-		if (jwtToken != null) {
-			try {
-				username = jwtUtil.extractUsername(jwtToken);
-			} catch (IllegalArgumentException e) {
-				System.out.println("Unable to get JWT Token");
-			} catch (ExpiredJwtException e) {
-				System.out.println("JWT Token has expired");
-			}
-		}
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    jwtToken = cookie.getValue();
+                    logger.info("JWT Token found in cookies");
+                }
+            }
+        }
 
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (jwtToken != null) {
+            try {
+                username = jwtUtil.extractUsername(jwtToken);
+                logger.info("Extracted username from JWT Token: {}", username);
+            } catch (IllegalArgumentException e) {
+                logger.error("Unable to get JWT Token", e);
+            } catch (ExpiredJwtException e) {
+                logger.warn("JWT Token has expired", e);
+            }
+        }
 
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-			if (jwtUtil.validateToken(jwtToken, userDetails)) {
-				Claims claims = jwtUtil.extractAllClaims(jwtToken);
-				List<String> roles = claims.get("roles", List.class);
-				List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new)
-						.collect(Collectors.toList());
+            if (jwtUtil.validateToken(jwtToken, userDetails)) {
+                Claims claims = jwtUtil.extractAllClaims(jwtToken);
+                List<String> roles = claims.get("roles", List.class);
+                List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-			}
-		}
-		chain.doFilter(request, response);
-	}
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                logger.info("Authenticated user: {}", username);
+            }
+        }
+        chain.doFilter(request, response);
+    }
 }
