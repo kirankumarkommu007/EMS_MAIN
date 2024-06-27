@@ -71,7 +71,7 @@ public class OperationsControllers {
 				return "redirect:/user/home";
 			}
 		}
-		return "/views/pages/welcome";
+		return "views/pages/welcome";
 	}
 	
 	
@@ -99,7 +99,7 @@ public class OperationsControllers {
 
 		} catch (Exception e) {
 			model.addAttribute("error", "Invalid username or password ");
-			return "/views/pages/welcome";
+			return "views/pages/welcome";
 		}
 	}
 	 
@@ -123,14 +123,14 @@ public class OperationsControllers {
 		model.addAttribute("Employee", empList);
 		model.addAttribute("isAdmin", isAdmin);
 
-		return "/views/pages/employeeslist";
+		return "views/pages/employeeslist";
 	}
 
 	@Operation(summary = "Show add employee form", description = "Displays the form for adding a new employee")
 	@GetMapping("/addemployees")
 	public String AddEmpForm(Model model) {
 		model.addAttribute("Employee", new Employees());
-		return "/views/fragments/addempform";
+		return "views/fragments/addempform";
 	}
 
 	@PostMapping("/addemployees")
@@ -169,7 +169,7 @@ public class OperationsControllers {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
-			return "/views/fragments/editemp";
+			return "views/fragments/editemp";
 		} else {
 			return "redirect:/admin/home";
 		}
@@ -331,7 +331,7 @@ public class OperationsControllers {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
-			return "/views/fragments/updateRole";
+			return "views/fragments/updateRole";
 		} else {
 			return "redirect:/welcome";
 		}
@@ -354,7 +354,7 @@ public class OperationsControllers {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
-			return "/views/fragments/updatePassword";
+			return "views/fragments/updatePassword";
 		} else {
 			return "redirect:/welcome";
 		}
@@ -394,7 +394,7 @@ public class OperationsControllers {
 
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Profile", optionalEmp.get());
-			return "/views/pages/profile";
+			return "views/pages/profile";
 		} else {
 			return "redirect:/welcome";
 		}
@@ -409,7 +409,7 @@ public class OperationsControllers {
 
 	@GetMapping("/employeeForm")
 	public String employeeForm() {
-		return "/views/fragments/addemployeedownloadform";
+		return "views/fragments/addemployeedownloadform";
 	}
 
 	@GetMapping("/activeEmployees")
@@ -421,7 +421,7 @@ public class OperationsControllers {
 		model.addAttribute("isAdmin", isAdmin);
 		model.addAttribute("Employee", empList);
 
-		return "/views/pages/activeEmployeeslist";
+		return "views/pages/activeEmployeeslist";
 	}
 	
 	@GetMapping("/updateStatus/{id}")
@@ -429,7 +429,7 @@ public class OperationsControllers {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeById(id);
 		if (optionalEmp.isPresent()) {
 			model.addAttribute("Employee", optionalEmp.get());
-			return "/views/fragments/updateStatus";
+			return "views/fragments/updateStatus";
 		} else {
 			return "redirect:/welcome";
 		}

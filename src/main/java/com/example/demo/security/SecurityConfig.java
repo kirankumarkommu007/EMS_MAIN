@@ -37,7 +37,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 logger.info("Setting authorization rules");
                 auth
-                    .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello").permitAll()
+                    .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello","/simplepage").permitAll()
                     .requestMatchers("/admin/**", "/updateRole/**").hasRole("ADMIN")
                     .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus").hasAnyRole("ADMIN", "HR")
                     .requestMatchers("/hr/**").hasRole("HR")
@@ -61,7 +61,7 @@ public class SecurityConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(employeeDetailsServiceImpl);
         authProvider.setPasswordEncoder(passwordEncoder());
-        logger.info("Configured authentication provider");
+//        logger.info("Configured authentication provider");
         return authProvider;
     }
 
@@ -73,7 +73,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        logger.info("Configuring authentication manager");
+//        logger.info("Configuring authentication manager");
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(employeeDetailsServiceImpl).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();

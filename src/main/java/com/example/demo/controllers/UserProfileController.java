@@ -51,13 +51,13 @@ public class UserProfileController {
 		}
 		model.addAttribute("Profile", user);
 
-		return "/views/pages/profile";
+		return "views/pages/profile";
 	}
 
 	@Operation(summary = "Employee dashboard", description = "Displays the user dashboard")
 	@GetMapping("/user/home")
 	public String userDashboard() {
-		return "/views/pages/userhome";
+		return "views/pages/userhome";
 	}
 
 	@GetMapping("/updateMyPassword")
@@ -73,7 +73,7 @@ public class UserProfileController {
 
 		model.addAttribute("employee", employee); // Pass the found employee
 
-		return "/views/fragments/updateMyPassword";
+		return "views/fragments/updateMyPassword";
 	}
 
 	@Operation(summary = "Update Password for Logged User", description = "Update the password of present logged user")
@@ -88,7 +88,7 @@ public class UserProfileController {
 	    if (!newPassword.equals(confirmPassword)) {
 	        model.addAttribute("employee", employee);
 	        model.addAttribute("errorMessage", "Passwords do not match.");
-	        return "/views/fragments/updateMyPassword";
+	        return "views/fragments/updateMyPassword";
 	    }
 
 	    // Update password
@@ -101,7 +101,7 @@ public class UserProfileController {
 	    model.addAttribute("employee", employee);
 
 	    // Return the same view with success message displayed
-	    return "/views/fragments/updateMyPassword";
+	    return "views/fragments/updateMyPassword";
 	}
 	
 	
@@ -117,11 +117,16 @@ public class UserProfileController {
 	    Optional<Employees> employee = employeeServiceImpl.getEmployeeById(employeeId);
 	    if (employee.isPresent()) {
 	        model.addAttribute("Employee", employee.get());
-	        return "/views/pages/employeeslist"; // The view name to display the employee details
+	        return "views/pages/employeeslist"; // The view name to display the employee details
 	    } else {
 	        redirectAttributes.addFlashAttribute("errorMessage", "No Employee Found with Employeed id : "+employeeId+" Please Check the Employee ID");
 	        return "redirect:/listemployees";
 	    }
 	}
 
+	
+	@GetMapping("/simplepage")
+	public String getSimple() {
+		return "views/pages/simple";
+	}
 }

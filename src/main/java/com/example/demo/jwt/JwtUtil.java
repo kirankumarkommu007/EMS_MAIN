@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @Service
 public class JwtUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+//    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     private String SECRET_KEY = "ZGpyZHNkZmFqZmtkYWprZnNkZGZqa3NhZGZqa3NkamZsa2phc2Rma2xqYXNkZmxr";
 
@@ -61,7 +61,7 @@ public class JwtUtil {
                                          .map(GrantedAuthority::getAuthority)
                                          .collect(Collectors.toList());
         claims.put("roles", roles);
-        logger.info("Generating token for user: {}", userDetails.getUsername());
+//        logger.info("Generating token for user: {}", userDetails.getUsername());
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -79,7 +79,7 @@ public class JwtUtil {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         boolean isValid = username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-        logger.info("Validating token for user: {}. Is valid: {}", username, isValid);
+//        logger.info("Validating token for user: {}. Is valid: {}", username, isValid);
         return isValid;
     }
 }

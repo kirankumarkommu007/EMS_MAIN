@@ -11,6 +11,11 @@ import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+	
+	 private String generateNextEmployeeId() {
+	        Long count = employeeRepo.count() + 1;
+	        return "DDOL-" + String.format("%03d", count);
+	    }
 
 	private final EmployeeRepo employeeRepo;
 	private final PasswordEncoder passwordEncoder;

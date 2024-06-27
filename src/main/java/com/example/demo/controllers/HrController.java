@@ -28,7 +28,7 @@ public class HrController {
     @Operation(summary = "Show HR home page", description = "Displays the HR home page with a list of employees")
     @GetMapping("/hr/home")
     public String showEmpList(Model model) {
-        return "/views/pages/hrhome";
+        return "views/pages/hrhome";
     }
     
  

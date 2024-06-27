@@ -16,7 +16,7 @@ public class AdminController {
     @Operation(summary = "View admin home page", description = "Displays the admin home page with a list of employees")
     @GetMapping("/admin/home")
     public String page() {     
-        return "/views/pages/homepage";
+        return "views/pages/homepage";
     }
 
    
