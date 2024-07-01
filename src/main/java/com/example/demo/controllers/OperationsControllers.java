@@ -109,19 +109,19 @@ public class OperationsControllers {
 	@GetMapping("/listemployees")
 	public String employeesList(Model model, Authentication authentication) {
 		// Check if the user has ADMIN role
-		boolean isAdmin = authentication.getAuthorities().stream()
-				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+//		boolean isAdmin = authentication.getAuthorities().stream()
+//				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-		List<Employees> empList;
-
-		if (isAdmin) {
-			empList = employeeService.getAllEmployees();
-		} else {
-			empList = employeeService.getAllEmployeesExceptAdmin();
-		}
-
+		List<Employees> empList = employeeService.getAllEmployees();
 		model.addAttribute("Employee", empList);
-		model.addAttribute("isAdmin", isAdmin);
+
+
+//		if (isAdmin) {
+//			empList = employeeService.getAllEmployees();
+//		} else {
+//			empList = employeeService.getAllEmployeesExceptAdmin();
+//		}
+//		model.addAttribute("isAdmin", isAdmin);
 
 		return "views/pages/employeeslist";
 	}
@@ -413,12 +413,12 @@ public class OperationsControllers {
 	}
 
 	@GetMapping("/activeEmployees")
-	public String activeList(Model model, Authentication authentication) {
-		boolean isAdmin = authentication.getAuthorities().stream()
-				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+	public String activeList(Model model) {
+//		boolean isAdmin = authentication.getAuthorities().stream()
+//				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
 		List<Employees> empList = employeeService.findActiveEmployees();
-		model.addAttribute("isAdmin", isAdmin);
+//		model.addAttribute("isAdmin", isAdmin);
 		model.addAttribute("Employee", empList);
 
 		return "views/pages/activeEmployeeslist";
@@ -439,11 +439,10 @@ public class OperationsControllers {
 		
 	@PostMapping("/updateStatus/{id}")
 	public String updateStatus(@PathVariable Integer id, @RequestParam("status") Boolean status,
-			RedirectAttributes redirectAttributes) {
+		RedirectAttributes redirectAttributes) {
 		employeeService.updateEmployeeStatus(id, status);
 		redirectAttributes.addFlashAttribute("successMessage",
 				"Status updated successfully for employee with ID " + id + ".");
-
 		return "redirect:/activeEmployees";
 	}
 

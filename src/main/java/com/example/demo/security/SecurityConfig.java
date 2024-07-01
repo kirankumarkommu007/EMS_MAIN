@@ -38,10 +38,10 @@ public class SecurityConfig {
                 logger.info("Setting authorization rules");
                 auth
                     .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello","/simplepage").permitAll()
-                    .requestMatchers("/admin/**", "/updateRole/**").hasRole("ADMIN")
-                    .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus").hasAnyRole("ADMIN", "HR")
-                    .requestMatchers("/hr/**").hasRole("HR")
-                    .requestMatchers("/user/**").hasRole("USER")
+                    .requestMatchers("/admin/**","/leaveRequest" ).hasRole("ADMIN")
+                    .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus","/updateRole/**").hasAnyRole("ADMIN", "HR")
+                    .requestMatchers("/hr/**","/leaveRequest").hasRole("HR")
+                    .requestMatchers("/user/**","/leaveRequest").hasRole("USER")
                     .anyRequest().authenticated();
             })
             .formLogin(form -> form

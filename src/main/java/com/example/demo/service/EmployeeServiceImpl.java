@@ -12,11 +12,7 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 	
-	 private String generateNextEmployeeId() {
-	        Long count = employeeRepo.count() + 1;
-	        return "DDOL-" + String.format("%03d", count);
-	    }
-
+	
 	private final EmployeeRepo employeeRepo;
 	private final PasswordEncoder passwordEncoder;
 
@@ -40,14 +36,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Optional<Employees> getEmployeeById(Integer id) {
 		return employeeRepo.findById(id);
 	}
-
+	
+	
+	
+	
+	
+	 private String generateNextEmployeeId() {
+		    
+	        Long count = (employeeRepo.count() + 1);
+	        return "DVDL-" + String.format("%04d", count);
+	    }
+	 
 	 @Override
 	    public Employees addEmployee(Employees employee) throws Exception {
 	        if (isUnique(employee)) {
-	            String encodedPassword = passwordEncoder.encode(employee.getEmail());
-	            employee.setPassword(encodedPassword);
 	            employee.setRole("USER");
 	            employee.setStatus(true);
+	            String nextEmployeeId = generateNextEmployeeId();
+	            employee.setEmployeeId(nextEmployeeId);
+	            String encodedPassword = passwordEncoder.encode(employee.getEmployeeId());
+	            employee.setPassword(encodedPassword);
 	            return employeeRepo.save(employee);
 	        } else {
 	            throw new Exception("Employee with given details already exists");
@@ -162,4 +170,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}		
 	}
 
+	@Override
+	public Employees findByEmployeeId(String employeeid) {
+		return employeeRepo.findByEmployeeId(employeeid);
+	}
+	
+
+	
 }

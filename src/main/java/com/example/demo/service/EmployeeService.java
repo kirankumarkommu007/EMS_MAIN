@@ -16,6 +16,9 @@ public interface EmployeeService {
 	Employees addEmployee(Employees employee) throws Exception;
 
 	Employees findByFirstname(String firstname);
+	
+	Employees findByEmployeeId(String employeeid);
+
 
 	Employees updateEmployee(Integer id, Employees employee);
 

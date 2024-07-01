@@ -44,8 +44,8 @@ public class UserProfileController {
 	@GetMapping("/employeeprofile")
 	public String userProfile(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String firstName = authentication.getName();
-		Employees user = employeeRepo.findByFirstname(firstName);
+		String employeeID = authentication.getName();
+		Employees user = employeeServiceImpl.findByEmployeeId(employeeID);
 		if (user == null) {
 			return "error";
 		}
@@ -63,9 +63,9 @@ public class UserProfileController {
 	@GetMapping("/updateMyPassword")
 	public String showUpdatePasswordForm(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String firstname = auth.getName(); // Assuming firstname is the username in this case
+		String employeeid = auth.getName(); // Assuming firstname is the username in this case
 
-		Employees employee = employeeServiceImpl.findByFirstname(firstname);
+		Employees employee = employeeServiceImpl.findByEmployeeId(employeeid);
 
 		if (employee == null) {
 			throw new RuntimeException("Employee not found");
@@ -83,7 +83,7 @@ public class UserProfileController {
 	                             @RequestParam("confirmPassword") String confirmPassword) {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String name = auth.getName();
-	    Employees employee = employeeServiceImpl.findByFirstname(name);
+	    Employees employee = employeeServiceImpl.findByEmployeeId(name);
 
 	    if (!newPassword.equals(confirmPassword)) {
 	        model.addAttribute("employee", employee);

@@ -10,6 +10,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <style>
 body {
 	padding-top: 50px;
@@ -50,7 +54,7 @@ body {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/users/home">ITY Nerds</a>
+				<a class="navbar-brand" href="/users/home">Dev Dolphins</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
@@ -70,6 +74,17 @@ body {
 					class="list-group-item list-group-item-action">My Profile</a> <a
 					href="/updateMyPassword"
 					class="list-group-item list-group-item-action">Update Password</a>
+
+				<!-- Leave Management Dropdown -->
+				<a href="#leaveManagement"
+					class="list-group-item list-group-item-action"
+					data-toggle="collapse">Leave Management</a>
+				<div id="leaveManagement" class="collapse">
+					<a href="/leaveRequest"
+						class="list-group-item list-group-item-action">Request Leave</a> <a
+						href="/leaveBalance"
+						class="list-group-item list-group-item-action">Leave Balance</a>
+				</div>
 			</div>
 		</div>
 	</div>

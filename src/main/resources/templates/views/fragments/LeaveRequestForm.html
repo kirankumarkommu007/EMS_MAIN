@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Leave Request Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div class="container mt-5">
+		<div class="card">
+			<div class="card-header bg-primary text-white">
+				<h4>Leave Request Form</h4>
+			</div>
+			<div class="card-body">
+				<form action="/submitLeaveRequest" th:object="${leave}"
+					method="post">
+					<div class="form-group">
+						<label for="typeOfLeave">Type of Leave:</label> <input type="text"
+							class="form-control" id="typeOfLeave" th:field="*{typeOfLeave}"
+							required>
+					</div>
+					<div class="form-group">
+						<label for="reason">Reason:</label>
+						<textarea class="form-control" id="reason" th:field="*{reason}"
+							required></textarea>
+					</div>
+					<div class="form-group">
+						<label for="dateOfLeave">Date of Leave:</label> <input type="date"
+							class="form-control" id="dateOfLeave" th:field="*{dateOfLeave}"
+							required>
+					</div>
+
+					<input type="hidden" th:field="*{appliedDate}"
+						th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

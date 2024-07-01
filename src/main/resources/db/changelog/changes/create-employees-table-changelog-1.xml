@@ -8,9 +8,11 @@
    <changeSet id="1" author="kirankumar">
         <createTable tableName="employees">
             <!-- Personal details -->
-            <column name="id" type="INT" autoIncrement="true">
+            
+            <column name="employee_id" type="VARCHAR(10)" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            
             <column name="firstname" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -83,6 +85,9 @@
             <column name="role" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(255)"/>
             <column name="status" type="boolean"> <constraints nullable="false"/> </column>
+             <column name="available_leaves" type="INT" defaultValue="12" />
+
+                        
         </createTable>
     </changeSet>
 

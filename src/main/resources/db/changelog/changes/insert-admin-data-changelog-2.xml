@@ -10,6 +10,7 @@
     <changeSet id="2" author="kirankumar">
         <insert tableName="employees">
             <!-- Personal details -->
+            <column name="employee_id" value="DVDL-0001"/>
             <column name="firstname" value="ADMIN"/>
             <column name="middlename" value="John"/>
             <column name="lastname" value="Doe"/>
