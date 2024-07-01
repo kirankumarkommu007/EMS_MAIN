@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>User Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+.section {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.form-group input, .form-group textarea {
+	width: 90%;
+	margin-bottom: 15px;
+}
+ body {
+            padding-top: 60px; /* Adjust this value if needed */
+        }
+</style>
+</head>
+
+<body>
+<div>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href=""><span th:text="${Profile.firstname}"></span>'s Profile</a>
+
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/welcome"><span
+							class="glyphicon glyphicon-home"></span> Home</a></li>
+					<li><a href="/logout"><span
+							class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav></div>
+
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="section">
+					<h2>Personal Details</h2>
+					<div class="form-group">
+						<label for="name">Employee ID:</label> <input type="text"
+							class="form-control" id="Employeeid" th:value="${Profile.employeeId}"
+							readonly>
+					</div>
+					
+					<div class="form-group">
+						<label for="name">First Name:</label> <input type="text"
+							class="form-control" id="name" th:value="${Profile.firstname}"
+							readonly>
+					</div>
+					
+					<div class="form-group">
+						<label for="name">Middle Name:</label> <input type="text"
+							class="form-control" id="name" th:value="${Profile.middlename}"
+							readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="name">Last Name:</label> <input type="text"
+							class="form-control" id="name" th:value="${Profile.lastname}"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label for="dateOfBirth">Date of Birth:</label> <input type="text"
+							class="form-control" id="dateOfBirth"
+							th:value="${Profile.dateOfBirth}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="gender">Gender:</label> <input type="text"
+							class="form-control" id="gender" th:value="${Profile.gender}"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label for="bloodgroup">Blood Group:</label> <input type="text"
+							class="form-control" id="bloodgroup"
+							th:value="${Profile.bloodgroup}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="pan">PAN Number:</label> <input type="text"
+							class="form-control" id="pan" th:value="${Profile.pan}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="aadhaar">Aadhaar Number:</label> <input type="text"
+							class="form-control" id="aadhaar" th:value="${Profile.adhaar}"
+							readonly>
+					</div>
+				</div>
+				<div class="section">
+					<h2>Contact Details</h2>
+					<div class="form-group">
+						<label for="email">Email:</label> <input type="email"
+							class="form-control" id="email" th:value="${Profile.email}"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label for="mobile">Mobile:</label> <input type="text"
+							class="form-control" id="mobile" th:value="${Profile.mobile}"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label for="permanentAddress">Permanent Address:</label>
+						<textarea class="form-control" id="permanentAddress" readonly
+							th:text="${Profile.permanentaddress}"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="communicationAddress">Communication Address:</label>
+						<textarea class="form-control" id="communicationAddress" readonly
+							th:text="${Profile.communicationaddress}"></textarea>
+					</div>
+				</div>
+				<div class="section">
+					<h2>Emergency Contact 1</h2>
+					<div class="form-group">
+						<label for="emergencyContactPerson1">Contact Person:</label> <input
+							type="text" class="form-control" id="emergencyContactPerson1"
+							th:value="${Profile.emergencyContactPerson1}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson1mobile">Mobile:</label> <input
+							type="text" class="form-control"
+							id="emergencyContactPerson1mobile"
+							th:value="${Profile.emergencyContactPerson1mobile}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson1email">Email:</label> <input
+							type="email" class="form-control"
+							id="emergencyContactPerson1email"
+							th:value="${Profile.emergencyContactPerson1email}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson1relation">Relation:</label> <input
+							type="text" class="form-control"
+							id="emergencyContactPerson1relation"
+							th:value="${Profile.emergencyContactPerson1relation}" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="section">
+					<h2>Educational Details</h2>
+					<div class="form-group">
+						<label for="highestQualification">Highest Qualification:</label> <input
+							type="text" class="form-control" id="highestQualification"
+							th:value="${Profile.highestqualification}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="qualifyingBranch">Qualifying Branch:</label> <input
+							type="text" class="form-control" id="qualifyingBranch"
+							th:value="${Profile.qualifyingbranch}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="yearOfPassing">Year of Passing:</label> <input
+							type="text" class="form-control" id="yearOfPassing"
+							th:value="${Profile.yearOfPassing}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="university">University:</label> <input type="text"
+							class="form-control" id="university"
+							th:value="${Profile.university}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="collegeAddress">College Address:</label>
+						<textarea class="form-control" id="collegeAddress" readonly
+							th:text="${Profile.collegeaddress}"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="cgpaPercentage">CGPA/Percentage:</label> <input
+							type="text" class="form-control" id="cgpaPercentage"
+							th:value="${Profile.cgpaPercentage}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="technicalSkills">Technical Skills:</label>
+						<textarea class="form-control" id="technicalSkills" readonly
+							th:text="${Profile.technicalSkills}"></textarea>
+					</div>
+				</div>
+				<div class="section">
+					<h2>Employment Details</h2>
+					<div class="form-group">
+						<label for="designation">Designation:</label> <input type="text"
+							class="form-control" id="designation"
+							th:value="${Profile.designation}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="department">Department:</label> <input type="text"
+							class="form-control" id="department"
+							th:value="${Profile.department}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="dateOfJoining">Date of Joining:</label> <input
+							type="text" class="form-control" id="dateOfJoining"
+							th:value="${Profile.dateOfJoining}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="managerId">Manager:</label> <input type="text"
+							class="form-control" id="managerId"
+							th:value="${Profile.managerId}" readonly>
+					</div>
+				</div>
+				<div class="section">
+					<h2>Emergency Contact 2</h2>
+					<div class="form-group">
+						<label for="emergencyContactPerson2">Contact Person:</label> <input
+							type="text" class="form-control" id="emergencyContactPerson2"
+							th:value="${Profile.emergencyContactPerson2}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson2mobile">Mobile:</label> <input
+							type="text" class="form-control"
+							id="emergencyContactPerson2mobile"
+							th:value="${Profile.emergencyContactPerson2mobile}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson2email">Email:</label> <input
+							type="email" class="form-control"
+							id="emergencyContactPerson2email"
+							th:value="${Profile.emergencyContactPerson2email}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="emergencyContactPerson2relation">Relation:</label> <input
+							type="text" class="form-control"
+							id="emergencyContactPerson2relation"
+							th:value="${Profile.emergencyContactPerson2relation}" readonly>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Employee</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+	
+	
+</head>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.maindiv {
+    width: auto;
+    min-width:20%;
+ 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+    width: 260px;
+    padding:8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+.fields{
+	padding-right: 20px;
+}
+.fields2 input[type="text"] {
+    width: 550px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+
+.fields3 input[type="text"] {
+    width: 550px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    height:100px;
+}
+
+
+</style>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">Admin Panel</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/welcome"><span
+						class="glyphicon glyphicon-user"></span> Back to Home</a></li>
+				<li><a href="/logout"><span
+						class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="maindiv">
+		<div>
+			<form id="employeeForm">
+				<h2>Personal Details</h2>
+				<div class="form-group">
+					<div class="fields">
+						<label for="firstname">First Name of the Employee:</label><br>
+						<input type="text" id="firstname" name="firstname"
+							required="required">
+					</div>
+					<div>
+						<label for="middlename">Middle Name of the Employee:</label><br>
+						<input type="text" id="middlename" name="middlename">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="lastname">Last Name of the Employee:</label><br>
+						<input type="text" id="lastname" name="lastname"
+							required="required">
+					</div>
+					<div>
+						<label for="dateOfBirth">Date of Birth:</label><br> <input
+							type="text" id="dateOfBirth" name="dateOfBirth">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="gender">Gender:</label><br> <input type="text"
+							id="gender" name="gender">
+					</div>
+					<div class="fields">
+						<label for="bloodgroup">Blood Group:</label><br> <input
+							type="text" id="bloodgroup" name="bloodgroup" required="required">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="mobile">Mobile:</label><br> <input type="text"
+							id="mobile" name="mobile" required="required">
+					</div>
+					<div>
+						<label for="email">Email:</label><br> <input type="email"
+							id="email" name="email" required="required">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="pan">PAN Number:</label><br> <input type="text"
+							id="pan" name="pan" required="required">
+					</div>
+					<div class="fields">
+						<label for="aadhaar">Aadhaar Number:</label><br> <input
+							type="text" id="aadhaar" name="aadhaar" required="required">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="fathername">Father's Name:</label><br> <input
+							type="text" id="fathername" name="fathername">
+					</div>
+					<div>
+						<label for="mothername">Mother's Name:</label><br> <input
+							type="text" id="mothername" name="mothername">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="maritalStatus">Marital Status:</label><br> <input
+							type="text" id="maritalStatus" name="maritalStatus">
+					</div>
+					<div>
+						<label for="spousename">Spouse's Name:</label><br> <input
+							type="text" id="spousename" name="spousename">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields3">
+						<label for="permanentaddress">Permanent Address:</label><br>
+						<input type="text" id="permanentaddress" name="permanentaddress">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="fields3">
+						<label for="communicationaddress">Communication Address:</label><br>
+						<input type="text" id="communicationaddress"
+							name="communicationaddress">
+					</div>
+				</div>
+
+				<h2>Educational Details</h2>
+				<div class="form-group">
+					<div class="fields">
+						<label for="highestqualification">Highest Qualification:</label><br>
+						<input type="text" id="highestqualification"
+							name="highestqualification">
+					</div>
+					<div>
+						<label for="qualifyingbranch">Qualifying Branch:</label><br>
+						<input type="text" id="qualifyingbranch" name="qualifyingbranch">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="yearOfPassing">Year of Passing:</label><br> <input
+							type="text" id="yearOfPassing" name="yearOfPassing">
+					</div>
+					<div>
+						<label for="university">University:</label><br> <input
+							type="text" id="university" name="university">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields3">
+						<label for="collegeaddress">College Address:</label><br> <input
+							type="text" id="collegeaddress" name="collegeaddress">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="cgpaPercentage">CGPA/Percentage:</label><br> <input
+							type="text" id="cgpaPercentage" name="cgpaPercentage">
+					</div>
+					<div class="fields">
+						<label for="technicalCertification">Technical
+							Certification:</label><br> <input type="text"
+							id="technicalCertification" name="technicalCertification">
+					</div>
+				</div>
+
+				<div class="form-Group">
+					<div>
+						<label for="technicalSkills">Technical Skills:</label><br> <input
+							type="text" id="technicalSkills" name="technicalSkills">
+					</div>
+				</div>
+
+
+				<h2>Work Experience Details</h2>
+				<div class="form-group">
+					<div class="fields">
+						<label for="company">Company:</label><br> <input type="text"
+							id="company" name="company">
+					</div>
+					<div class="fields">
+						<label for="companyAddress">Company Address:</label><br> <input
+							type="text" id="companyAddress" name="companyAddress">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="fields">
+						<label for="expYearOfJoining">Year of Joining:</label><br> <input
+							type="text" id="expYearOfJoining" name="expYearOfJoining">
+					</div>
+					<div class="fields">
+						<label for="expYearOfReleiving">Year of Releiving:</label><br>
+						<input type="text" id="expYearOfReleiving"
+							name="expYearOfReleiving">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="fields">
+						<label for="experienceYears">Years of Experience:</label><br>
+						<input type="text" id="experienceYears" name="experienceYears">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="fields3">
+						<label for="experienceDesc">Experience Description:</label><br>
+						<input type="text" id="experienceDesc" name="experienceDesc">
+					</div>
+				</div>
+				<h2>Emergency Details</h2>
+				<div class="form-group">
+					<div class="fields">
+						<label for="emergencyContactPerson1">Emergency Contact
+							Person 1:</label><br> <input type="text"
+							id="emergencyContactPerson1" name="emergencyContactPerson1">
+					</div>
+					<div>
+						<label for="emergencyContactPerson1mobile">Emergency
+							Contact Person 1 Mobile:</label><br> <input type="text"
+							id="emergencyContactPerson1mobile"
+							name="emergencyContactPerson1mobile">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="emergencyContactPerson1email">Emergency
+							Contact Person 1 Email:</label><br> <input type="email"
+							id="emergencyContactPerson1email"
+							name="emergencyContactPerson1email">
+					</div>
+					<div>
+						<label for="emergencyContactPerson1relation">Emergency
+							Contact Person 1 Relation:</label><br> <input type="text"
+							id="emergencyContactPerson1relation"
+							name="emergencyContactPerson1relation">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="emergencyContactPerson2">Emergency Contact
+							Person 2:</label><br> <input type="text"
+							id="emergencyContactPerson2" name="emergencyContactPerson2">
+					</div>
+					<div>
+						<label for="emergencyContactPerson2mobile">Emergency
+							Contact Person 2 Mobile:</label><br> <input type="text"
+							id="emergencyContactPerson2mobile"
+							name="emergencyContactPerson2mobile">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="fields">
+						<label for="emergencyContactPerson2email">Emergency
+							Contact Person 2 Email:</label><br> <input type="email"
+							id="emergencyContactPerson2email"
+							name="emergencyContactPerson2email">
+					</div>
+					<div>
+						<label for="emergencyContactPerson2relation">Emergency
+							Contact Person 2 Relation:</label><br> <input type="text"
+							id="emergencyContactPerson2relation"
+							name="emergencyContactPerson2relation">
+					</div>
+				</div>
+		    	<!-- 	<div class="form-group">
+					<button type="button" class="btn btn-primary" id="generatePdfBtn">Generate
+						PDF</button>
+				</div>-->
+ 
+			</form>
+		</div>
+	</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+
+</body>
+</html>

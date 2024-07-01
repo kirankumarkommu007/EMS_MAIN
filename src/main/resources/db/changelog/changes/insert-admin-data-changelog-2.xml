@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+
+    <changeSet id="2" author="kirankumar">
+        <insert tableName="employees">
+            <!-- Personal details -->
+            <column name="employee_id" value="DVDL-0001"/>
+            <column name="firstname" value="ADMIN"/>
+            <column name="middlename" value="John"/>
+            <column name="lastname" value="Doe"/>
+            <column name="date_of_birth" value="1990-01-01"/>
+            <column name="bloodgroup" value="O+"/>
+            <column name="gender" value="Male"/>
+            <column name="pan" value="ABCDE1234F"/>
+            <column name="adhaar" value="123456789012"/>
+            <column name="mobile" value="1234567890"/>
+            <column name="email" value="alex.doe@example.com"/>
+            <column name="fathername" value="John Doe"/>
+            <column name="mothername" value="Jane Doe"/>
+            <column name="spousename" value="Emily Doe"/>
+            <column name="marital_status" value="Married"/>
+            <column name="permanent_address" value="123 Main St, Hometown, HT 12345"/>
+            <column name="communication_address" value="123 Main St, Hometown, HT 12345"/>
+
+            <!-- Educational details -->
+            <column name="highest_qualification" value="Bachelor's Degree"/>
+            <column name="qualifying_branch" value="Computer Science"/>
+            <column name="year_of_passing" value="2012"/>
+            <column name="university" value="Hometown University"/>
+            <column name="college_address" value="456 College Rd, Hometown, HT 12345"/>
+            <column name="technical_skills" value="Java, Spring, SQL"/>
+            <column name="technical_certification" value="Oracle Certified Java Programmer"/>
+            <column name="cgpa_percentage" value="3.5"/>
+
+            <!-- Present employment details -->
+            <column name="salary" value="75000"/>
+            <column name="manager_id" value="mgr123"/>
+            <column name="designation" value="Software Engineer"/>
+            <column name="department" value="IT"/>
+            <column name="date_of_joining" value="2022-01-15"/>
+
+            <!-- Previous employment details -->
+            <column name="years_experience" value="10"/>
+            <column name="job_role" value="Senior Developer"/>
+            <column name="previous_company" value="Tech Solutions Inc."/>
+            <column name="uan_number" value="9876543210"/>
+
+            <!-- Emergency contact -->
+            <column name="emergency_contact_person1" value="John Smith"/>
+            <column name="emergency_contact_person1_mobile" value="1234567891"/>
+            <column name="emergency_contact_person1_email" value="john.smith@example.com"/>
+            <column name="emergency_contact_person1_relation" value="Friend"/>
+            <column name="emergency_contact_person2" value="Mary Johnson"/>
+            <column name="emergency_contact_person2_mobile" value="1234567892"/>
+            <column name="emergency_contact_person2_email" value="mary.johnson@example.com"/>
+            <column name="emergency_contact_person2_relation" value="Sister"/>
+
+            <!-- Login details -->
+            <column name="role" value="ADMIN"/>
+            <column name="password" value="$2a$12$z.XuXcdtmpw9Iyj6tTRdQuGRrMjvOV5JF7sLzDcplhz1k8PuS6qK."/>
+            <column name="status" valueBoolean="true"/>
+            
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

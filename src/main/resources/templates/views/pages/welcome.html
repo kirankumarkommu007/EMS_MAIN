@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Welcome to ITyNerds</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	background-color: #f0f0f0; /* Light grey background */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; /* Full viewport height */
+}
+
+.login-container {
+	background-color: #fff; /* White background */
+	border-radius: 8px; /* Rounded corners */
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Shadow effect */
+	width: 400px; /* Increased width */
+	padding: 20px;
+	text-align: center;
+	margin-top: 20px; /* Adjusted margin */
+}
+
+.login-container img {
+	width: 295px; /* Set the width of the logo */
+	height: 1px; /* Set the height of the logo */
+	margin-bottom: 20px; /* Space between logo and heading */
+}
+
+h1 {
+	color: #333;
+	margin-top: 20px;
+}
+
+a {
+	display: inline-block;
+	background-color: #4CAF50;
+	color: white;
+	padding: 14px 20px;
+	text-decoration: none;
+	border-radius: 5px;
+	margin-top: 20px;
+}
+
+a:hover {
+	background-color: #45a049;
+}
+
+form {
+	margin-top: 20px;
+	text-align: left;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+	text-align: left;
+}
+
+input[type="text"], input[type="password"] {
+	width: calc(100% - 22px); /* Adjust for padding */
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+	/* Include padding and border in width calculation */
+}
+
+button[type="submit"] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	display: block;
+	margin: 0 auto; /* Center the button horizontally */
+}
+
+button[type="submit"]:hover {
+	background-color: #45a049;
+}
+
+.error {
+	color: red;
+	margin-top: 10px;
+}
+</style>
+</head>
+<body>
+	<div th:if="${successMessage}" class="modal fade" id="successModal"
+		tabindex="-1" role="dialog" aria-labelledby="successModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="successModalLabel">Success!</h4>
+				</div>
+				<div class="modal-body">
+					<p th:text="${successMessage}"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="login-container">
+		<h1>Welcome to ITyNerds</h1>
+		<p>Please login to continue.</p>
+		<form th:action="@{/login}" method="post">
+			<div>
+				<label for="username">Username:</label> <input type="text"
+					id="username" name="username" />
+			</div>
+			<div>
+				<label for="password">Password:</label> <input type="password" 
+					id="password" name="password" />
+			</div>
+			<div>
+				<button type="submit">Login</button>
+			</div>
+			<p th:if="${error}" class="error" th:text="${error}"></p>
+		</form>
+	</div>
+</body>
+<script th:if="${successMessage != null or errorMessage != null}">
+	$(document).ready(function() {
+		$('#messageModal').modal('show');
+	});
+</script>
+</html>
