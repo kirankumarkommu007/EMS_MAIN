@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.models.Leaves;
+import java.util.List;
+
+import com.example.demo.dto.LeaveDTO;
 
 public interface LeavesService {
 
-    Leaves saveLeave(Leaves leave);
-
+    void addLeaves(String authenticatedEmployeeId, LeaveDTO leaveDTO);
+    List<LeaveDTO> getPendingLeaves();
+    void denyLeave(Integer leaveId, String denyReason);
+    void approveLeave(Integer leaveId);
 }

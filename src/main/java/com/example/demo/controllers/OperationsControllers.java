@@ -440,7 +440,7 @@ public class OperationsControllers {
 		employeeService.updateEmployeeStatus(employeeid, status);
 		redirectAttributes.addFlashAttribute("successMessage",
 				"Status updated successfully for employee with ID " + employeeid + ".");
-		return "redirect:/activeEmployees";
+		return "redirect:/listemployees";
 	}
 
 }

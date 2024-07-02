@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+
 import com.example.demo.models.Employees;
 
 @Repository
@@ -34,5 +35,7 @@ public interface EmployeeRepo extends JpaRepository<Employees, String> {
     boolean existsByPan(String pan);
     boolean existsByMobile(Long mobile);
     boolean existsByEmail(String email);
+    
+    
 
 }

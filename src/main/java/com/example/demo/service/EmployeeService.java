@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.models.Employees;
 
 public interface EmployeeService {
@@ -47,5 +48,10 @@ public interface EmployeeService {
     List<Employees> findActiveEmployees();
     
 	void updateEmployeeStatus(String employeeid, Boolean status);
+	
+    EmployeeDTO findByEmployeeID(String employeeId);
+
+	
+
 
 }

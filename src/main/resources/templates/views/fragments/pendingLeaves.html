@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Pending Leaves</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+th, td {
+	padding: 10px;
+	text-align: left;
+}
+</style>
+</head>
+<body>
+	<h2>Pending Leaves</h2>
+	<table>
+		<tr>
+			<th>Employee ID</th>
+			<th>Type of Leave</th>
+			<th>Reason</th>
+			<th>Date of Leave</th>
+			<th>Applied Date</th>
+			<th>Leave Balance</th>
+
+
+		</tr>
+		<tr th:each="leave : ${pendingLeaves}">
+			<td th:text="${leave.employeeId}"></td>
+			<td th:text="${leave.typeOfLeave}"></td>
+			<td th:text="${leave.reason}"></td>
+			<td th:text="${leave.dateOfLeave}"></td>
+			<td th:text="${leave.appliedDate}"></td>
+			<td th:text="${leave.availableLeaves}"></td>
+
+			<td class="actions">
+				<form th:action="@{/approve}" method="post">
+					<input type="hidden" th:value="${leave.leaveId}" name="leaveId" />
+					<button type="submit">Approve</button>
+				</form>
+				<form th:action="@{/deny}" method="post">
+					<input type="hidden" th:value="${leave.leaveId}" name="leaveId" />
+					<input type="text" name="denyReason"
+						placeholder="Reason for denial" required />
+					<button type="submit">Deny</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
