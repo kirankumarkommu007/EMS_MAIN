@@ -8,6 +8,10 @@ public interface LeavesService {
 
     void addLeaves(String authenticatedEmployeeId, LeaveDTO leaveDTO);
     List<LeaveDTO> getPendingLeaves();
+    List<LeaveDTO> employeeOnleave();
+
     void denyLeave(Integer leaveId, String denyReason);
     void approveLeave(Integer leaveId);
+	void deleteLeave(Integer leaveId);
+
 }

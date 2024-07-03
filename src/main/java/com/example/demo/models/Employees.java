@@ -3,6 +3,8 @@ package com.example.demo.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -18,6 +20,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -166,7 +169,8 @@ public class Employees {
 	@Column(name= "available_leaves")
 	private Integer totalLeaves;
 	
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore // Ignore serialization of leaves here
+    @ToString.Exclude
     private List<Leaves> leaves;
 }

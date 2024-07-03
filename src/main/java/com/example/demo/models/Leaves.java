@@ -16,10 +16,10 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
-
 public class Leaves {
 
     @Id
@@ -42,6 +42,8 @@ public class Leaves {
     @Column(name = "applied_date")
     private LocalDate appliedDate;
     
+    @Column(name = "end_date")
+    private LocalDate endDate;
     
     @Column(name = "available_Leaves")
     private Integer availableLeaves;
@@ -50,7 +52,10 @@ public class Leaves {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     @JsonIgnore // Ignore serialization of employee here
+    @ToString.Exclude
     private Employees employee;
 
+    @Column(name = "days")
+    private Integer days;
 	
 }

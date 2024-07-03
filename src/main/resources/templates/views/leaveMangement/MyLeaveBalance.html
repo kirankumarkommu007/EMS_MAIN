@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave Balance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Leave Balance</h2>
+    <p>Total Leaves: <span th:text="${leaveBalance.totalLeaves}"></span></p>
+    <p>Available Leaves: <span th:text="${leaveBalance.availableLeaves}"></span></p>
+</body>
+</html>

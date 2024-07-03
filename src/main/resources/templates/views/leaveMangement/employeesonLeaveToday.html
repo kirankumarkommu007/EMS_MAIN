@@ -25,43 +25,24 @@ th, td {
 </style>
 </head>
 <body>
-	<h2>Pending Leaves</h2>
+	<h2>Employees on leaves today Leaves</h2>
 	<table>
 		<tr>
 			<th>Leave ID</th>
 			<th>Employee ID</th>
 			<th>Type of Leave</th>
 			<th>Reason</th>
-			<th>Date of Leave</th>
 			<th>Applied Date</th>
 			<th>Leave Balance</th>
-			<th>Actions</th>
 		</tr>
-		<tr th:each="leave : ${pendingLeaves}">
+		<tr th:each="leave : ${employees}">
 			<td th:text="${leave.leaveId}"></td>
 			<td th:text="${leave.employeeId}"></td>
 			<td th:text="${leave.typeOfLeave}"></td>
 			<td th:text="${leave.reason}"></td>
-			<td th:text="${leave.dateOfLeave}"></td>
 			<td th:text="${leave.appliedDate}"></td>
 			<td th:text="${leave.availableLeaves}"></td>
-			<td class="actions">
-				<form
-					th:action="@{/approve/{employeeId}(employeeId=${leave.employeeId})}"
-					method="post" style="display: inline;">
-					<input type="hidden" name="leaveId" th:value="${leave.leaveId}">
-					<button type="submit">Approve</button>
-				</form>
-				<form
-					th:action="@{/deny/{employeeId}(employeeId=${leave.employeeId})}"
-					method="post" style="display: inline;">
-					<input type="hidden" name="leaveId" th:value="${leave.leaveId}">
-					<input type="text" name="denyReason"
-						placeholder="Reason for denial">
-					<button type="submit">Deny</button>
-				</form>
-
-			</td>
+		
 		</tr>
 	</table>
 </body>

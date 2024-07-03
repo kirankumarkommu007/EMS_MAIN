@@ -8,13 +8,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // Import correct Model interface
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.dto.LeaveBalanceDTO;
 import com.example.demo.dto.LeaveDTO;
 import com.example.demo.models.Employees;
 import com.example.demo.models.Leaves;
@@ -42,13 +45,24 @@ public class LeaveManagementControllers {
     }
 
     @PostMapping("/submitLeaveRequest")
-    public String submitLeave(@ModelAttribute("leave") LeaveDTO leaveDTO) {
+    public String submitLeave(@ModelAttribute("leave") LeaveDTO leaveDTO, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String authenticatedEmployeeId = auth.getName(); // Assuming authenticated user's username is the employeeId
-        leaveService.addLeaves(authenticatedEmployeeId, leaveDTO);
-        return "redirect:/leaveRequest";
+        
+        try {
+            leaveService.addLeaves(authenticatedEmployeeId, leaveDTO);
+            model.addAttribute("success", "Leave added successfully");
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("error", "Error adding leave: " + e.getMessage());
+        }
+
+        return "views/fragments/LeaveRequestForm";
     }
-    
+
     @GetMapping("/pending")
     @PreAuthorize("hasRole('HR') or hasRole('ADMIN')")
     public String viewPendingLeaves(Model model) {
@@ -57,17 +71,69 @@ public class LeaveManagementControllers {
         return "views/fragments/pendingLeaves";
     }
 
-    @PostMapping("/approve")
+    @PostMapping("/approve/{employeeId}")
     @PreAuthorize("hasRole('HR') or hasRole('ADMIN')")
-    public String approveLeave(@RequestParam("leaveId") Integer leaveId) {
+    public String approveLeave(@PathVariable("employeeId") String employeeId, 
+                               @RequestParam("leaveId") Integer leaveId) {
+        if (leaveId == null) {
+            System.out.println("leaveId is null!");
+        } else {
+            System.out.println("Approving leave for Employee ID: " + employeeId + ", Leave ID: " + leaveId);
+        }
         leaveService.approveLeave(leaveId);
-        return "redirect:/leaves/pending";
+        return "redirect:/pending";
     }
 
-    @PostMapping("/deny")
+    @PostMapping("/deny/{employeeId}")
     @PreAuthorize("hasRole('HR') or hasRole('ADMIN')")
-    public String denyLeave(@RequestParam("leaveId") Integer leaveId, @RequestParam("denyReason") String denyReason) {
+    public String denyLeave(@PathVariable("employeeId") String employeeId, 
+                            @RequestParam("leaveId") Integer leaveId, 
+                            @RequestParam("denyReason") String denyReason) {
+        if (leaveId == null) {
+            System.out.println("leaveId is null!");
+        } else {
+            System.out.println("Denying leave for Employee ID: " + employeeId + ", Leave ID: " + leaveId + ", Reason: " + denyReason);
+        }
         leaveService.denyLeave(leaveId, denyReason);
-        return "redirect:/leaves/pending";
+        return "redirect:/pending";
+    }
+
+    
+    
+    
+    @GetMapping("/myleaves")
+    public String viewMyLeaves(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String employeeId = ((UserDetails) auth.getPrincipal()).getUsername();
+        
+        List<LeaveDTO> myLeaves = leaveService.getMyLeaves(employeeId);
+        model.addAttribute("myLeaves", myLeaves);
+        
+        return "views/leaveMangement/MyLeaves";
+    }
+
+    @GetMapping("/balance")
+    public String viewLeaveBalance(Model model) {
+        // Get the authenticated user's details
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String employeeId = ((UserDetails) auth.getPrincipal()).getUsername();
+
+        // Fetch the leave balance for the employee
+        LeaveBalanceDTO leaveBalance = leaveService.getLeaveBalance(employeeId);
+        
+        model.addAttribute("leaveBalance", leaveBalance);
+
+        // Return the view name
+        return "views/leaveMangement/MyLeaveBalance";
+    }
+    
+    
+    
+    @GetMapping("/employees/on-leave")
+    @PreAuthorize("hasRole('HR') or hasRole('ADMIN')")
+    public String viewAbsentEmployees(Model model) {
+        List<LeaveDTO> employees = leaveService.employeeOnleave();
+        model.addAttribute("employees", employees);
+        return "views/leaveMangement/employeesonLeaveToday";
     }
 }
