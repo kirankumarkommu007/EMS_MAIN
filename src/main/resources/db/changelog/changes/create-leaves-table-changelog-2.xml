@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+	<changeSet id="2" author="KiranKumar">
+
+		<createTable tableName="leaves">
+			<column name="leave_id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+
+			<column name="employee_id" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="type_of_leave" type="VARCHAR(255)" />
+			<column name="reason" type="VARCHAR(255)" />
+			<column name="status" type="VARCHAR(255)" />
+			<column name="date_of_leave" type="DATE" />
+			<column name="end_date" type="DATE" />
+			<column name="days" type="INT" />
+
+			<column name="available_leaves" type="INT" />
+			<column name="applied_date" type="DATE" />
+
+		</createTable>
+
+		<!-- Add foreign key constraint separately -->
+		<addForeignKeyConstraint
+			baseTableName="leaves" baseColumnNames="employee_id"
+			constraintName="fk_leaves_employee" referencedTableName="employees"
+			referencedColumnNames="employee_id" onDelete="CASCADE"
+			onUpdate="CASCADE" />
+
+	</changeSet>
+
+</databaseChangeLog>

@@ -46,6 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (isUnique(employee)) {
             employee.setRole("USER");
             employee.setStatus(true);
+            employee.setTotalLeaves(12);
             String nextEmployeeId = generateNextEmployeeId();
             employee.setEmployeeId(nextEmployeeId);
             String encodedPassword = passwordEncoder.encode(employee.getEmployeeId()); // Default password based on employeeId
