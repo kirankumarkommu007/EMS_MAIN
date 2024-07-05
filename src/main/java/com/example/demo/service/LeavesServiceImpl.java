@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.LeaveBalanceDTO;
 import com.example.demo.dto.LeaveDTO;
+import com.example.demo.mailgun.MailgunService;
 import com.example.demo.models.Employees;
 import com.example.demo.models.Leaves;
+import com.example.demo.nexmosms.NexmoService;
 import com.example.demo.repos.EmployeeRepo;
 import com.example.demo.repos.LeavesRepository;
 
@@ -25,7 +27,13 @@ public class LeavesServiceImpl implements LeavesService {
 	@Autowired
 	private LeavesRepository leavesRepository;
 
-
+    @Autowired
+    private MailgunService mailgunService;
+    
+    
+    @Autowired
+    private NexmoService nexmoService;
+    
 //	@Override
 //	public void addLeaves(String authenticatedEmployeeId, LeaveDTO leaveDTO) {
 //	    Optional<Employees> optionalEmployee = employeesRepository.findById(authenticatedEmployeeId);
@@ -129,12 +137,42 @@ public class LeavesServiceImpl implements LeavesService {
 //	            leave.setApprovedDays(approvedDays); // Set approved days
 
 	            leave.setEmployee(employee);
+	            System.out.println("this is print statements: "+employee);
 	            employee.getLeaves().add(leave);
 
 	            employeesRepository.save(employee);
+	            //Mail request 
+	            String from =employee.getEmail();
+		        String to = "kommukirankumar1226@gmail.com";
+		        String subject = "Request for "+leaveDTO.getTypeOfLeave()+" With EmployeeID : "+employee.getEmployeeId();
+		        mailgunService.sendSimpleEmail(from, to, subject, authenticatedEmployeeId);
+		        
+//		        String daysText;
+//		        if (leaveDTO.getDays() == 1) {
+//		            daysText = "1 day on " + leaveDTO.getDateOfLeave();
+//		        } else {
+//		            daysText = leaveDTO.getDays() + " days from " + leaveDTO.getDateOfLeave() + " to " + leaveDTO.getEndDate();
+//		        }
+//
+//		        String[] recipientRoles = {"Admin", "Manager", "HR"};
+//		        String[] recipientNumbers = {"+919652261423", "+917780164901", "+916304231585"};
+//
+//		        for (int i = 0; i < recipientRoles.length; i++) {
+//		            String recipientRole = recipientRoles[i];
+//		            String recipientNumber = recipientNumbers[i];
+//
+//		            String text = "Hi " + recipientRole + ",\n" +
+//		                          "I am " + employee.getFirstname() + " with EmployeeID: " + employee.getEmployeeId() + "\n" +
+//		                          "I need leave for " + daysText + " for the reason: " + leaveDTO.getReason() + "\n" +
+//		                          "Please consider my request and grant the leave.\n" +
+//		                          "Thank you.";
+//		            nexmoService.sendSms(recipientNumber, text);
+//		        }
+//	        
+	        }
 	        }
 
-	    } else {
+	    else {
 	        throw new IllegalArgumentException("Authenticated employee not found.");
 	    }
 	}

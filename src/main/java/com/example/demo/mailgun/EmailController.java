@@ -1,4 +1,4 @@
-package com.example.demo.mailchrimp;
+package com.example.demo.mailgun;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,12 @@ public class EmailController {
 
     @PostMapping("/sendEmail")
     public String sendEmail(@RequestBody EmailRequest emailRequest) {
+    	String from =emailRequest.getFrom();
         String to = emailRequest.getTo();
         String subject = emailRequest.getSubject();
         String text = emailRequest.getText();
 
-        mailgunService.sendSimpleEmail(to, subject, text);
+        mailgunService.sendSimpleEmail(from,to, subject, text);
 
         return "Email sent successfully!";
     }

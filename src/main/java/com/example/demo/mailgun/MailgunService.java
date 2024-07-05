@@ -1,4 +1,4 @@
-package com.example.demo.mailchrimp;
+package com.example.demo.mailgun;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,15 +13,13 @@ public class MailgunService {
     @Autowired
     private MailgunMessagesApi mailgunMessagesApi;
 
-    @Value("${mailgun.from.email}")
-    private String fromEmail;
 
     @Value("${mailgun.domain}")
     private String domain;
 
-    public void sendSimpleEmail(String to, String subject, String text) {
+    public void sendSimpleEmail(String from,String to, String subject, String text) {
         Message message = Message.builder()
-                .from(fromEmail)
+                .from(from)
                 .to(to)
                 .subject(subject)
                 .text(text)

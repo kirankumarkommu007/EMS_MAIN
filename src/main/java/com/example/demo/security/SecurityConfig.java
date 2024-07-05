@@ -1,7 +1,6 @@
 package com.example.demo.security;
 
 import com.example.demo.jwt.JwtRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +22,15 @@ public class SecurityConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Autowired
-    private MyUserDetailsService employeeDetailsServiceImpl;
+    private final MyUserDetailsService employeeDetailsServiceImpl;
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+
+    private final JwtRequestFilter jwtRequestFilter;
+    
+    public SecurityConfig( MyUserDetailsService employeeDetailsServiceImpl,JwtRequestFilter jwtRequestFilter ) {
+    	this.employeeDetailsServiceImpl =employeeDetailsServiceImpl;
+    	this.jwtRequestFilter =jwtRequestFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,20 +40,21 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 logger.info("Setting authorization rules");
                 auth
-                    .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello","/simplepage","/sendEmail").permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus","/updateRole/**","/approve","/deny").hasAnyRole("ADMIN", "HR")
-                    .requestMatchers("/leaveRequest","/myleaves","/balance").hasAnyRole("ADMIN", "HR","USER")                    
-                    .requestMatchers("/hr/**").hasRole("HR")
-                    .requestMatchers("/user/**").hasRole("USER")
-                    .anyRequest().authenticated();
+                .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello", "/simplepage", "/sendEmail", "/send-sms").permitAll()
+                .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus", "/updateRole/**", "/approve", "/deny","/pending").hasAnyRole("ADMIN", "HR")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasRole("USER")
+                .requestMatchers("/hr/**").hasRole("HR")
+                .anyRequest().authenticated();
             })
             .formLogin(form -> form
                 .loginPage("/welcome")
                 .failureUrl("/login?error=true").permitAll())
+            
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .deleteCookies("token", "JSESSIONID"))
+            
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -62,7 +66,6 @@ public class SecurityConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(employeeDetailsServiceImpl);
         authProvider.setPasswordEncoder(passwordEncoder());
-//        logger.info("Configured authentication provider");
         return authProvider;
     }
 
@@ -74,7 +77,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//        logger.info("Configuring authentication manager");
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(employeeDetailsServiceImpl).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();

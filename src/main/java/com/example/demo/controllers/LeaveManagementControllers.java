@@ -1,11 +1,9 @@
 package com.example.demo.controllers;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,15 +29,17 @@ import io.swagger.v3.oas.annotations.Operation;
 @Controller
 public class LeaveManagementControllers {
 	
-	@Autowired
-	private  EmployeeServiceImpl employeeServiceImpl ;
 	
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    private LeavesServiceImpl leaveService; 
+	
+	public LeaveManagementControllers(LeavesServiceImpl leaveService) {
+		this.leaveService=leaveService;
+	}
+	
+	
 
 
-    @Autowired
-    private LeavesServiceImpl leaveService; // Assuming you have a service layer
+    // Assuming you have a service layer
 
     @GetMapping("/leaveRequest")
     public String showLeaveRequestForm(Model model) {
@@ -54,11 +54,10 @@ public class LeaveManagementControllers {
         
         try {
             leaveService.addLeaves(authenticatedEmployeeId, leaveDTO);
-            model.addAttribute("success", "Leave added successfully");
+            model.addAttribute("success", "Leave Request Sent Successfully ");
         } catch (IllegalStateException e) {
             model.addAttribute("error", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+        
         } catch (Exception e) {
             model.addAttribute("error", "Error adding leave: " + e.getMessage());
         }
@@ -84,6 +83,7 @@ public class LeaveManagementControllers {
             System.out.println("Approving leave for Employee ID: " + employeeId + ", Leave ID: " + leaveId);
         }
         leaveService.approveLeave(leaveId);
+        
         return "redirect:/pending";
     }
 

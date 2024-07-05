@@ -2,11 +2,9 @@ package com.example.demo.repos;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.dto.LeaveDTO;
 import com.example.demo.models.Employees;
 import com.example.demo.models.Leaves;
 
