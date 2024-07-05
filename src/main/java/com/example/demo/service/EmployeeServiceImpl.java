@@ -176,7 +176,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDTO.setFirstname(employee.getFirstname());
         employeeDTO.setLastname(employee.getLastname());
         employeeDTO.setDateOfBirth(employee.getDateOfBirth());
-        // Map other fields as needed
 
         return employeeDTO;
     }

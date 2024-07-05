@@ -1,0 +1,28 @@
+<!-- fragments/sidebar.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="sidebar">
+        <div class="sidebar">
+            <a href="/home" th:classappend="${activeTab == 'home'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-home"></span> Home
+            </a>
+            <a href="/results" th:classappend="${activeTab == 'results'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-education"></span> Results  
+            </a>
+            <a href="/syllabus" th:classappend="${activeTab == 'syllabus'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-book"></span> Syllabus
+            </a>
+            <a href="/jobs" th:classappend="${activeTab == 'jobs'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-briefcase"></span> Jobs & Careers
+            </a>
+            <a href="/notifications" th:classappend="${activeTab == 'notifications'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-bell"></span> Notifications
+            </a>
+            <a href="/help" th:classappend="${activeTab == 'help'} ? 'active' : ''">
+                <span class="glyphicon glyphicon-question-sign"></span> Help Center
+            </a>
+        </div>
+    </div>
+</body>
+</html>

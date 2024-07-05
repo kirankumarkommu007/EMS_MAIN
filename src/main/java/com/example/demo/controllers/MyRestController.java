@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.models.Employees;
 import com.example.demo.repos.EmployeeRepo;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,8 @@ public class MyRestController {
 
     @Autowired
     private EmployeeRepo employeeRepo;
+    
+  
 
     private static final Logger logger = LoggerFactory.getLogger(MyRestController.class);
 
@@ -33,6 +36,14 @@ public class MyRestController {
             return "Employee not found";
         }
     }
+    
+    
+  
+        
+
+      
+    
+
 
     @GetMapping("/hello")
     public String getGreetad() {

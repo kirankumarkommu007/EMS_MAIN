@@ -24,6 +24,8 @@ public class LeaveDTO {
     private Integer days;
     private LocalDate endDate;
     private LocalDate startDate;
+    
+    private Integer approvedDays;
 
 
     // Add other relevant fields as needed

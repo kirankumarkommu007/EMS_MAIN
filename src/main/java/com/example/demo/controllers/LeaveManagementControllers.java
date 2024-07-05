@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // Import correct Model interface
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,8 @@ import com.example.demo.models.Leaves;
 import com.example.demo.repos.EmployeeRepo;
 import com.example.demo.service.EmployeeServiceImpl;
 import com.example.demo.service.LeavesServiceImpl;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 @Controller
 public class LeaveManagementControllers {
@@ -41,7 +44,7 @@ public class LeaveManagementControllers {
     @GetMapping("/leaveRequest")
     public String showLeaveRequestForm(Model model) {
         model.addAttribute("leave", new LeaveDTO()); // Prepare a new LeaveDTO object for the form
-        return "views/fragments/LeaveRequestForm"; // Assuming a view named leaveRequestForm exists
+        return "views/leavemanagement/LeaveRequestForm"; // Assuming a view named leaveRequestForm exists
     }
 
     @PostMapping("/submitLeaveRequest")
@@ -60,7 +63,7 @@ public class LeaveManagementControllers {
             model.addAttribute("error", "Error adding leave: " + e.getMessage());
         }
 
-        return "views/fragments/LeaveRequestForm";
+        return "views/leavemanagement/LeaveRequestForm";
     }
 
     @GetMapping("/pending")
@@ -68,7 +71,7 @@ public class LeaveManagementControllers {
     public String viewPendingLeaves(Model model) {
         List<LeaveDTO> pendingLeaves = leaveService.getPendingLeaves();
         model.addAttribute("pendingLeaves", pendingLeaves);
-        return "views/fragments/pendingLeaves";
+        return "views/leavemanagement/pendingLeaves";
     }
 
     @PostMapping("/approve/{employeeId}")
@@ -109,7 +112,7 @@ public class LeaveManagementControllers {
         List<LeaveDTO> myLeaves = leaveService.getMyLeaves(employeeId);
         model.addAttribute("myLeaves", myLeaves);
         
-        return "views/leaveMangement/MyLeaves";
+        return "views/leavemanagement/MyLeaves";
     }
 
     @GetMapping("/balance")
@@ -124,7 +127,7 @@ public class LeaveManagementControllers {
         model.addAttribute("leaveBalance", leaveBalance);
 
         // Return the view name
-        return "views/leaveMangement/MyLeaveBalance";
+        return "views/leavemanagement/MyLeaveBalance";
     }
     
     
@@ -136,4 +139,11 @@ public class LeaveManagementControllers {
         model.addAttribute("employees", employees);
         return "views/leaveMangement/employeesonLeaveToday";
     }
+    
+    @GetMapping("/deleteLeave/{leaveId}")
+    public String deleteLeave(@PathVariable Integer leaveId) {
+        leaveService.deleteLeave(leaveId);
+        return "redirect:/myleaves";
+    }
+
 }

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Welcome to ITyNerds</title>
-<style>
+ <title>
+         DevDolphins
+    </title>
+    <style>
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: center;
-	background-color: #f0f0f0; /* Light grey background */
+	background-color: #F3E9C4; /* Light grey background */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -114,11 +116,13 @@ button[type="submit"]:hover {
 		</div>
 	</div>
 	<div class="login-container">
-		<h1>Welcome to ITyNerds</h1>
+	    <img class="logo" th:src="@{/images/DevDolphins.jpg}" alt="DevDolphins Logo">
+	
+		<h1>Welcome to DevDolphins</h1>
 		<p>Please login to continue.</p>
 		<form th:action="@{/login}" method="post">
 			<div>
-				<label for="username">Username:</label> <input type="text"
+				<label for="username">Employee ID:</label> <input type="text"
 					id="username" name="username" />
 			</div>
 			<div>

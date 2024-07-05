@@ -16,18 +16,31 @@
                 <h4>Leave Request Form</h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/submitLeaveRequest}" th:object="${leave}" method="post">
+                <form th:action="@{/submitLeaveRequest}" th:object="${leave}" method="post" id="leaveForm">
+                    <div class="form-group">
+                        <label for="typeOfLeave">Type of Leave:</label>
+                        <select class="form-control" id="typeOfLeave" th:field="*{typeOfLeave}" required>
+                            <option value="">Select Leave Type</option>
+                            <option value="SickLeave">Sick Leave</option>
+                            <option value="CasualLeave">Casual Leave</option>
+                            <option value="BereavementLeave">Bereavement Leave</option>
+                            <option value="MarriageLeave">Marriage Leave</option>
+                            <option value="MaternityLeave">Maternity Leave</option>
+                            <option value="PaternityLeave">Paternity Leave</option>
+                            <option value="AdoptionLeave">Adoption Leave</option>
+                            <option value="EmergencyLeave">Emergency Leave</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="days">Number of Days:</label>
                         <select class="form-control" id="days" th:field="*{days}" required>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="24">24</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="typeOfLeave">Type of Leave:</label>
-                        <input type="text" class="form-control" id="typeOfLeave" th:field="*{typeOfLeave}" required>
                     </div>
                     <div class="form-group">
                         <label for="reason">Reason:</label>
@@ -56,7 +69,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const typeOfLeaveSelect = document.getElementById('typeOfLeave');
             const daysSelect = document.getElementById('days');
+            const leaveForm = document.getElementById('leaveForm');
             const singleDateField = document.querySelector('.single-date');
             const multipleDatesFields = document.querySelectorAll('.multiple-dates');
 
@@ -79,7 +94,74 @@
                 }
             }
 
+            function validateForm(event) {
+                const typeOfLeave = typeOfLeaveSelect.value;
+                const days = parseInt(daysSelect.value, 10);
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const dateOfLeave = document.getElementById('dateOfLeave').value;
+                let dateDifference = 0;
+
+                if (days > 1) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    dateDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                } else {
+                    dateDifference = 1;
+                }
+
+                if (dateDifference !== days) {
+                    alert('The number of days requested does not match the date range provided.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'CasualLeave' && days > 2) {
+                    alert('Casual leave cannot exceed 2 consecutive days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'CasualLeave' && dateDifference > 2) {
+                    alert('Casual leave cannot exceed 2 consecutive days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'BereavementLeave' && days > 3) {
+                    alert('Bereavement leave cannot exceed 3 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'MarriageLeave' && days > 5) {
+                    alert('Marriage leave cannot exceed 5 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'MaternityLeave' && days > 24) {
+                    alert('Maternity leave cannot exceed 24 weeks.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'PaternityLeave' && days > 3) {
+                    alert('Paternity leave cannot exceed 3 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'AdoptionLeave' && days > 5) {
+                    alert('Adoption leave cannot exceed 5 days.');
+                    event.preventDefault();
+                    return;
+                }
+            }
+
+            typeOfLeaveSelect.addEventListener('change', updateDateFields);
             daysSelect.addEventListener('change', updateDateFields);
+            leaveForm.addEventListener('submit', validateForm);
             updateDateFields(); // Initial call to set the correct fields on page load
         });
     </script>
