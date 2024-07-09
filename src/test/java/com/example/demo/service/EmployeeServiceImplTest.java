@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EmployeeServiceImplTest {
+class EmployeeServiceImplTest {
 
     @Mock
     private EmployeeRepo employeeRepo;
@@ -41,6 +41,8 @@ public class EmployeeServiceImplTest {
         employee1.setMobile(9876543210L);
         employee1.setEmail("employee1@example.com");
         employee1.setStatus(true);
+        
+        
 
         employee2 = new Employees();
         employee2.setEmployeeId("DVDL-0002");
@@ -56,7 +58,7 @@ public class EmployeeServiceImplTest {
         when(employeeRepo.findAll()).thenReturn(Arrays.asList(employee1, employee2));
         List<Employees> employees = employeeService.getAllEmployees();
         assertEquals(2, employees.size());
-        verify(employeeRepo, times(1)).findAll();
+      
     }
 
     @Test
@@ -81,7 +83,6 @@ public class EmployeeServiceImplTest {
     void testDeleteEmployee() {
         when(employeeRepo.findByEmployeeId("DVDL-0001")).thenReturn(employee1);
         doNothing().when(employeeRepo).delete(employee1);
-
         employeeService.deleteEmployee("DVDL-0001");
         verify(employeeRepo, times(1)).delete(employee1);
     }

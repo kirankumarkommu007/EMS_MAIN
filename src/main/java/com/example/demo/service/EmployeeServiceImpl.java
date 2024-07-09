@@ -3,7 +3,6 @@ package com.example.demo.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.models.Employees;
 import com.example.demo.repos.EmployeeRepo;
 
@@ -166,18 +165,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepo.findByEmployeeId(employeeid);
     }
 
-    @Override
-    public EmployeeDTO findByEmployeeID(String employeeId) {
-        Employees employee = employeeRepo.findByEmployeeId(employeeId);
-
-        // Convert Employees entity to EmployeeDTO
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setEmployeeId(employee.getEmployeeId());
-        employeeDTO.setFirstname(employee.getFirstname());
-        employeeDTO.setLastname(employee.getLastname());
-        employeeDTO.setDateOfBirth(employee.getDateOfBirth());
-
-        return employeeDTO;
-    }
+ 
 
 }

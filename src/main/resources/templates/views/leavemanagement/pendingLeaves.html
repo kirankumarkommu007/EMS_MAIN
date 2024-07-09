@@ -1,135 +1,152 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Pending Leaves</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+<meta charset="UTF-8">
+<title>Pending Leaves</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" th:href="@{/css/navbar.css}">
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+<style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
+table, th, td {
+	border: 1px solid #ddd;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
+th, td {
+	padding: 15px;
+	text-align: left;
+}
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+th {
+	background-color: #f2f2f2;
+}
 
-        tr:hover {
-            background-color: #f1f1f1;
-        }
+tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
 
-        .btn-approve {
-            color: white;
-            background-color: #5cb85c;
-            border-color: #4cae4c;
-        }
+tr:hover {
+	background-color: #f1f1f1;
+}
 
-        .btn-approve:hover {
-            background-color: #4cae4c;
-            border-color: #398439;
-        }
+.btn-approve {
+	color: white;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+}
 
-        .btn-deny {
-            color: white;
-            background-color: #d9534f;
-            border-color: #d43f3a;
-        }
+.btn-approve:hover {
+	background-color: #4cae4c;
+	border-color: #398439;
+}
 
-        .btn-deny:hover {
-            background-color: #c9302c;
-            border-color: #ac2925;
-        }
+.btn-deny {
+	color: white;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+}
 
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
+.btn-deny:hover {
+	background-color: #c9302c;
+	border-color: #ac2925;
+}
 
-        h2 {
-            margin-top: 0;
-        }
+.actions {
+	display: flex;
+	gap: 10px;
+}
 
-        .tooltip-inner {
-            background-color: #5cb85c;
-            color: white;
-        }
+h2 {
+	margin-top: 0;
+}
 
-        .tooltip-arrow {
-            border-top-color: #5cb85c !important;
-        }
+.tooltip-inner {
+	background-color: #5cb85c;
+	color: white;
+}
 
-        .deny-reason-input {
-            width: 200px;
-            margin-right: 10px;
-        }
-    </style>
+.tooltip-arrow {
+	border-top-color: #5cb85c !important;
+}
+
+.deny-reason-input {
+	width: 200px;
+	margin-right: 10px;
+}
+</style>
 </head>
 <body>
-    <h2>Pending Leaves</h2>
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Leave ID</th>
-                <th>Employee ID</th>
-                <th>Type of Leave</th>
-                <th>Reason</th>
-                <th>Date of Leave</th>
-                <th>Applied Date</th>
-                <th>Leave Balance</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="leave : ${pendingLeaves}">
-                <td th:text="${leave.leaveId}"></td>
-                <td th:text="${leave.employeeId}"></td>
-                <td th:text="${leave.typeOfLeave}"></td>
-                <td th:text="${leave.reason}"></td>
-                <td th:text="${leave.dateOfLeave}"></td>
-                <td th:text="${leave.appliedDate}"></td>
-                <td th:text="${leave.availableLeaves}"></td>
-                <td class="actions">
-                    <form th:action="@{/approve/{employeeId}(employeeId=${leave.employeeId})}" method="post" style="display: inline;">
-                        <input type="hidden" name="leaveId" th:value="${leave.leaveId}">
-                        <button type="submit" class="btn btn-approve" data-toggle="tooltip" title="Approve">
-                            <i class="fas fa-check icon"></i> Approve
-                        </button>
-                    </form>
-                    <form th:action="@{/deny/{employeeId}(employeeId=${leave.employeeId})}" method="post" style="display: inline;">
-                        <input type="hidden" name="leaveId" th:value="${leave.leaveId}">
-                        <input type="text" name="denyReason" placeholder="Reason for denial" class="deny-reason-input form-control">
-                        <button type="submit" class="btn btn-deny" data-toggle="tooltip" title="Deny">
-                            <i class="fas fa-times icon"></i> Deny
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+	<div data-th-insert="views/fragments/navbar :: navbar"></div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
+	<h2>Pending Leaves</h2>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Leave ID</th>
+				<th>Employee ID</th>
+				<th>Type of Leave</th>
+				<th>Reason</th>
+				<th>Date of Leave</th>
+				<th>Applied Date</th>
+				<th>Leave Balance</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="leave : ${pendingLeaves}">
+				<td th:text="${leave.leaveId}"></td>
+				<td th:text="${leave.employeeId}"></td>
+				<td th:text="${leave.typeOfLeave}"></td>
+				<td th:text="${leave.reason}"></td>
+				<td th:text="${leave.dateOfLeave}"></td>
+				<td th:text="${leave.appliedDate}"></td>
+				<td th:text="${leave.availableLeaves}"></td>
+				<td class="actions">
+					<form
+						th:action="@{/approve/{employeeId}(employeeId=${leave.employeeId})}"
+						method="post" style="display: inline;">
+						<input type="hidden" name="leaveId" th:value="${leave.leaveId}">
+						<button type="submit" class="btn btn-approve"
+							data-toggle="tooltip" title="Approve">
+							<i class="fas fa-check icon"></i> Approve
+						</button>
+					</form>
+					<form
+						th:action="@{/deny/{employeeId}(employeeId=${leave.employeeId})}"
+						method="post" style="display: inline;">
+						<input type="hidden" name="leaveId" th:value="${leave.leaveId}">
+						<input type="text" name="denyReason"
+							placeholder="Reason for denial"
+							class="deny-reason-input form-control">
+						<button type="submit" class="btn btn-deny" data-toggle="tooltip"
+							title="Deny">
+							<i class="fas fa-times icon"></i> Deny
+						</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });

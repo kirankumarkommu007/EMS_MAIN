@@ -1,4 +1,4 @@
-package com.example.demo.pdfService;
+package com.example.demo.pdfservices;
 
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;

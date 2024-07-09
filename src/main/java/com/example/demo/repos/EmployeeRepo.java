@@ -13,7 +13,7 @@ import com.example.demo.models.Employees;
 public interface EmployeeRepo extends JpaRepository<Employees, String> {
 
 
-	Employees findByFirstnameAndEmail(String firstname, String Email);
+	Employees findByFirstnameAndEmail(String firstname, String email);
 
 	Employees findByFirstname(String firstname);
 	

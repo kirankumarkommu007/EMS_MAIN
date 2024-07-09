@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+		<link rel="stylesheet" th:href="@{/css/navbar.css}">
+
 <head>
 <meta charset="UTF-8">
 <title>Pending Leaves</title>
@@ -25,6 +27,8 @@ th, td {
 </style>
 </head>
 <body>
+	<div data-th-insert="views/fragments/navbar :: navbar"></div>
+
 	<h2>Employees on leaves today Leaves</h2>
 	<table>
 		<tr>

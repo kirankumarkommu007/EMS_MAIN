@@ -1,15 +1,11 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-import com.example.demo.models.Employees;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class LeaveDTO {
 
@@ -24,22 +20,31 @@ public class LeaveDTO {
     private Integer days;
     private LocalDate endDate;
     private LocalDate startDate;
-    
     private Integer approvedDays;
 
-
-    // Add other relevant fields as needed
-    public LeaveDTO(Integer leaveId,String typeOfLeave, String reason, LocalDate dateOfLeave, LocalDate appliedDate, String employeeId,Integer availableLeaves,String status, LocalDate endDate) {
+    // Constructor with essential fields
+    public LeaveDTO(Integer leaveId, String typeOfLeave, String reason, LocalDate dateOfLeave, LocalDate appliedDate, String employeeId) {
+        this.leaveId = leaveId;
         this.typeOfLeave = typeOfLeave;
         this.reason = reason;
         this.dateOfLeave = dateOfLeave;
         this.appliedDate = appliedDate;
         this.employeeId = employeeId;
-        this.availableLeaves=availableLeaves;
-        this.leaveId =leaveId;
-        this.status=status;
-        this.endDate =endDate;
     }
 
+    // Constructor with additional fields
+    public LeaveDTO(Integer leaveId, String typeOfLeave, String reason, LocalDate dateOfLeave, LocalDate appliedDate, String employeeId, Integer availableLeaves, String status, LocalDate endDate) {
+        this.leaveId = leaveId;
+        this.typeOfLeave = typeOfLeave;
+        this.reason = reason;
+        this.dateOfLeave = dateOfLeave;
+        this.appliedDate = appliedDate;
+        this.employeeId = employeeId;
+        this.availableLeaves = availableLeaves;
+        this.status = status;
+        this.endDate = endDate;
+    }
 
+    // Getters and setters, and any other methods as needed
 }
+

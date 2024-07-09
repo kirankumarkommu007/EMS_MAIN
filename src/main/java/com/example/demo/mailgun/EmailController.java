@@ -1,7 +1,6 @@
 package com.example.demo.mailgun;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,8 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmailController {
 
-    @Autowired
-    private MailgunService mailgunService;
+	
+    private final MailgunService mailgunService;
+    
+    public EmailController(MailgunService mailgunService) {
+    	this.mailgunService=mailgunService;
+    }
 
     @PostMapping("/sendEmail")
     public String sendEmail(@RequestBody EmailRequest emailRequest) {

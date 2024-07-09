@@ -40,7 +40,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 logger.info("Setting authorization rules");
                 auth
-                .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello", "/simplepage", "/sendEmail", "/send-sms").permitAll()
+                .requestMatchers("/login", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/hello", "/sidebar", "/sendEmail", "/send-sms").permitAll()
                 .requestMatchers("/listemployees", "/activeEmployees", "/updateStatus", "/updateRole/**", "/approve", "/deny","/pending").hasAnyRole("ADMIN", "HR")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasRole("USER")

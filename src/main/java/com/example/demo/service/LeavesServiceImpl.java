@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.dto.LeaveBalanceDTO;
 import com.example.demo.dto.LeaveDTO;
 import com.example.demo.mailgun.MailgunService;
@@ -16,80 +15,36 @@ import com.example.demo.repos.LeavesRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class LeavesServiceImpl implements LeavesService {
 
-	@Autowired
-	private EmployeeRepo employeesRepository;
+	private final EmployeeRepo employeesRepository;
 
-	@Autowired
-	private LeavesRepository leavesRepository;
+	private final LeavesRepository leavesRepository;
 
-    @Autowired
-    private MailgunService mailgunService;
+    private final MailgunService mailgunService;
+    
+    private final NexmoService nexmoService;
     
     
-    @Autowired
-    private NexmoService nexmoService;
+    public LeavesServiceImpl(EmployeeRepo employeesRepository, LeavesRepository leavesRepository, MailgunService mailgunService, NexmoService nexmoService) {
+    	this.employeesRepository = employeesRepository;
+    	this.leavesRepository= leavesRepository;
+    	this.mailgunService = mailgunService;
+    	this.nexmoService =nexmoService;
+    }
     
-//	@Override
-//	public void addLeaves(String authenticatedEmployeeId, LeaveDTO leaveDTO) {
-//	    Optional<Employees> optionalEmployee = employeesRepository.findById(authenticatedEmployeeId);
-//
-//	    if (optionalEmployee.isPresent()) {
-//	        Employees employee = optionalEmployee.get();
-//
-//	        // Check if there are pending leaves
-//	        boolean hasPendingLeaves = employee.getLeaves().stream()
-//	                .anyMatch(leave -> leave.getStatus().equals("PENDING"));
-//
-//	        if (hasPendingLeaves) {
-//	            throw new IllegalStateException("You already have pending leave(s). Please look into them first.");
-//	        }
-//
-//	        // Proceed to add new leave
-//	        Leaves leave = new Leaves();
-//	        leave.setTypeOfLeave(leaveDTO.getTypeOfLeave());
-//	        leave.setReason(leaveDTO.getReason());
-//	        leave.setStatus("PENDING");
-//	        leave.setAppliedDate(LocalDate.now()); // Set current date for applied date
-//	        leave.setDays(leaveDTO.getDays()); // Set days from leaveDTO
-//
-//	        if (leaveDTO.getDays() == 1) {
-//	            leave.setDateOfLeave(leaveDTO.getDateOfLeave());
-//	            leave.setEndDate(leaveDTO.getDateOfLeave()); // endDate is same as dateOfLeave for single day
-//	            System.out.println(leaveDTO.getDateOfLeave());
-//	        } else {
-//	            leave.setDateOfLeave(leaveDTO.getStartDate());
-//	            System.out.println("showing start date for multiple dates"+leaveDTO.getDateOfLeave());
-//
-//	            leave.setEndDate(leaveDTO.getEndDate());
-//	            System.out.println("showing end date for multiple dates"+leaveDTO.getEndDate());
-//
-//	        }
-//
-//	        // Set availableLeaves based on calculation
-//	        long approvedLeavesCount = employee.getLeaves().stream()
-//	                .filter(l -> l.getStatus().equals("APPROVED"))
-//	                .count();
-//	        int availableLeaves = employee.getTotalLeaves() - (int) approvedLeavesCount;
-//	        if (availableLeaves <= 0) {
-//	            throw new IllegalArgumentException("You have 0 available leaves. Please contact administration.");
-//	        } else {
-//	            leave.setAvailableLeaves(availableLeaves);
-//
-//	            leave.setEmployee(employee);
-//	            employee.getLeaves().add(leave);
-//
-//	            employeesRepository.save(employee);
-//	        }
-//
-//	    } else {
-//	        throw new IllegalArgumentException("Authenticated employee not found.");
-//	    }
-//	}
+    
+    private static final String APPROVED = "APPROVED";
+    private static final String PENDING = "PENDING";
+    private static final String DENIED = "DENIED";
+    private static final String ADMIN_MOBILE = "+919652261423";
+
+
+   
+    
+    
 	
 	@Override
 	public void addLeaves(String authenticatedEmployeeId, LeaveDTO leaveDTO) {
@@ -100,7 +55,7 @@ public class LeavesServiceImpl implements LeavesService {
 
 //	        // Check if there are pending leaves
 //	        boolean hasPendingLeaves = employee.getLeaves().stream()
-//	                .anyMatch(leave -> leave.getStatus().equals("PENDING"));
+//	                .anyMatch(leave -> leave.getStatus().equals(PENDING));
 //
 //	        if (hasPendingLeaves) {
 //	            throw new IllegalStateException("You already have pending leave(s). Please look into them first.");
@@ -110,7 +65,7 @@ public class LeavesServiceImpl implements LeavesService {
 	        Leaves leave = new Leaves();
 	        leave.setTypeOfLeave(leaveDTO.getTypeOfLeave());
 	        leave.setReason(leaveDTO.getReason());
-	        leave.setStatus("PENDING");
+	        leave.setStatus(PENDING);
 	        leave.setAppliedDate(LocalDate.now()); // Set current date for applied date
 	        leave.setDays(leaveDTO.getDays()); // Set days from leaveDTO
 
@@ -124,7 +79,7 @@ public class LeavesServiceImpl implements LeavesService {
 
 	        // Calculate approved days for the employee
 	        int approvedDays = employee.getLeaves().stream()
-	                .filter(l -> l.getStatus().equals("APPROVED"))
+	                .filter(l -> l.getStatus().equals(APPROVED))
 	                .mapToInt(Leaves::getDays)
 	                .sum();
 
@@ -147,28 +102,28 @@ public class LeavesServiceImpl implements LeavesService {
 		        String subject = "Request for "+leaveDTO.getTypeOfLeave()+" With EmployeeID : "+employee.getEmployeeId();
 		        mailgunService.sendSimpleEmail(from, to, subject, authenticatedEmployeeId);
 		        
-//		        String daysText;
-//		        if (leaveDTO.getDays() == 1) {
-//		            daysText = "1 day on " + leaveDTO.getDateOfLeave();
-//		        } else {
-//		            daysText = leaveDTO.getDays() + " days from " + leaveDTO.getDateOfLeave() + " to " + leaveDTO.getEndDate();
-//		        }
-//
-//		        String[] recipientRoles = {"Admin", "Manager", "HR"};
-//		        String[] recipientNumbers = {"+919652261423", "+917780164901", "+916304231585"};
-//
-//		        for (int i = 0; i < recipientRoles.length; i++) {
-//		            String recipientRole = recipientRoles[i];
-//		            String recipientNumber = recipientNumbers[i];
-//
-//		            String text = "Hi " + recipientRole + ",\n" +
-//		                          "I am " + employee.getFirstname() + " with EmployeeID: " + employee.getEmployeeId() + "\n" +
-//		                          "I need leave for " + daysText + " for the reason: " + leaveDTO.getReason() + "\n" +
-//		                          "Please consider my request and grant the leave.\n" +
-//		                          "Thank you.";
-//		            nexmoService.sendSms(recipientNumber, text);
-//		        }
-//	        
+		        String daysText;
+		        if (leaveDTO.getDays() == 1) {
+		            daysText = "1 day on " + leaveDTO.getDateOfLeave();
+		        } else {
+		            daysText = leaveDTO.getDays() + " days from " + leaveDTO.getDateOfLeave() + " to " + leaveDTO.getEndDate();
+		        }
+
+		        String[] recipientRoles = {"Admin", "Manager", "HR"};
+		        String[] recipientNumbers = {ADMIN_MOBILE, "+917780164901", "+916304231585"};
+
+		        for (int i = 0; i < recipientRoles.length; i++) {
+		            String recipientRole = recipientRoles[i];
+		            String recipientNumber = recipientNumbers[i];
+
+		            String text = "Hi " + recipientRole + ",\n" +
+		                          "I am " + employee.getFirstname() + " with EmployeeID: " + employee.getEmployeeId() + "\n" +
+		                          "I need leave for " + daysText + " for the reason: " + leaveDTO.getReason() + "\n" +
+		                          "Please consider my request and grant the leave.\n" +
+		                          "Thank you.";
+		            nexmoService.sendSms(recipientNumber, text);
+		        }
+	        
 	        }
 	        }
 
@@ -183,13 +138,16 @@ public class LeavesServiceImpl implements LeavesService {
 
 	@Override
 	public List<LeaveDTO> getPendingLeaves() {
-		List<Leaves> pendingLeaves = leavesRepository.findByStatus("PENDING");
+		List<Leaves> pendingLeaves = leavesRepository.findByStatus(PENDING);
 		return pendingLeaves.stream().map(leave -> new LeaveDTO(leave.getLeaveId(),leave.getTypeOfLeave(), leave.getReason(),
 				leave.getDateOfLeave(), leave.getAppliedDate(), leave.getEmployee().getEmployeeId(), leave.getAvailableLeaves(),leave.getStatus(),leave.getEndDate()))
-				.collect(Collectors.toList());
+				.toList();
 	}
 	@Override
 	public void approveLeave(Integer leaveId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String authenticatedEmployeeId = auth.getName();
+		
 	    Optional<Leaves> optionalLeave = leavesRepository.findById(leaveId);
 
 	    if (optionalLeave.isPresent()) {
@@ -200,41 +158,66 @@ public class LeavesServiceImpl implements LeavesService {
 	        int approvedDays = leave.getDays();
 
 	        // Approve the leave
-	        leave.setStatus("APPROVED");
+	        leave.setStatus(APPROVED);
 	        leavesRepository.save(leave);
 
-	        // Find all pending leaves for the same employee
-	        List<Leaves> pendingLeaves = leavesRepository.findByEmployeeAndStatus(employee, "PENDING");
+	        // Find the leave requester (Kiran)
+	        Employees requester = employeesRepository.findById(authenticatedEmployeeId)
+	            .orElseThrow(() -> new IllegalArgumentException("Authenticated employee not found."));
 
-	        // Decrease availableLeaves by the number of approved days for each pending leave
-	        for (Leaves pendingLeave : pendingLeaves) {
-	            pendingLeave.setAvailableLeaves(pendingLeave.getAvailableLeaves() - approvedDays);
-	            leavesRepository.save(pendingLeave);
-	        }
+	        // Send notification email to the leave requester (Kiran)
+	        String from = requester.getEmail();
+	        String to = employee.getEmail();
+	        String subject = "Leave Approved for " + leave.getTypeOfLeave() + " - EmployeeID: " + employee.getEmployeeId();
+	        String message = "Your leave request for " + leave.getDays() + " days has been approved.";
+	        mailgunService.sendSimpleEmail(from, to, subject, message);
 
-	        // Save the employee
-	        employeesRepository.save(employee);
+	        // Send notification SMS to the leave requester (Kiran)
+	        String recipientNumber = ADMIN_MOBILE; // Change this to Kiran's phone number
+	        String smsText = "Your leave request for " + leave.getDays() + " days has been approved.";
+	        nexmoService.sendSms(recipientNumber, smsText);
 	    } else {
 	        throw new IllegalArgumentException("Leave not found.");
 	    }
 	}
 
 
+
 	@Override
-    public void denyLeave(Integer leaveId, String denyReason) {
-        Optional<Leaves> optionalLeave = leavesRepository.findById(leaveId);
+	public void denyLeave(Integer leaveId, String denyReason) {
+		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+		String authenticatedEmployeeId =auth.getName();
+	    Optional<Leaves> optionalLeave = leavesRepository.findById(leaveId);
 
-        if (optionalLeave.isPresent()) {
-            Leaves leave = optionalLeave.get();
-            leave.setStatus("DENIED");
-            leave.setReason(denyReason);
+	    if (optionalLeave.isPresent()) {
+	        Leaves leave = optionalLeave.get();
 
-            leavesRepository.save(leave);
-        } else {
-            throw new IllegalArgumentException("Leave not found.");
-        }
-    }
-    
+	        // Deny the leave
+	        leave.setStatus(DENIED);
+	        leave.setReason(denyReason);
+	        leavesRepository.save(leave);
+
+	        // Find the leave requester (Kiran)
+	        Employees requester = employeesRepository.findById(authenticatedEmployeeId)
+	            .orElseThrow(() -> new IllegalArgumentException("Authenticated employee not found."));
+
+	        // Send notification email to the leave requester (Kiran)
+	        String from = "kommukirankumar1226@gmail.com";
+	        //requester.getEmail();
+	        String to = leave.getEmployee().getEmail();
+	        String subject = "Leave Denied for " + leave.getTypeOfLeave() + " - EmployeeID: " + leave.getEmployee().getEmployeeId();
+	        String message = "Your leave request for " + leave.getDays() + " days has been denied. Reason: " + denyReason;
+	        mailgunService.sendSimpleEmail(from, to, subject, message);
+
+	        // Send notification SMS to the leave requester (Kiran)
+	        String recipientNumber = ADMIN_MOBILE; // Change this to Kiran's phone number
+	        String smsText = "Your leave request for " + leave.getDays() + " days has been denied. Reason: " + denyReason;
+	        nexmoService.sendSms(recipientNumber, smsText);
+	    } else {
+	        throw new IllegalArgumentException("Leave not found.");
+	    }
+	}
+
     
     
 
@@ -244,7 +227,7 @@ public class LeavesServiceImpl implements LeavesService {
         return employee.getLeaves().stream()
                 .map(leave -> new LeaveDTO(leave.getLeaveId(), leave.getTypeOfLeave(), leave.getReason(), leave.getDateOfLeave(), 
                 		leave.getAppliedDate(), leave.getEmployee().getEmployeeId(), leave.getAvailableLeaves(),leave.getStatus(),leave.getEndDate()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     
@@ -255,8 +238,8 @@ public class LeavesServiceImpl implements LeavesService {
 	    
 	    int totalLeaves = employee.getTotalLeaves();
 	    int usedLeaveDays = employee.getLeaves().stream()
-	        .filter(leave -> "APPROVED".equals(leave.getStatus()))
-	        .mapToInt(leave -> leave.getDays())
+	        .filter(leave -> APPROVED.equals(leave.getStatus()))
+	        .mapToInt(Leaves::getDays)
 	        .sum();
 	    
 	    int availableLeaves = totalLeaves - usedLeaveDays;
@@ -265,12 +248,13 @@ public class LeavesServiceImpl implements LeavesService {
 	}
 
 
+
 	@Override
 	public List<LeaveDTO> employeeOnleave() {
 		List<Leaves> pendingLeaves = leavesRepository.findByDateOfLeave(LocalDate.now());
 		return pendingLeaves.stream().map(leave -> new LeaveDTO(leave.getLeaveId(),leave.getTypeOfLeave(), leave.getReason(),
 				leave.getDateOfLeave(), leave.getAppliedDate(), leave.getEmployee().getEmployeeId(), leave.getAvailableLeaves(),leave.getStatus(),leave.getEndDate()))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 

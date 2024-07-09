@@ -2,14 +2,12 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // Import correct Model interface
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,13 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.LeaveBalanceDTO;
 import com.example.demo.dto.LeaveDTO;
-import com.example.demo.models.Employees;
-import com.example.demo.models.Leaves;
-import com.example.demo.repos.EmployeeRepo;
-import com.example.demo.service.EmployeeServiceImpl;
 import com.example.demo.service.LeavesServiceImpl;
-
-import io.swagger.v3.oas.annotations.Operation;
 
 @Controller
 public class LeaveManagementControllers {

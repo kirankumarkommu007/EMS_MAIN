@@ -1,26 +1,17 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Employees;
-import com.example.demo.repos.EmployeeRepo;
 import com.example.demo.service.EmployeeServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,16 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Tag(name = "User Controller", description = "Controller for handling web page requests")
 public class UserProfileController {
 
-	private final EmployeeRepo employeeRepo;
 	private final EmployeeServiceImpl employeeServiceImpl;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	public UserProfileController(EmployeeRepo employeeRepo, EmployeeServiceImpl employeeServiceImpl) {
-		this.employeeRepo = employeeRepo;
+	public UserProfileController( EmployeeServiceImpl employeeServiceImpl) {
 		this.employeeServiceImpl = employeeServiceImpl;
 	}
+	
+	private static final String EMPLOYEE ="employee";
 
 	@Operation(summary = "Employee Profile", description = "Displays the user profile")
 	@GetMapping("/employeeprofile")
@@ -71,7 +58,7 @@ public class UserProfileController {
 			throw new RuntimeException("Employee not found");
 		}
 
-		model.addAttribute("employee", employee); // Pass the found employee
+		model.addAttribute(EMPLOYEE, employee); // Pass the found employee
 
 		return "views/fragments/updateMyPassword";
 	}
@@ -86,7 +73,7 @@ public class UserProfileController {
 	    Employees employee = employeeServiceImpl.findByEmployeeId(name);
 
 	    if (!newPassword.equals(confirmPassword)) {
-	        model.addAttribute("employee", employee);
+	        model.addAttribute(EMPLOYEE, employee);
 	        model.addAttribute("errorMessage", "Passwords do not match.");
 	        return "views/fragments/updateMyPassword";
 	    }
@@ -98,7 +85,7 @@ public class UserProfileController {
 	    model.addAttribute("successMessage", "Password updated successfully. Please Kindly Relogin");
 
 	    // Update employee in model to display updated data on the same page
-	    model.addAttribute("employee", employee);
+	    model.addAttribute(EMPLOYEE, employee);
 
 	    // Return the same view with success message displayed
 	    return "views/fragments/updateMyPassword";
@@ -125,8 +112,8 @@ public class UserProfileController {
 	}
 
 	
-	@GetMapping("/simplepage")
+	@GetMapping("/sidebar")
 	public String getSimple() {
-		return "views/pages/simple";
+		return "views/fragments/sidebar";
 	}
 }

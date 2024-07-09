@@ -1,10 +1,9 @@
-package com.example.demo.pdfService;
+package com.example.demo.pdfservices;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import java.io.File;
 
 @Controller
 public class PdfController {

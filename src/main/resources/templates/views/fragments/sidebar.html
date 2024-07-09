@@ -1,97 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="sidebar">
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="sidebar-css">
+    <title>Sidebar</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-	<div th:fragment="sidebar">
-		<div class="maindiv1">
+    <div class="sidebar" th:fragment="sidebar" style="margin-top: 60px">
+        <div class="maindiv1">
 
-			<div class="dropdown">
-				<button class="dropbtn">
-					<div class="iconstyling">
-						<img alt="Print"
-							th:src="@{/images/sidebarimages/disabled.png}" class="images">
-					</div>
-				</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a> 
-					<a href="#">Link 3</a>
-				</div>
-			</div>
-			
-			
-			<div class="dropdown">
-				<button class="dropbtn">
-					<div class="iconstyling">
-						<img alt="Print"
-							th:src="@{/images/sidebarimages/chemistry.png}" class="images">
-					</div>
-				</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a> 
-					<a href="#">Link 3</a>
-				</div>
-			</div>
-			
-			
-			
-			<div class="dropdown">
-				<button class="dropbtn">
-					<div class="iconstyling">
-						<img alt="Print"
-							th:src="@{/images/sidebarimages/hospital.png}" class="images">
-					</div>
-				</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a> 
-					<a href="#">Link 3</a>
-				</div>
-			</div>
-			
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <div class="iconstyling">
+                        <i class="fas fa-home"></i>
+                        <span class="link-text">Home</span>
+                    </div>
+                </button>
+            </div>
 
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <div class="iconstyling">
+                        <i class="fas fa-users"></i>
+                        <span class="link-text">Employee Management</span>
+                    </div>
+                </button>
+                <div class="dropdown-content">
+                    <a th:href="@{/listemployees}">All Employees</a>
+                    <a th:href="@{/activeEmployees}">Active Employees</a>
+                    <a th:href="@{/addemployees}">Add Employee</a>
+                    <a th:href="@{/employeeForm}">Download Employee Form</a>
+                </div>
+            </div>
 
-		
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/hospital.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/addition.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/id-card.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/book.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/user.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/files.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/lock.png}" class="images"></a>
-			</div>
-			<div class="iconstyling">
-				<a href="#" class="links1"><img alt="Print"
-					th:src="@{/images/sidebarimages/calendar.png}" class="images"></a>
-			</div>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <div class="iconstyling">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="link-text">Leave Management</span>
+                    </div>
+                </button>
+                <div class="dropdown-content">
+                    <a th:href="@{/pendingRequests}">Pending Requests</a>
+                    <a th:href="@{/employeesOnLeave}">Employees on Leave</a>
+                </div>
+            </div>
 
-		</div>
-	</div>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <div class="iconstyling">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="link-text">Attendance Management</span>
+                    </div>
+                </button>
+                <div class="dropdown-content">
+                    <a th:href="@{/markAttendance}">Mark Attendance</a>
+                    <a th:href="@{/viewAttendance}">View Attendance</a>
+                </div>
+            </div>
+
+            <div class="iconstyling">
+                <a th:href="@{/myCorner}" class="links1">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="link-text">My Corner</span>
+                </a>
+            </div>
+
+            <div class="iconstyling">
+                <a th:href="@{/myProfile}" class="links1">
+                    <i class="fas fa-id-badge"></i>
+                    <span class="link-text">My Profile</span>
+                </a>
+            </div>
+
+            <div class="iconstyling">
+                <a th:href="@{/updatePassword}" class="links1">
+                    <i class="fas fa-key"></i>
+                    <span class="link-text">Update Password</span>
+                </a>
+            </div>
+
+            <div class="iconstyling">
+                <a th:href="@{/settings}" class="links1">
+                    <i class="fas fa-cog"></i>
+                    <span class="link-text">Settings</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>

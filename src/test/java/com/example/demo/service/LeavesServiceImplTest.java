@@ -1,17 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.LeaveDTO;
-import com.example.demo.models.Employees;
 import com.example.demo.models.Leaves;
 import com.example.demo.repos.EmployeeRepo;
 import com.example.demo.repos.LeavesRepository;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,7 +19,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-public class LeavesServiceImplTest {
+ class LeavesServiceImplTest {
+	 
+	 private AutoCloseable closeable;
 
     @Mock
     private EmployeeRepo employeesRepository;
@@ -32,13 +34,19 @@ public class LeavesServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
     }
+    
+    @AfterEach
+    public void tearDown() throws Exception {
+        closeable.close();
+    }
+
 
   
 
     @Test
-    public void testAddLeaves_EmployeeNotFound() {
+     void testAddLeaves_EmployeeNotFound() {
         // Mock authenticated employee
         String authenticatedEmployeeId = "emp123";
 
