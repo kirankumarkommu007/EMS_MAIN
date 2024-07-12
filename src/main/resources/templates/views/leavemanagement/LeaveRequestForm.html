@@ -6,13 +6,46 @@
     <title>Leave Request Form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/leaverequest.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
 </head>
-<body>
 
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: black;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/welcome">
+                    <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins" style="display: inline-block; height: 30px; margin-right: 10px;">
+                    Dev Dolphins
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="user-icon fa fa-user"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/mycorner">My Corner</a></li>
+                            <li><a th:href="@{/updateMyPassword}">Reset Password</a></li>
+                            <li><a th:href="@{/logout}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Leave Request Form -->
     <div class="container mt-5">
         <div class="card">
             <div class="card-header bg-primary text-white">
@@ -71,101 +104,108 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const typeOfLeaveSelect = document.getElementById('typeOfLeave');
-        const daysSelect = document.getElementById('days');
-        const leaveForm = document.getElementById('leaveForm');
-        const singleDateField = document.querySelector('.single-date');
-        const multipleDatesFields = document.querySelectorAll('.multiple-dates');
+        document.addEventListener('DOMContentLoaded', function () {
+            const typeOfLeaveSelect = document.getElementById('typeOfLeave');
+            const daysSelect = document.getElementById('days');
+            const leaveForm = document.getElementById('leaveForm');
+            const singleDateField = document.querySelector('.single-date');
+            const multipleDatesFields = document.querySelectorAll('.multiple-dates');
 
-        function updateDateFields() {
-            const days = daysSelect.value;
-            if (days === '1') {
-                singleDateField.style.display = 'block';
-                singleDateField.querySelector('input').setAttribute('required', 'required');
-                multipleDatesFields.forEach(field => {
-                    field.style.display = 'none';
-                    field.querySelector('input').removeAttribute('required');
-                });
-            } else {
-                singleDateField.style.display = 'none';
-                singleDateField.querySelector('input').removeAttribute('required');
-                multipleDatesFields.forEach(field => {
-                    field.style.display = 'block';
-                    field.querySelector('input').setAttribute('required', 'required');
-                });
-            }
-        }
-
-        function validateForm(event) {
-            const typeOfLeave = typeOfLeaveSelect.value;
-            const days = parseInt(daysSelect.value, 10);
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            let dateDifference = 0;
-
-            if (days > 1) {
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                dateDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
-            } else {
-                dateDifference = 1;
+            function updateDateFields() {
+                const days = daysSelect.value;
+                if (days === '1') {
+                    singleDateField.style.display = 'block';
+                    singleDateField.querySelector('input').setAttribute('required', 'required');
+                    multipleDatesFields.forEach(field => {
+                        field.style.display = 'none';
+                        field.querySelector('input').removeAttribute('required');
+                    });
+                } else {
+                    singleDateField.style.display = 'none';
+                    singleDateField.querySelector('input').removeAttribute('required');
+                    multipleDatesFields.forEach(field => {
+                        field.style.display = 'block';
+                        field.querySelector('input').setAttribute('required', 'required');
+                    });
+                }
             }
 
-            if (dateDifference !== days) {
-                alert('The number of days requested does not match the date range provided.');
-                event.preventDefault();
-                return;
+            function validateForm(event) {
+                const typeOfLeave = typeOfLeaveSelect.value;
+                const days = parseInt(daysSelect.value, 10);
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                let dateDifference = 0;
+
+                if (days > 1) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    dateDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                } else {
+                    dateDifference = 1;
+                }
+
+                if (dateDifference !== days) {
+                    alert('The number of days requested does not match the date range provided.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'CasualLeave' && days > 2) {
+                    alert('Casual leave cannot exceed 2 consecutive days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'CasualLeave' && dateDifference > 2) {
+                    alert('Casual leave cannot exceed 2 consecutive days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'BereavementLeave' && days > 3) {
+                    alert('Bereavement leave cannot exceed 3 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'MarriageLeave' && days > 5) {
+                    alert('Marriage leave cannot exceed 5 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'MaternityLeave' && days > 24) {
+                    alert('Maternity leave cannot exceed 24 weeks.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'PaternityLeave' && days > 3) {
+                    alert('Paternity leave cannot exceed 3 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'AdoptionLeave' && days > 5) {
+                    alert('Adoption leave cannot exceed 5 days.');
+                    event.preventDefault();
+                    return;
+                }
+
+                if (typeOfLeave === 'EmergencyLeave' && days > 1) {
+                    alert('Emergency leave cannot exceed 1 day.');
+                    event.preventDefault();
+                    return;
+                }
             }
 
-            if (typeOfLeave === 'CasualLeave' && days > 2) {
-                alert('Casual leave cannot exceed 2 consecutive days.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'CasualLeave' && dateDifference > 2) {
-                alert('Casual leave cannot exceed 2 consecutive days.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'BereavementLeave' && days > 3) {
-                alert('Bereavement leave cannot exceed 3 days.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'MarriageLeave' && days > 5) {
-                alert('Marriage leave cannot exceed 5 days.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'MaternityLeave' && days > 24) {
-                alert('Maternity leave cannot exceed 24 weeks.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'PaternityLeave' && days > 3) {
-                alert('Paternity leave cannot exceed 3 days.');
-                event.preventDefault();
-                return;
-            }
-
-            if (typeOfLeave === 'AdoptionLeave' && days > 5) {
-                alert('Adoption leave cannot exceed 5 days.');
-                event.preventDefault();
-            }
-        }
-
-        typeOfLeaveSelect.addEventListener('change', updateDateFields);
-        daysSelect.addEventListener('change', updateDateFields);
-        leaveForm.addEventListener('submit', validateForm);
-        updateDateFields(); // Initial call to set the correct fields on page load
-    });
-
+            typeOfLeaveSelect.addEventListener('change', updateDateFields);
+            daysSelect.addEventListener('change', updateDateFields);
+            leaveForm.addEventListener('submit', validateForm);
+            updateDateFields(); // Initial call to set the correct fields on page load
+        });
     </script>
 </body>
+
 </html>
