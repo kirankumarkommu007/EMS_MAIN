@@ -103,6 +103,10 @@ public class LeaveManagementControllers {
         
         List<LeaveDTO> myLeaves = leaveService.getMyLeaves(employeeId);
         model.addAttribute("myLeaves", myLeaves);
+        // Fetch the leave balance for the employee
+        LeaveBalanceDTO leaveBalance = leaveService.getLeaveBalance(employeeId);
+        
+        model.addAttribute("leaveBalance", leaveBalance);
         
         return "views/leavemanagement/MyLeaves";
     }

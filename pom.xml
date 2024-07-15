@@ -172,12 +172,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.demo</groupId>
-			<artifactId>demo-repo</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<!--mailchrimp -->
+			<!--mailchrimp -->
 
 <!-- https://mvnrepository.com/artifact/com.mailgun/mailgun-java -->
 <dependency>

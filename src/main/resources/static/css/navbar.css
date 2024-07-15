@@ -32,3 +32,6 @@
     cursor: pointer;
     display: inline-block;
 }
+.user-icon {
+    color: black;
+}

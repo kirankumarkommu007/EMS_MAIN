@@ -1,105 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Employee Management</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" th:href="@{/css/navbar.css}">
-<link rel="stylesheet" th:href="@{/css/sidebar.css}">
-
-<link rel="stylesheet" th:href="@{/css/adminhome.css}">
-
+    <meta charset="UTF-8">
+    <title>Employee Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/adminhome.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<style>
+.user-icon {
+    color: white; /* Make the icon white to stand out against the black background */
+    font-size: 20px; /* Adjust the size as needed */
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+</style>
 <body>
-	<!-- Include Navbar Fragment -->
-	<nav class="navbar navbar-inverse navbar-fixed-top"
-		style="background-color: black;" th:fragment="navbar">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/welcome"> <img
-					th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins"
-					style="display: inline-block; height: 30px; margin-right: 10px;">
-					Dev Dolphins
-				</a>
-			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="user-icon"
-							th:text="${user.firstname}"></span>
-					</a>
-						<ul class="dropdown-menu">
-							<li><a href="/mycorner}">My Corner</a></li>
-							<li><a th:href="@{/updateMyPassword}">Reset Password</a></li>
-							<li><a th:href="@{/logout}">Logout</a></li>
-						</ul></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+    <!-- Include Navbar Fragment -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: black;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/welcome">
+                    <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins" style="display: inline-block; height: 30px; margin-right: 10px;">
+                    Dev Dolphins
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="user-icon fa fa-user"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/mycorner">My Corner</a></li>
+                            <li><a th:href="@{/updateMyPassword}">Reset Password</a></li>
+                            <li><a th:href="@{/logout}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-	<div class="container-fluid mt-4">
-		<div class="row">
-			<!-- Main Content Area -->
-			<div class="col-lg-5">
-				<!-- Employee Management -->
-				<div class="jumbotron bg-light p-4">
-					<h2 class="mb-4">Employee Management</h2>
-					<div class="list-group">
-						<a href="/addemployees"
-							class="list-group-item list-group-item-action">Add Employee</a> <a
-							href="/listemployees"
-							class="list-group-item list-group-item-action">All Employees
-							List</a> <a href="/activeEmployees"
-							class="list-group-item list-group-item-action">Active
-							Employees List</a> <a href="/employeeForm"
-							class="list-group-item list-group-item-action">Download
-							Employee Form</a>
-					</div>
-				</div>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Main Content Area -->
+            <div class="col-lg-5">
+                <!-- Employee Management -->
+                <div class="jumbotron bg-light p-4">
+                    <h2 class="mb-4">Employee Management</h2>
+                    <div class="list-group">
+                        <a href="/addemployees" class="list-group-item list-group-item-action">Add Employee</a>
+                        <a href="/listemployees" class="list-group-item list-group-item-action">All Employees List</a>
+                        <a href="/activeEmployees" class="list-group-item list-group-item-action">Active Employees List</a>
+                        <a href="/employeeForm" class="list-group-item list-group-item-action">Download Employee Form</a>
+                    </div>
+                </div>
 
-				<!-- Attendance Management -->
-				<div class="jumbotron bg-light p-4">
-					<h2 class="mb-4">Attendance Management</h2>
-					<div class="list-group">
-						<a href="#" class="list-group-item list-group-item-action">View
-							Attendance</a> <a href="#"
-							class="list-group-item list-group-item-action">Mark
-							Attendance</a> <a href="#"
-							class="list-group-item list-group-item-action">Attendance
-							Reports</a>
-					</div>
-				</div>
+                <!-- Attendance Management -->
+                <div class="jumbotron bg-light p-4">
+                    <h2 class="mb-4">Attendance Management</h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">View Attendance</a>
+                        <a href="#" class="list-group-item list-group-item-action">Mark Attendance</a>
+                        <a href="#" class="list-group-item list-group-item-action">Attendance Reports</a>
+                    </div>
+                </div>
 
-				<!-- Leave Management -->
-				<div class="jumbotron bg-light p-4">
-					<h2 class="mb-4">Leave Management</h2>
-					<div class="list-group">
-						<a href="/leaveRequest"
-							class="list-group-item list-group-item-action">Request Leave</a>
-						<a href="/pending" class="list-group-item list-group-item-action">Pending</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
-
-
-
+                <!-- Leave Management -->
+                <div class="jumbotron bg-light p-4">
+                    <h2 class="mb-4">Leave Management</h2>
+                    <div class="list-group">
+                        <a href="/leaveRequest" class="list-group-item list-group-item-action">Request Leave</a>
+                        <a href="/pending" class="list-group-item list-group-item-action">Pending</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
